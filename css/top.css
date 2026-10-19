@@ -699,3 +699,10 @@ body.top-page {
   }
 }
 
+
+/* PC版：もちとらとの間隔をすぷーん側に合わせる */
+@media (min-width: 651px) {
+  .stage .figure.fork {
+    left: 24%;
+  }
+}
