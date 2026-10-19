@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="ja">
 <head>
@@ -9,55 +10,140 @@
   <link rel="stylesheet" href="css/characters.css">
 </head>
 <body class="sub-page">
+
   <header class="site-header">
-    <a class="mini-brand" href="index.html" aria-label="メイドル トップ">♡ メイドル!!</a>
-    <button class="menu-toggle" aria-label="メニューを開く" aria-expanded="false" aria-controls="site-menu"><span></span><span></span><span></span></button>
+    <a class="mini-brand" href="index.html" aria-label="メイドル トップ">
+      ♡ メイドル!!
+    </a>
+
+    <button class="menu-toggle" aria-label="メニューを開く"
+      aria-expanded="false" aria-controls="site-menu">
+      <span></span><span></span><span></span>
+    </button>
+
     <nav class="site-menu" id="site-menu" aria-hidden="true">
       <a href="index.html">TOP <small>トップ</small></a>
       <a href="characters.html">CHARACTER <small>キャラクター</small></a>
       <a href="sns.html">OFFICIAL SNS <small>公式SNS</small></a>
     </nav>
   </header>
+
   <main class="page-wrap character-page">
+
     <div class="page-heading">
       <p class="eyebrow">MEET OUR FRIENDS</p>
       <h1>CHARACTER</h1>
       <p>メイドルの仲間たちを紹介するよ！</p>
       <span class="heading-sparkle">✧　♡　✧</span>
     </div>
-    <div class="character-tabs" role="tablist" aria-label="キャラクター選択">
-      <button class="character-tab active" data-character="spoon" role="tab" aria-selected="true"><span class="tab-icon pink">S</span><span>すぷーん</span></button>
-      <button class="character-tab" data-character="fork" role="tab" aria-selected="false"><span class="tab-icon blue">F</span><span>ふぉーく</span></button>
-      <button class="character-tab" data-character="knife" role="tab" aria-selected="false"><span class="tab-icon orange">N</span><span>ないふ</span></button>
-      <button class="character-tab" data-character="hashi" role="tab" aria-selected="false"><span class="tab-icon green">H</span><span>はし</span></button>
-      <button class="character-tab" data-character="mochitora" role="tab" aria-selected="false"><span class="tab-icon white">M</span><span>もちとら</span></button>
+
+    <div class="character-tabs" role="tablist"
+      aria-label="キャラクター選択">
+
+      <button class="character-tab active" data-character="spoon"
+        role="tab" aria-selected="true">
+        <span class="tab-icon">
+          <img src="assets/icon-spoon.png" alt="">
+        </span>
+        <span>すぷーん</span>
+      </button>
+
+      <button class="character-tab" data-character="fork"
+        role="tab" aria-selected="false">
+        <span class="tab-icon">
+          <img src="assets/icon-fork.png" alt="">
+        </span>
+        <span>ふぉーく</span>
+      </button>
+
+      <button class="character-tab" data-character="knife"
+        role="tab" aria-selected="false">
+        <span class="tab-icon">
+          <img src="assets/icon-knife.png" alt="">
+        </span>
+        <span>ないふ</span>
+      </button>
+
+      <button class="character-tab" data-character="hashi"
+        role="tab" aria-selected="false">
+        <span class="tab-icon">
+          <img src="assets/icon-hashi.png" alt="">
+        </span>
+        <span>はし</span>
+      </button>
+
+      <button class="character-tab" data-character="mochitora"
+        role="tab" aria-selected="false">
+        <span class="tab-icon">
+          <img src="assets/icon-mochitora.png" alt="">
+        </span>
+        <span>もちとら</span>
+      </button>
+
     </div>
+
     <section class="profile-card" aria-live="polite">
+
       <div class="profile-art-wrap">
-        <button class="art-arrow prev" type="button" aria-label="前の画像">◀</button>
+
+        <button class="art-arrow prev" type="button"
+          aria-label="前の画像">◀</button>
+
         <div class="profile-art" id="profile-art">
-          <div class="profile-placeholder pink" id="art-placeholder"><span class="art-sparkle">✧</span><strong id="art-name">すぷーん</strong><small>CHARACTER IMAGE<br>PLACEHOLDER</small></div>
+          <div class="profile-placeholder pink" id="art-placeholder">
+            <span class="art-sparkle">✧</span>
+            <strong id="art-name">すぷーん</strong>
+            <small>CHARACTER IMAGE</small>
+          </div>
         </div>
-        <button class="art-arrow next" type="button" aria-label="次の画像">▶</button>
+
+        <button class="art-arrow next" type="button"
+          aria-label="次の画像">▶</button>
+
         <div class="image-count" id="image-count">01 / 01</div>
       </div>
+
       <div class="profile-info">
+
         <p class="profile-en" id="profile-en">SPOON</p>
         <h2 id="profile-name">すぷーん</h2>
         <div class="profile-ribbon" id="profile-tag">レッド担当</div>
-        <p class="profile-description" id="profile-description">ここにキャラクターの紹介文が入ります。性格や好きなものなど、メイドルらしいプロフィールを掲載できます。</p>
+
+        <p class="profile-description" id="profile-description">
+          お嬢様気質の、メイドルを彩る女の子。
+        </p>
+
         <dl class="profile-details">
-          <div><dt>学年</dt><dd id="profile-grade">高校2年生</dd></div>
-          <div><dt>カラー</dt><dd id="profile-color">RED / PINK</dd></div>
-          <div><dt>好きなもの</dt><dd id="profile-favorite">準備中</dd></div>
+          <div>
+            <dt>学年</dt>
+            <dd id="profile-grade">高校2年生</dd>
+          </div>
+          <div>
+            <dt>カラー</dt>
+            <dd id="profile-color">RED / PINK</dd>
+          </div>
+          <div>
+            <dt>好きなもの</dt>
+            <dd id="profile-favorite">準備中</dd>
+          </div>
         </dl>
-        <p class="diff-note">画像差分は後から追加できます ♡</p>
+
+        <p class="diff-note">画像の左右の矢印で差分を切り替えられるよ ♡</p>
+
       </div>
     </section>
+
     <a class="back-home" href="index.html">♡ TOPページへ戻る</a>
+
   </main>
-  <footer class="site-footer"><span>♡ 萌え萌え♡きゅ～と メイドル!!</span><small>© MAIDOL / かとらりびより</small></footer>
+
+  <footer class="site-footer">
+    <span>♡ 萌え萌え♡きゅ～と メイドル!!</span>
+    <small>© MAIDOL / かとらりびより</small>
+  </footer>
+
   <script src="js/common.js"></script>
   <script src="js/characters.js"></script>
+
 </body>
 </html>
