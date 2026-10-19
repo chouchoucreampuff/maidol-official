@@ -704,7 +704,7 @@ body.top-page {
 /* PC版：もちとらとすぷーんの間隔に合わせてふぉーくを配置 */
 @media (min-width: 651px) {
   .stage .figure.fork {
-    left: 30%;
+    left: 29%;
   }
 }
 
