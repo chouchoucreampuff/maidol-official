@@ -873,3 +873,91 @@ body.top-page {
   }
 }
 
+/* ========================================
+   PC版：キャラクターを大胆に拡大・重ねる
+======================================== */
+
+@media (min-width: 651px) {
+
+  .stage {
+    width: min(100%, 1700px);
+    height: clamp(760px, 92vh, 1050px);
+    min-height: 760px;
+    grid-template-columns: 23% repeat(5, minmax(0, 1fr));
+    column-gap: 0;
+    transform: translateX(2%);
+  }
+
+  /* ロゴは左側に収める */
+  .stage .logo-halo {
+    width: 105%;
+    max-width: 500px;
+    justify-self: center;
+    z-index: 2;
+  }
+
+  /* キャラクター4人を約1.5倍の高さに */
+  .stage .figure.knife,
+  .stage .figure.fork,
+  .stage .figure.spoon,
+  .stage .figure.hashi {
+    height: 100%;
+    width: 135%;
+    justify-self: center;
+    position: relative;
+    overflow: visible;
+  }
+
+  .stage .figure .character-art {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center bottom;
+  }
+
+  /* もちとらは小さめを維持 */
+  .stage .figure.mochitora {
+    height: 100%;
+    width: 100%;
+    position: relative;
+    z-index: 3;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+  }
+
+  .stage .figure.mochitora .character-art {
+    width: 60%;
+    height: 60%;
+    flex: 0 0 60%;
+    object-fit: contain;
+    object-position: center bottom;
+  }
+
+  /* キャラクター同士の横間隔を詰める */
+  .stage .figure.knife {
+    z-index: 2;
+    transform: translateX(10%);
+  }
+
+  .stage .figure.fork {
+    z-index: 5;
+    transform: translateX(-10%) translateY(-8%);
+  }
+
+  .stage .figure.mochitora {
+    z-index: 3;
+    transform: scale(1.1);
+  }
+
+  .stage .figure.spoon {
+    z-index: 5;
+    transform: translateX(-10%) translateY(-8%);
+  }
+
+  .stage .figure.hashi {
+    z-index: 2;
+    transform: translateX(-10%);
+  }
+}
+
