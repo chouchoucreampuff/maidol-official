@@ -1063,3 +1063,10 @@ body.top-page {
     object-position: center bottom;
   }
 }
+
+/* PC版：ふぉーくを少し右へ */
+@media (min-width: 651px) {
+  .stage .figure.fork {
+    transform: translateX(0%) !important;
+  }
+}
