@@ -720,28 +720,28 @@ body.top-page {
   align-items: center;
   flex: 0 0 auto;
   line-height: 1;
-  max-width: 110px;
+  max-width: 140px;
 }
 
 .mini-brand img {
   display: block;
   width: auto !important;
-  height: 52px !important;
-  max-width: 110px !important;
-  max-height: 52px !important;
+  height: 65px !important;
+  max-width: 140px !important;
+  max-height: 65px !important;
   object-fit: contain;
 }
 
-/* 左上のミニロゴ：スマートフォン版は小さく */
+/* 左上のミニロゴ：スマートフォン版 */
 @media (max-width: 650px) {
   .mini-brand {
-    max-width: 60px;
+    max-width: 85px;
   }
 
   .mini-brand img {
     width: auto !important;
-    height: 24px !important;
-    max-width: 60px !important;
-    max-height: 24px !important;
+    height: 34px !important;
+    max-width: 85px !important;
+    max-height: 34px !important;
   }
 }
