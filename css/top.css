@@ -598,3 +598,35 @@ body.top-page {
     opacity: 1 !important;
   }
 }
+
+/* ===== PC版：キャラクター全体を拡大 ===== */
+@media (min-width: 651px) {
+  .stage {
+    width: min(100%, 1600px);
+    grid-template-columns: 30% repeat(5, minmax(0, 1fr));
+    height: clamp(580px, 78vh, 820px);
+    min-height: 580px;
+  }
+
+  .stage .figure {
+    height: 100%;
+  }
+
+  /* もちとらは他のキャラクターの60% */
+  .stage .figure.mochitora {
+    height: 100%;
+  }
+
+  .stage .figure.mochitora .character-art {
+    width: 60%;
+    height: 60%;
+    flex-basis: 60%;
+  }
+
+  /* ロゴも少し大きく */
+  .stage .logo-halo {
+    width: 140%;
+    max-width: 680px;
+  }
+}
+
