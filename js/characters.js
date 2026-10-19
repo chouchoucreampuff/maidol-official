@@ -7,8 +7,11 @@ const characters = {
     en: "SPOON",
     tag: "レッド担当",
     grade: "高校2年生",
+    birthday: "未設定",
     color: "RED / PINK",
-    favorite: "準備中",
+    food: "未設定",
+    hobby: "未設定",
+    favorite: "未設定",
     description: "お嬢様気質の、メイドルを彩る女の子。",
     tone: "pink",
     images: ["assets/spoon.png"]
@@ -19,8 +22,11 @@ const characters = {
     en: "FORK",
     tag: "ブルー担当",
     grade: "高校2年生",
+    birthday: "未設定",
     color: "BLUE",
-    favorite: "準備中",
+    food: "未設定",
+    hobby: "未設定",
+    favorite: "未設定",
     description: "サブカル好きで、すぷーんと仲良し。",
     tone: "blue",
     images: ["assets/fork.png"]
@@ -31,9 +37,12 @@ const characters = {
     en: "KNIFE",
     tag: "オレンジ担当",
     grade: "高校3年生",
+    birthday: "未設定",
     color: "ORANGE",
+    food: "ジャンクフード",
+    hobby: "未設定",
     favorite: "ジャンクフード",
-    description: "明るく元気なムードメーカー。ジャンクフードが好き。",
+    description: "明るく元気なムードメーカー。",
     tone: "orange",
     images: ["assets/knife.png"]
   },
@@ -43,9 +52,12 @@ const characters = {
     en: "HASHI",
     tag: "グリーン担当",
     grade: "高校1年生",
+    birthday: "未設定",
     color: "GREEN",
+    food: "和食",
+    hobby: "未設定",
     favorite: "和食",
-    description: "おとなしく落ち着いた雰囲気の女の子。和食が好き。",
+    description: "おとなしく落ち着いた雰囲気の女の子。",
     tone: "green",
     images: ["assets/hashi.png"]
   },
@@ -55,7 +67,10 @@ const characters = {
     en: "MOCHITORA",
     tag: "メイドルのマスコット",
     grade: "3さい",
+    birthday: "未設定",
     color: "WHITE",
+    food: "ケーキ",
+    hobby: "未設定",
     favorite: "ケーキ",
     description: "まるまるふっくら、もちもちの白いトラ。メイドルのみんなを見守るマスコット。",
     tone: "white",
@@ -91,7 +106,10 @@ function renderCharacter() {
   document.getElementById("profile-name").textContent = character.name;
   document.getElementById("profile-tag").textContent = character.tag;
   document.getElementById("profile-grade").textContent = character.grade;
+  document.getElementById("profile-birthday").textContent = character.birthday;
   document.getElementById("profile-color").textContent = character.color;
+  document.getElementById("profile-food").textContent = character.food;
+  document.getElementById("profile-hobby").textContent = character.hobby;
   document.getElementById("profile-favorite").textContent = character.favorite;
   document.getElementById("profile-description").textContent =
     character.description;
