@@ -1017,3 +1017,49 @@ body.top-page {
   }
 }
 
+
+/* ===== PC版：高さを統一し、横方向だけ重ねる ===== */
+@media (min-width: 651px) {
+
+  /* 5人とも同じ基準位置・同じ高さ */
+  .stage .figure.knife,
+  .stage .figure.fork,
+  .stage .figure.mochitora,
+  .stage .figure.spoon,
+  .stage .figure.hashi {
+    align-self: end;
+    bottom: auto;
+    margin-top: 0;
+  }
+
+  /* 上下方向のズレを完全に解除 */
+  .stage .figure.knife {
+    transform: translateX(10%) !important;
+    z-index: 2;
+  }
+
+  .stage .figure.fork {
+    transform: translateX(-10%) !important;
+    z-index: 5;
+  }
+
+  .stage .figure.mochitora {
+    transform: none !important;
+    z-index: 3;
+  }
+
+  .stage .figure.spoon {
+    transform: translateX(-10%) !important;
+    z-index: 5;
+  }
+
+  .stage .figure.hashi {
+    transform: translateX(-10%) !important;
+    z-index: 2;
+  }
+
+  /* 画像は下端を基準に表示 */
+  .stage .figure .character-art {
+    object-position: center bottom;
+  }
+}
