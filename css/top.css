@@ -124,3 +124,93 @@ body.top-page{background:#fff9fe;overflow-x:hidden}
   }
 }
 
+
+/* ===== PC版：キャラクター5体を横一列に ===== */
+@media (min-width: 651px) {
+  .stage {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 12px;
+    height: auto;
+    min-height: 0;
+    padding: 10px 0 0;
+    margin-bottom: 0;
+  }
+
+  /* 前列・後列のグループを解除して一列に並べる */
+  .character-row {
+    display: contents;
+  }
+
+  .character-row .figure {
+    flex: 0 0 17%;
+    width: 17%;
+    height: clamp(260px, 32vw, 390px);
+    min-width: 0;
+    padding: 10px 2px 18px;
+  }
+
+  /* もちとらは少し小さめ */
+  .figure.mochitora {
+    flex: 0 0 14%;
+    width: 14%;
+    height: clamp(210px, 25vw, 310px);
+    align-self: flex-end;
+  }
+
+  /* 表示順：ないふ → ふぉーく → もちとら → すぷーん → はし */
+  .figure.knife {
+    order: 1;
+  }
+
+  .figure.fork {
+    order: 2;
+  }
+
+  .figure.mochitora {
+    order: 3;
+  }
+
+  .figure.spoon {
+    order: 4;
+  }
+
+  .figure.hashi {
+    order: 5;
+  }
+
+  /* ロゴはキャラクターの下へ */
+  .logo-halo {
+    position: relative;
+    top: auto;
+    bottom: auto;
+    left: auto;
+    flex: 0 0 100%;
+    width: min(77%, 590px);
+    margin: 12px auto 0;
+    transform: none;
+    animation: desktop-logo-pop .85s 1.35s both;
+  }
+
+  @keyframes desktop-logo-pop {
+    from {
+      opacity: 0;
+      transform: scale(.85);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+}
+
+/* ===== スマホ版：もちとらを上へ ===== */
+@media (max-width: 650px) {
+  .figure.mochitora {
+    position: relative;
+    top: -35px;
+  }
+}
+
