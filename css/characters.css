@@ -1,29 +1,423 @@
-body.sub-page{background:linear-gradient(145deg,#fff8fd,#f7f4ff 45%,#f1fbff);min-height:100vh}
-.character-page{max-width:1000px}
-.character-tabs{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:0 auto 24px}
-.character-tab{display:flex;align-items:center;gap:8px;padding:8px 13px 8px 8px;border-radius:99px;border:1px solid #f1ddec;background:#ffffffb8;color:#987e9b;font-size:.8rem;font-weight:800;cursor:pointer;transition:.2s}
-.character-tab:hover,.character-tab.active{background:#fff;border-color:#e5afd0;color:#c75d9b;box-shadow:0 5px 18px #d9a1c51e;transform:translateY(-2px)}
-.tab-icon{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;color:white;font-size:.95rem;font-weight:900;box-shadow:inset 0 2px 5px #fff7}
-.tab-icon.pink{background:linear-gradient(135deg,#f8a4ce,#d968a9)}.tab-icon.blue{background:linear-gradient(135deg,#9de2f8,#6bafd8)}.tab-icon.orange{background:linear-gradient(135deg,#ffd1a1,#f09b64)}.tab-icon.green{background:linear-gradient(135deg,#b8e8c4,#71be91)}.tab-icon.white{background:linear-gradient(135deg,#fff,#d4e5f1);color:#86a1b2;border:1px solid #e2eaf0}
-.profile-card{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.85fr);gap:clamp(20px,5vw,56px);align-items:center;padding:clamp(18px,4vw,42px);border:1px solid #fff;border-radius:28px;background:#ffffffb8;box-shadow:0 18px 55px #a77ca218;backdrop-filter:blur(12px)}
-.profile-art-wrap{position:relative;min-height:440px;display:flex;align-items:center;justify-content:center;border-radius:24px;background:linear-gradient(150deg,#fff0f8,#f5f2ff 50%,#eafaff);overflow:hidden}
-.profile-art-wrap:before,.profile-art-wrap:after{content:"✧";position:absolute;color:#fff;font-size:2.5rem;text-shadow:0 0 15px #f0acd5}
-.profile-art-wrap:before{top:8%;left:12%}.profile-art-wrap:after{bottom:13%;right:12%}
-.profile-art{width:100%;height:100%;min-height:440px;display:flex;align-items:center;justify-content:center;padding:28px}
-.profile-placeholder{width:min(75%,300px);height:370px;border:1px solid #ffffffc9;border-radius:48% 48% 20px 20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;box-shadow:inset 0 0 35px #fff9,0 15px 35px #ab7ea01c;color:#a46d99;text-align:center;transition:background .25s}
-.profile-placeholder.pink{background:linear-gradient(150deg,#fff4fb,#f6c4e1)}.profile-placeholder.blue{background:linear-gradient(150deg,#f2fcff,#bce8f7)}.profile-placeholder.orange{background:linear-gradient(150deg,#fff9f1,#ffd3ae)}.profile-placeholder.green{background:linear-gradient(150deg,#f4fff7,#c6eed0)}.profile-placeholder.white{background:linear-gradient(150deg,#fff,#e6f4fb);border-radius:46%}
-.profile-placeholder strong{font-size:1.7rem}.profile-placeholder small{font-size:.6rem;letter-spacing:.12em;line-height:1.7;color:#a98eac}.art-sparkle{font-size:3.5rem;color:white;text-shadow:0 0 20px #fff,0 0 30px #d995c8}
-.art-arrow{position:absolute;z-index:3;top:50%;transform:translateY(-50%);width:38px;height:38px;border:1px solid #fff;background:#ffffffd9;border-radius:50%;color:#c66ba3;cursor:pointer;box-shadow:0 4px 12px #b885a022}
-.art-arrow:hover{background:#fff0fa}.art-arrow.prev{left:10px}.art-arrow.next{right:10px}
-.image-count{position:absolute;bottom:12px;right:15px;font-size:.65rem;color:#a58ba9;letter-spacing:.1em}
-.profile-info{padding:8px 0}
-.profile-en{font-size:.7rem;letter-spacing:.25em;font-weight:900;color:#d28bb7;margin:0 0 4px}
-.profile-info h2{font-size:clamp(2rem,4vw,3.2rem);color:#c75d9b;margin:0 0 10px;line-height:1.2}
-.profile-ribbon{display:inline-block;padding:6px 14px;background:#fff0f8;border:1px solid #f5d7e9;border-radius:99px;color:#c773a6;font-size:.75rem;font-weight:800}
-.profile-description{font-family:'Kiwi Maru',sans-serif;font-size:.85rem;line-height:2;color:#88758e;margin:20px 0}
-.profile-details{margin:0;border-top:1px dashed #ead5e5}
-.profile-details div{display:grid;grid-template-columns:90px 1fr;gap:10px;padding:11px 0;border-bottom:1px dashed #ead5e5;font-size:.8rem}
-.profile-details dt{color:#b18aaa}.profile-details dd{margin:0;color:#76627c;font-weight:700}
-.diff-note{font-size:.7rem;color:#b39ab2;margin-top:16px}
-@media(max-width:720px){.profile-card{grid-template-columns:1fr;gap:22px}.profile-art-wrap,.profile-art{min-height:390px}.profile-placeholder{height:330px}.character-tabs{gap:7px}.character-tab{padding:6px 10px 6px 6px;font-size:.72rem}.tab-icon{width:30px;height:30px}.profile-info{padding:0 4px}}
-@media(max-width:420px){.profile-art-wrap,.profile-art{min-height:340px}.profile-placeholder{height:285px}.character-tab{gap:5px}.character-tab span:last-child{font-size:.68rem}}
+
+body.sub-page {
+  background: linear-gradient(145deg, #fff8fd, #f7f4ff 45%, #f1fbff);
+  min-height: 100vh;
+}
+
+.character-page {
+  max-width: 1100px;
+  margin-inline: auto;
+}
+
+/* ページ見出し */
+.page-heading {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.page-heading h1 {
+  color: #c75d9b;
+}
+
+.heading-sparkle {
+  display: inline-block;
+  color: #e6a0cc;
+  margin-top: 6px;
+}
+
+/* キャラクター選択 */
+.character-tabs {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 0 auto 28px;
+}
+
+.character-tab {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 8px 14px 8px 9px;
+  border-radius: 99px;
+  border: 1px solid #f1ddec;
+  background: #ffffffd9;
+  color: #987e9b;
+  font-size: .85rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform .2s, box-shadow .2s, border-color .2s;
+}
+
+.character-tab:hover,
+.character-tab.active {
+  background: #fff;
+  border-color: #e5afd0;
+  color: #c75d9b;
+  box-shadow: 0 5px 18px #d9a1c522;
+  transform: translateY(-2px);
+}
+
+/* アイコン画像：800pxの原寸ではなく表示サイズで縮小 */
+.tab-icon {
+  display: block;
+  width: 58px;
+  height: 58px;
+  flex: 0 0 58px;
+  overflow: hidden;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 2px 9px #d9a1c51a;
+}
+
+.tab-icon img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.character-tab.active .tab-icon {
+  outline: 3px solid #f2b8d8;
+  outline-offset: 2px;
+}
+
+/* プロフィールカード */
+.profile-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr);
+  gap: clamp(22px, 4vw, 48px);
+  align-items: stretch;
+  padding: clamp(16px, 3vw, 32px);
+  border: 1px solid #fff;
+  border-radius: 28px;
+  background: #ffffffc7;
+  box-shadow: 0 18px 55px #a77ca218;
+  backdrop-filter: blur(12px);
+}
+
+/* 立ち絵の背景 */
+.profile-art-wrap {
+  position: relative;
+  min-width: 0;
+  min-height: 500px;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  border-radius: 24px;
+  background: linear-gradient(150deg, #fff0f8, #f5f2ff 50%, #eafaff);
+  overflow: hidden;
+}
+
+.profile-art-wrap::before,
+.profile-art-wrap::after {
+  content: "✧";
+  position: absolute;
+  z-index: 1;
+  color: #fff;
+  font-size: 2.5rem;
+  pointer-events: none;
+  text-shadow: 0 0 15px #f0acd5;
+}
+
+.profile-art-wrap::before {
+  top: 6%;
+  left: 8%;
+}
+
+.profile-art-wrap::after {
+  bottom: 8%;
+  right: 8%;
+}
+
+/* 立ち絵表示領域 */
+.profile-art {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+  min-height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 22px 34px;
+  box-sizing: border-box;
+}
+
+/* 立ち絵：縦横比を維持 */
+#character-real-image {
+  display: block;
+  position: relative;
+  z-index: 2;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 470px;
+  object-fit: contain;
+  object-position: center bottom;
+}
+
+#character-real-image[hidden] {
+  display: none;
+}
+
+/* 画像が未設定・読み込み失敗した場合 */
+.profile-placeholder {
+  width: min(75%, 300px);
+  min-height: 340px;
+  border: 1px solid #ffffffc9;
+  border-radius: 48% 48% 20px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  box-shadow: inset 0 0 35px #fff9, 0 15px 35px #ab7ea01c;
+  color: #a46d99;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.profile-placeholder.pink {
+  background: linear-gradient(150deg, #fff4fb, #f6c4e1);
+}
+
+.profile-placeholder.blue {
+  background: linear-gradient(150deg, #f2fcff, #bce8f7);
+}
+
+.profile-placeholder.orange {
+  background: linear-gradient(150deg, #fff9f1, #ffd3ae);
+}
+
+.profile-placeholder.green {
+  background: linear-gradient(150deg, #f4fff7, #c6eed0);
+}
+
+.profile-placeholder.white {
+  background: linear-gradient(150deg, #fff, #e6f4fb);
+  border-radius: 46%;
+}
+
+.profile-placeholder strong {
+  font-size: 1.7rem;
+}
+
+.profile-placeholder small {
+  font-size: .6rem;
+  letter-spacing: .12em;
+  line-height: 1.7;
+  color: #a98eac;
+}
+
+.art-sparkle {
+  font-size: 3.5rem;
+  color: white;
+  text-shadow: 0 0 20px #fff, 0 0 30px #d995c8;
+}
+
+/* 左右の画像切り替え */
+.art-arrow {
+  position: absolute;
+  z-index: 4;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #fff;
+  background: #ffffffeb;
+  border-radius: 50%;
+  color: #c66ba3;
+  cursor: pointer;
+  box-shadow: 0 4px 12px #b885a022;
+}
+
+.art-arrow:hover:not(:disabled) {
+  background: #fff0fa;
+}
+
+.art-arrow:disabled {
+  opacity: .35;
+  cursor: default;
+}
+
+.art-arrow.prev {
+  left: 10px;
+}
+
+.art-arrow.next {
+  right: 10px;
+}
+
+.image-count {
+  position: absolute;
+  z-index: 4;
+  bottom: 12px;
+  right: 15px;
+  font-size: .7rem;
+  color: #a58ba9;
+  letter-spacing: .1em;
+}
+
+/* プロフィール文章 */
+.profile-info {
+  padding: 12px 0;
+  align-self: center;
+  min-width: 0;
+}
+
+.profile-en {
+  font-size: .75rem;
+  letter-spacing: .25em;
+  font-weight: 900;
+  color: #d28bb7;
+  margin: 0 0 4px;
+}
+
+.profile-info h2 {
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  color: #c75d9b;
+  margin: 0 0 10px;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.profile-ribbon {
+  display: inline-block;
+  padding: 6px 14px;
+  background: #fff0f8;
+  border: 1px solid #f5d7e9;
+  border-radius: 99px;
+  color: #c773a6;
+  font-size: .75rem;
+  font-weight: 800;
+}
+
+.profile-description {
+  font-family: 'Kiwi Maru', sans-serif;
+  font-size: .88rem;
+  line-height: 2;
+  color: #88758e;
+  margin: 20px 0;
+}
+
+.profile-details {
+  margin: 0;
+  border-top: 1px dashed #ead5e5;
+}
+
+.profile-details div {
+  display: grid;
+  grid-template-columns: 90px minmax(0, 1fr);
+  gap: 10px;
+  padding: 11px 0;
+  border-bottom: 1px dashed #ead5e5;
+  font-size: .8rem;
+}
+
+.profile-details dt {
+  color: #b18aaa;
+}
+
+.profile-details dd {
+  margin: 0;
+  color: #76627c;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.diff-note {
+  font-size: .7rem;
+  line-height: 1.8;
+  color: #b39ab2;
+  margin-top: 16px;
+}
+
+.back-home {
+  display: block;
+  width: fit-content;
+  margin: 28px auto;
+  color: #c75d9b;
+  text-decoration: none;
+}
+
+/* タブレット・スマートフォン */
+@media (max-width: 720px) {
+  .profile-card {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 18px;
+    padding: 14px;
+  }
+
+  .character-tabs {
+    gap: 9px;
+    margin-bottom: 20px;
+  }
+
+  .character-tab {
+    gap: 7px;
+    padding: 6px 11px 6px 7px;
+    font-size: .78rem;
+  }
+
+  .tab-icon {
+    width: 48px;
+    height: 48px;
+    flex-basis: 48px;
+  }
+
+  .profile-art-wrap,
+  .profile-art {
+    min-height: 420px;
+  }
+
+  #character-real-image {
+    max-height: 390px;
+  }
+
+  .profile-placeholder {
+    min-height: 300px;
+  }
+
+  .profile-info {
+    padding: 6px 5px;
+  }
+}
+
+@media (max-width: 420px) {
+  .character-tabs {
+    gap: 7px;
+  }
+
+  .character-tab {
+    gap: 5px;
+    padding: 5px 8px 5px 6px;
+    font-size: .72rem;
+  }
+
+  .tab-icon {
+    width: 40px;
+    height: 40px;
+    flex-basis: 40px;
+  }
+
+  .profile-art-wrap,
+  .profile-art {
+    min-height: 350px;
+  }
+
+  #character-real-image {
+    max-height: 325px;
+  }
+
+  .art-arrow {
+    width: 34px;
+    height: 34px;
+  }
+
+  .profile-details div {
+    grid-template-columns: 80px minmax(0, 1fr);
+  }
+}
