@@ -716,10 +716,11 @@ body.top-page {
   }
 }
 
-/* PC版：ふぉーくの表示位置だけを左へ微調整 */
+
+/* PC版：ふぉーくを左へ移動 */
 @media (min-width: 651px) {
   .stage .figure.fork {
     left: 29% !important;
-    margin-left: -20px !important;
+    margin-left: -50px !important;
   }
 }
