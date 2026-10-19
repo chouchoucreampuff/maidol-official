@@ -688,7 +688,7 @@ body.top-page {
 /* PC版：ふぉーくを少し右へ */
 @media (min-width: 651px) {
   .stage .figure.fork {
-    left: 27%;
+    left: 29%;
   }
 }
 
