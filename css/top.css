@@ -976,3 +976,44 @@ body.top-page {
   }
 }
 
+/* ===== PC版：足元の高さと重なりを修正 ===== */
+@media (min-width: 651px) {
+  .stage .figure {
+    align-self: end;
+    bottom: 0;
+  }
+
+  /* ないふ・はし：基準の高さ */
+  .stage .figure.knife {
+    transform: translateX(10%);
+    z-index: 2;
+  }
+
+  .stage .figure.hashi {
+    transform: translateX(-10%);
+    z-index: 2;
+  }
+
+  /* ふぉーく・すぷーん：少し上に重ねる */
+  .stage .figure.fork {
+    transform: translateX(-10%) translateY(-4%);
+    z-index: 5;
+  }
+
+  .stage .figure.spoon {
+    transform: translateX(-10%) translateY(-4%);
+    z-index: 5;
+  }
+
+  /* もちとら：中央で足元を揃える */
+  .stage .figure.mochitora {
+    transform: none;
+    align-self: end;
+    z-index: 3;
+  }
+
+  .stage .figure .character-art {
+    object-position: center bottom;
+  }
+}
+
