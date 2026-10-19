@@ -716,3 +716,53 @@ body.top-page {
     top: 28% !important;
   }
 }
+/* スマホ版：後列のないふとはしを下げ、もちとらを上げる */
+@media (max-width: 650px) {
+  .stage .back-row .figure.knife,
+  .stage .back-row .figure.hashi {
+    transform: translateY(8%) !important;
+  }
+
+  .stage .back-row .figure.mochitora {
+    transform: translateY(30%) !important;
+  }
+}
+/* トップページ：立ち絵とロゴがぱっと登場 */
+@keyframes maidol-pop {
+  from {
+    opacity: 0;
+    scale: 0.75;
+    filter: blur(5px);
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+    filter: blur(0);
+  }
+}
+
+/* キャラクターは順番に登場 */
+.stage .figure.knife {
+  animation: maidol-pop 0.65s 0.1s both;
+}
+
+.stage .figure.mochitora {
+  animation: maidol-pop 0.65s 0.2s both;
+}
+
+.stage .figure.hashi {
+  animation: maidol-pop 0.65s 0.3s both;
+}
+
+.stage .figure.fork {
+  animation: maidol-pop 0.65s 0.4s both;
+}
+
+.stage .figure.spoon {
+  animation: maidol-pop 0.65s 0.5s both;
+}
+
+/* メインロゴは最後に登場 */
+.stage .logo-halo {
+  animation: maidol-pop 0.75s 0.7s both;
+}
