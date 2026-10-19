@@ -710,3 +710,9 @@ body.top-page {
   }
 }
 
+/* スマホでPC版表示したときだけ、もちとらを下げる */
+@media (min-width: 651px) and (pointer: coarse) {
+  .stage .figure.mochitora {
+    top: 18% !important;
+  }
+}
