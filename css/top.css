@@ -766,3 +766,15 @@ body.top-page {
 .stage .logo-halo {
   animation: maidol-pop 0.75s 0.7s both;
 }
+/* 左上の小さいロゴ画像 */
+.mini-brand {
+  display: inline-flex;
+  align-items: center;
+}
+
+.mini-brand img {
+  display: block;
+  width: 100px;
+  height: auto;
+  object-fit: contain;
+}
