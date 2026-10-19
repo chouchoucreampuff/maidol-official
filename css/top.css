@@ -701,26 +701,12 @@ body.top-page {
 
 
 
-/* PC版：もちとらとすぷーんの間隔に合わせてふぉーくを配置 */
-@media (min-width: 651px) {
-  .stage .figure.fork {
-    left: 29%;
-  }
-}
 
-
-/* PC版：ふぉーくだけ少し左へ */
-@media (min-width: 651px) {
-  .stage .figure.fork {
-    left: 25% !important;
-  }
-}
-
-
-/* PC版：ふぉーくを左へ移動 */
+/* PC版：ふぉーくの位置調整 */
 @media (min-width: 651px) {
   .stage .figure.fork {
     left: 29% !important;
-    margin-left: -50px !important;
+    margin-left: -80px !important;
   }
 }
+
