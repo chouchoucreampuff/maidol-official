@@ -636,3 +636,29 @@ body.top-page {
     opacity: 1 !important;
   }
 }
+
+/* PC版：もちとらを中央に揃えて少し下げる */
+@media (min-width: 651px) {
+  .stage .figure.mochitora {
+    left: 42.5%;
+    top: 8%;
+  }
+}
+
+/* PC版：knifeとhashiを中央から左右対称に配置 */
+@media (min-width: 651px) {
+  .stage .figure.knife {
+    left: 0%;
+  }
+
+  .stage .figure.hashi {
+    left: 75%;
+  }
+}
+
+/* スマホ版：もちとらを1匹分ほど下げる */
+@media (max-width: 650px) {
+  .stage .back-row .figure.mochitora {
+    transform: translateY(100%) !important;
+  }
+}
