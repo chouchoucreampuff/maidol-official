@@ -706,7 +706,7 @@ body.top-page {
 @media (min-width: 651px) {
   .stage .figure.fork {
     left: 29% !important;
-    margin-left: -80px !important;
+    margin-left: -90px !important;
   }
 }
 
