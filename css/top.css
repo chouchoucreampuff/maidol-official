@@ -700,9 +700,11 @@ body.top-page {
 }
 
 
-/* PC版：もちとらとの間隔をすぷーん側に合わせる */
+
+/* PC版：もちとらとすぷーんの間隔に合わせてふぉーくを配置 */
 @media (min-width: 651px) {
   .stage .figure.fork {
-    left: 24%;
+    left: 31.5%;
   }
 }
+
