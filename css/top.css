@@ -692,3 +692,10 @@ body.top-page {
   }
 }
 
+/* スマホ版：もちとらの移動量を減らす */
+@media (max-width: 650px) {
+  .stage .back-row .figure.mochitora {
+    transform: translateY(70%) !important;
+  }
+}
+
