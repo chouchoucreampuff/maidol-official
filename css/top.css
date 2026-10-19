@@ -258,3 +258,142 @@ body.top-page{background:#fff9fe;overflow-x:hidden}
   object-fit: contain;
 }
 
+
+/* ===== 立ち絵とロゴの配置調整 ===== */
+
+/* ステージ全体 */
+.stage {
+  width: min(100%, 1100px);
+  height: clamp(520px, 72vh, 760px);
+  min-height: 520px;
+  margin-top: 10px;
+}
+
+/* キャラクターの並び */
+.character-row {
+  display: flex;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  align-items: flex-end;
+  justify-content: center;
+}
+
+/* 後ろの3人 */
+.back-row {
+  width: 100%;
+  height: 85%;
+  bottom: 0;
+  gap: 0;
+  z-index: 1;
+}
+
+/* 前の2人 */
+.front-row {
+  width: 76%;
+  height: 70%;
+  bottom: 0;
+  gap: 2%;
+  z-index: 3;
+}
+
+/* 立ち絵の基本設定 */
+.figure {
+  flex: 0 1 auto;
+  height: 100%;
+  width: 25%;
+  min-width: 0;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  overflow: visible;
+  opacity: 1;
+  animation: none;
+}
+
+/* 画像を枠内に収める */
+.character-art {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center bottom;
+}
+
+/* もちとら */
+.figure.mochitora {
+  width: 19%;
+  height: 55%;
+  top: 0;
+}
+
+/* 前列のすぷーん・ふぉーく */
+.figure.spoon,
+.figure.fork {
+  width: 48%;
+  height: 100%;
+}
+
+/* ロゴをキャラクターの中央付近に重ねない */
+.logo-halo {
+  position: relative;
+  z-index: 8;
+  left: auto;
+  top: auto;
+  transform: none;
+  width: min(68%, 440px);
+  margin: -5px auto 0;
+  opacity: 1;
+  animation: none;
+}
+
+/* ロゴ画像 */
+.site-logo {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+/* スマートフォン */
+@media (max-width: 650px) {
+  .stage {
+    height: 540px;
+    min-height: 0;
+    margin-top: 10px;
+  }
+
+  .back-row {
+    width: 100%;
+    height: 70%;
+  }
+
+  .front-row {
+    width: 86%;
+    height: 58%;
+    gap: 2%;
+  }
+
+  .figure {
+    width: 30%;
+  }
+
+  .figure.mochitora {
+    width: 20%;
+    height: 45%;
+  }
+
+  .figure.spoon,
+  .figure.fork {
+    width: 49%;
+  }
+
+  .logo-halo {
+    width: 82%;
+    max-width: 360px;
+    margin-top: 0;
+  }
+}
