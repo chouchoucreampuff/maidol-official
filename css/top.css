@@ -1,229 +1,134 @@
-body.top-page{background:#fff9fe;overflow-x:hidden}
-.hero{min-height:790px;min-height:100svh;position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:105px 14px 34px;background:linear-gradient(125deg,#fff5fb 0%,#f6f0ff 22%,#effbff 43%,#fff7fb 63%,#fff8e9 83%,#f6efff 100%);isolation:isolate}
-.hero:before{content:"";position:absolute;inset:-40%;z-index:-2;background:conic-gradient(from 0deg at 50% 50%,#ffd7ec33,#c7f0ff44,#e7d4ff55,#fff5c944,#ffd7ec33);filter:blur(50px);animation:holo-rotate 24s linear infinite}
-.hero:after{content:"";position:absolute;inset:0;z-index:-1;opacity:.45;background:linear-gradient(110deg,transparent 25%,#fff9 40%,transparent 52%);background-size:220% 100%;animation:light-flow 8s ease-in-out infinite}
-.hero-kicker{margin:0;color:#c47eac;font-size:clamp(.62rem,1.4vw,.8rem);font-weight:900;letter-spacing:.24em;text-align:center;animation:fade-up .8s .1s both}
-.stage{width:min(100%,1120px);height:clamp(480px,69vh,700px);min-height:470px;position:relative;margin-top:12px}
-.character-row{position:absolute;left:50%;transform:translateX(-50%);width:min(100%,950px);display:flex;align-items:flex-end;justify-content:center;gap:clamp(4px,2vw,25px)}
-.back-row{height:73%;bottom:0;z-index:1}
-.front-row{height:59%;bottom:0;z-index:3;gap:clamp(10px,5vw,60px)}
-.figure{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;width:30%;height:100%;padding:12px 4px 22px;border:1px solid #fff9;border-radius:48% 48% 18px 18px;box-shadow:inset 0 0 30px #fff9,0 12px 35px #b58bb51a;overflow:hidden;transform-origin:50% 100%;opacity:0;animation:pop-in .75s cubic-bezier(.2,1.5,.45,1) forwards}
-.figure:before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 30%,#fff9,transparent 65%);pointer-events:none}
-.figure b{position:relative;z-index:1;font-size:clamp(.8rem,2vw,1.15rem);color:#80617e;text-shadow:0 1px white}
-.figure small{position:relative;z-index:1;font-size:clamp(.42rem,1vw,.57rem);letter-spacing:.08em;color:#987c99;margin-top:5px;text-align:center}
-.figure-star{position:relative;z-index:1;font-size:clamp(3rem,9vw,6.5rem);line-height:1;color:#fff;text-shadow:0 0 10px #fff,0 0 25px #e99dcb;margin-bottom:auto;margin-top:20%}
-.figure.knife{background:linear-gradient(160deg,#fff3e7cc,#ffc79d66);animation-delay:.3s}
-.figure.mochitora{width:23%;height:53%;border-radius:48%;background:linear-gradient(160deg,#fff,#d9f3ffcc);animation-delay:.45s}
-.figure.hashi{background:linear-gradient(160deg,#f0fff4cc,#a9e2bf77);animation-delay:.6s}
-.figure.spoon{width:36%;background:linear-gradient(160deg,#fff0f8dd,#f5a7d177);animation-delay:.85s}
-.figure.fork{width:36%;background:linear-gradient(160deg,#eefaffdd,#9edbf377);animation-delay:1s}
-.tiger-face{font-size:clamp(1.2rem,4vw,3rem);color:#8b9ca7;margin:auto 0;text-shadow:0 2px #fff}
-.logo-halo{position:absolute;z-index:8;left:50%;top:43%;transform:translate(-50%,-50%) scale(.75);width:min(77%,590px);opacity:0;animation:logo-pop .85s 1.35s cubic-bezier(.2,1.45,.4,1) forwards;isolation:isolate}
-.logo-halo:before{content:"";position:absolute;z-index:-1;inset:-22% -16%;border-radius:50%;background:radial-gradient(ellipse at center,#fff 0%,#fffefeeF 25%,#fffdfacc 43%,#fff8 56%,transparent 74%);filter:blur(17px);transform:scale(1.05)}
-.logo-placeholder{position:relative;text-align:center;color:#d74d9c;padding:18px 10px 15px;filter:drop-shadow(0 3px 0 #fff)}
-.logo-small{display:block;font-family:'Kiwi Maru',sans-serif;font-weight:500;font-size:clamp(.75rem,2.3vw,1.2rem);letter-spacing:.1em;color:#8c6cba;text-shadow:0 1px white}
-.logo-placeholder strong{display:block;font-size:clamp(2.5rem,9vw,6.8rem);font-weight:900;line-height:1.05;letter-spacing:.02em;-webkit-text-stroke:2px white;text-shadow:2px 3px 0 #fff,4px 5px 0 #f6c3e3,0 0 18px white}
-.logo-placeholder strong span{color:#8fcaed}
-.logo-note{display:inline-block;margin-top:8px;padding:4px 13px;border-radius:99px;background:#fffD;border:1px solid #f7d8eb;font-size:clamp(.48rem,1.2vw,.7rem);letter-spacing:.18em;color:#b780ac}
-.hero-bottom{z-index:10;text-align:center;margin-top:-2px;animation:fade-up .8s 1.8s both}
-.hero-bottom p{font-family:'Kiwi Maru',sans-serif;font-size:.86rem;color:#8f7894;margin:0 0 14px}
-.pill-link{display:inline-flex;align-items:center;gap:12px;border:1px solid white;border-radius:99px;padding:12px 22px;background:linear-gradient(100deg,#fff8fd,#fff);box-shadow:0 5px 20px #d59cc526;color:#c75e9d;font-size:.83rem;font-weight:800}
-.pill-link span{font-size:1.1rem}
-.scroll-cue{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);font-size:.55rem;letter-spacing:.2em;color:#c39ab8;display:flex;align-items:center;gap:7px}
-.scroll-cue span{width:20px;height:1px;background:#dca6c8}
-.home-links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;width:min(850px,calc(100% - 36px));margin:48px auto}
-.home-links>a{display:flex;align-items:center;gap:17px;padding:22px;border-radius:20px;background:#fff;border:1px solid #f4e1ef;box-shadow:0 9px 30px #b47da00c;transition:transform .2s}
-.home-links>a:hover{transform:translateY(-3px)}
-.link-number{font-size:1.7rem;font-weight:900;color:#efb6d7}
-.home-links b{display:block;font-size:.9rem;letter-spacing:.1em;color:#c46a9f}
-.home-links small{display:block;color:#a68ca7;margin-top:4px;font-family:'Kiwi Maru',sans-serif;font-size:.72rem}
-.home-links i{font-style:normal;margin-left:auto;color:#d98fbc;font-size:1.2rem}
-.sparkle-field{position:absolute;inset:0;pointer-events:none;z-index:0;background-image:radial-gradient(circle,#fff 0 1.5px,transparent 2px),radial-gradient(circle,#fff 0 1px,transparent 2px),radial-gradient(circle,#f6c9e8 0 1px,transparent 2px);background-size:113px 137px,177px 191px,231px 173px;background-position:12px 20px,70px 90px,30px 130px;animation:sparkle-drift 18s linear infinite;opacity:.7}
-@keyframes holo-rotate{to{transform:rotate(360deg)}}
-@keyframes light-flow{0%,100%{background-position:120% 0}50%{background-position:-120% 0}}
-@keyframes sparkle-drift{to{background-position:125px -137px,0 281px,-201px 303px}}
-@keyframes pop-in{0%{opacity:0;transform:translateY(45px) scale(.72)}70%{opacity:1;transform:translateY(-7px) scale(1.03)}100%{opacity:1;transform:translateY(0) scale(1)}}
-@keyframes logo-pop{0%{opacity:0;transform:translate(-50%,-50%) scale(.68)}70%{opacity:1;transform:translate(-50%,-50%) scale(1.06)}100%{opacity:1;transform:translate(-50%,-50%) scale(1)}}
-@keyframes fade-up{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
-@media(max-width:650px){.hero{padding-top:95px;min-height:760px;min-height:100svh}.stage{height:clamp(440px,65vh,570px);min-height:430px;width:100%;margin-top:20px}.back-row{height:67%;width:100%;gap:0}.front-row{height:53%;width:88%;gap:5px}.figure{width:31%;padding-bottom:16px}.figure.mochitora{width:23%;height:48%}.figure.spoon,.figure.fork{width:40%}.logo-halo{top:43%;width:90%}.logo-placeholder strong{-webkit-text-stroke:1px white}.hero-bottom{margin-top:2px}.home-links{grid-template-columns:1fr;margin:28px auto}.hero-bottom p{font-size:.78rem}}
-@media(prefers-reduced-motion:reduce){.figure,.logo-halo,.hero-kicker,.hero-bottom,.sparkle-field,.hero:before,.hero:after{animation:none!important;opacity:1!important;transform:none!important}.logo-halo{transform:translate(-50%,-50%)!important}}
 
-/* ===== トップページ配置調整 ===== */
+/* ========================================
+   メイドル公式サイト TOP
+   PC・スマートフォン統合版
+======================================== */
 
-/* キャラクターを表示するスペースを確保 */
-.stage {
-  height: clamp(480px, 69vh, 700px);
-  margin-top: 12px;
-  margin-bottom: 0;
+body.top-page {
+  background: #fff9fe;
+  overflow-x: hidden;
 }
 
-/* 後列を少し高く配置 */
-.back-row {
-  height: 73%;
-  bottom: 14%;
-  z-index: 1;
-}
+/* ===== メイン背景 ===== */
 
-/* 前列は下側に配置 */
-.front-row {
-  height: 59%;
-  bottom: 0;
-  z-index: 3;
-}
-
-/* キャラクターの立ち位置を調整 */
-.figure {
+.hero {
+  min-height: 790px;
+  min-height: 100svh;
+  position: relative;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 105px 14px 34px;
+  background: linear-gradient(
+    125deg,
+    #fff5fb 0%,
+    #f6f0ff 22%,
+    #effbff 43%,
+    #fff7fb 63%,
+    #fff8e9 83%,
+    #f6efff 100%
+  );
+  isolation: isolate;
 }
 
-/* ロゴをキャラクターの下に配置 */
-.logo-halo {
-  top: auto;
-  bottom: 0;
-  transform: translateX(-50%) scale(.75);
-  width: min(77%, 590px);
-  animation: logo-below-pop .85s 1.35s
-    cubic-bezier(.2, 1.45, .4, 1) forwards;
+.hero:before {
+  content: "";
+  position: absolute;
+  inset: -40%;
+  z-index: -2;
+  background: conic-gradient(
+    from 0deg at 50% 50%,
+    #ffd7ec33,
+    #c7f0ff44,
+    #e7d4ff55,
+    #fff5c944,
+    #ffd7ec33
+  );
+  filter: blur(50px);
+  animation: holo-rotate 24s linear infinite;
 }
 
-/* ロゴの登場アニメーション */
-@keyframes logo-below-pop {
-  0% {
-    opacity: 0;
-    transform: translateX(-50%) scale(.68);
-  }
-  70% {
-    opacity: 1;
-    transform: translateX(-50%) scale(1.06);
-  }
-  100% {
-    opacity: 1;
-    transform: translateX(-50%) scale(1);
-  }
+.hero:after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  opacity: .45;
+  background: linear-gradient(
+    110deg,
+    transparent 25%,
+    #fff9 40%,
+    transparent 52%
+  );
+  background-size: 220% 100%;
+  animation: light-flow 8s ease-in-out infinite;
 }
 
-/* スマートフォン */
-@media (max-width: 650px) {
-  .stage {
-    height: clamp(440px, 65vh, 570px);
-    margin-top: 20px;
-  }
-
-  .back-row {
-    height: 67%;
-    bottom: 14%;
-  }
-
-  .front-row {
-    height: 53%;
-    bottom: 0;
-  }
-
-  .logo-halo {
-    width: 90%;
-  }
+.hero-kicker {
+  margin: 0;
+  color: #c47eac;
+  font-size: clamp(.62rem, 1.4vw, .8rem);
+  font-weight: 900;
+  letter-spacing: .24em;
+  text-align: center;
+  animation: fade-up .8s .1s both;
 }
 
+/* ===== キラキラ背景 ===== */
 
-/* ===== PC版：キャラクター5体を横一列に ===== */
-@media (min-width: 651px) {
-  .stage {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: flex-end;
-    justify-content: center;
-    gap: 12px;
-    height: auto;
-    min-height: 0;
-    padding: 10px 0 0;
-    margin-bottom: 0;
-  }
-
-  /* 前列・後列のグループを解除して一列に並べる */
-  .character-row {
-    display: contents;
-  }
-
-  .character-row .figure {
-    flex: 0 0 17%;
-    width: 17%;
-    height: clamp(260px, 32vw, 390px);
-    min-width: 0;
-    padding: 10px 2px 18px;
-  }
-
-  /* もちとらは少し小さめ */
-  .figure.mochitora {
-    flex: 0 0 14%;
-    width: 14%;
-    height: clamp(210px, 25vw, 310px);
-    align-self: flex-end;
-  }
-
-  /* 表示順：ないふ → ふぉーく → もちとら → すぷーん → はし */
-  .figure.knife {
-    order: 1;
-  }
-
-  .figure.fork {
-    order: 2;
-  }
-
-  .figure.mochitora {
-    order: 3;
-  }
-
-  .figure.spoon {
-    order: 4;
-  }
-
-  .figure.hashi {
-    order: 5;
-  }
-
-  /* ロゴはキャラクターの下へ */
-  .logo-halo {
-    position: relative;
-    top: auto;
-    bottom: auto;
-    left: auto;
-    flex: 0 0 100%;
-    width: min(77%, 590px);
-    margin: 12px auto 0;
-    transform: none;
-    animation: desktop-logo-pop .85s 1.35s both;
-  }
-
-  @keyframes desktop-logo-pop {
-    from {
-      opacity: 0;
-      transform: scale(.85);
-    }
-    to {
-      opacity: 1;
-      transform: scale(1);
-    }
-  }
+.sparkle-field {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    radial-gradient(circle, #fff 0 1.5px, transparent 2px),
+    radial-gradient(circle, #fff 0 1px, transparent 2px),
+    radial-gradient(circle, #f6c9e8 0 1px, transparent 2px);
+  background-size:
+    113px 137px,
+    177px 191px,
+    231px 173px;
+  background-position:
+    12px 20px,
+    70px 90px,
+    30px 130px;
+  animation: sparkle-drift 18s linear infinite;
+  opacity: .7;
 }
 
+/* ========================================
+   キャラクター共通
+======================================== */
 
-/* スマホ版：もちとらを前列より高い位置へ */
-@media (max-width: 650px) {
-  .figure.mochitora {
-    position: relative;
-    top: -100px;
-    z-index: 2;
-  }
+.stage {
+  position: relative;
+  z-index: 2;
+  width: min(100%, 1400px);
+  margin: 12px auto 0;
 }
 
-/* 実際の立ち絵・ロゴ画像 */
+.character-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  min-width: 0;
+}
+
 .figure {
+  position: relative;
+  min-width: 0;
+  margin: 0;
   padding: 0;
   border: none;
   border-radius: 0;
-  box-shadow: none;
-  background: transparent;
+  background: transparent !important;
+  box-shadow: none !important;
   overflow: visible;
+  opacity: 1;
+  animation: none;
 }
 
 .figure:before {
@@ -232,8 +137,6 @@ body.top-page{background:#fff9fe;overflow-x:hidden}
 
 .character-art {
   display: block;
-  position: relative;
-  z-index: 1;
   width: 100%;
   height: 100%;
   object-fit: contain;
@@ -247,110 +150,33 @@ body.top-page{background:#fff9fe;overflow-x:hidden}
   display: none;
 }
 
-.logo-halo {
-  background: none;
-}
+/* ===== ロゴ共通 ===== */
 
-.site-logo {
-  display: block;
-  width: 100%;
-  height: auto;
-  object-fit: contain;
-}
-
-
-/* ===== 立ち絵とロゴの配置調整 ===== */
-
-/* ステージ全体 */
-.stage {
-  width: min(100%, 1100px);
-  height: clamp(520px, 72vh, 760px);
-  min-height: 520px;
-  margin-top: 10px;
-}
-
-/* キャラクターの並び */
-.character-row {
-  display: flex;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  align-items: flex-end;
-  justify-content: center;
-}
-
-/* 後ろの3人 */
-.back-row {
-  width: 100%;
-  height: 85%;
-  bottom: 0;
-  gap: 0;
-  z-index: 1;
-}
-
-/* 前の2人 */
-.front-row {
-  width: 76%;
-  height: 70%;
-  bottom: 0;
-  gap: 2%;
-  z-index: 3;
-}
-
-/* 立ち絵の基本設定 */
-.figure {
-  flex: 0 1 auto;
-  height: 100%;
-  width: 25%;
-  min-width: 0;
-  padding: 0;
-  margin: 0;
-  border: 0;
-  border-radius: 0;
-  background: transparent;
-  box-shadow: none;
-  overflow: visible;
-  opacity: 1;
-  animation: none;
-}
-
-/* 画像を枠内に収める */
-.character-art {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  object-position: center bottom;
-}
-
-/* もちとら */
-.figure.mochitora {
-  width: 19%;
-  height: 55%;
-  top: 0;
-}
-
-/* 前列のすぷーん・ふぉーく */
-.figure.spoon,
-.figure.fork {
-  width: 48%;
-  height: 100%;
-}
-
-/* ロゴをキャラクターの中央付近に重ねない */
 .logo-halo {
   position: relative;
   z-index: 8;
-  left: auto;
-  top: auto;
-  transform: none;
-  width: min(68%, 440px);
-  margin: -5px auto 0;
-  opacity: 1;
-  animation: none;
+  min-width: 0;
+  isolation: isolate;
 }
 
-/* ロゴ画像 */
+.logo-halo:before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: -18% -14%;
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse at center,
+    #fff 0%,
+    #fffefeeF 25%,
+    #fffdfacc 43%,
+    #fff8 56%,
+    transparent 74%
+  );
+  filter: blur(17px);
+  pointer-events: none;
+}
+
 .site-logo {
   display: block;
   width: 100%;
@@ -358,409 +184,417 @@ body.top-page{background:#fff9fe;overflow-x:hidden}
   object-fit: contain;
 }
 
-/* スマートフォン */
-@media (max-width: 650px) {
+/* ========================================
+   PC版
+   左：ロゴ
+   右：ないふ・ふぉーく・もちとら・すぷーん・はし
+======================================== */
+
+@media (min-width: 651px) {
+
+  .hero {
+    padding: 100px 3vw 34px;
+  }
+
   .stage {
-    height: 540px;
-    min-height: 0;
-    margin-top: 10px;
+    display: grid;
+    grid-template-columns: 34% repeat(5, minmax(0, 1fr));
+    grid-template-rows: 1fr;
+    align-items: end;
+    height: clamp(500px, 70vh, 700px);
+    min-height: 500px;
+    margin-top: 12px;
   }
 
-  .back-row {
+  /* 行の入れ物をなくして、5人をGridに直接配置 */
+  .character-row {
+    display: contents;
+  }
+
+  /* 左側のロゴ：約1.5倍を目指して拡大 */
+  .stage .logo-halo {
+    grid-column: 1;
+    grid-row: 1;
+    align-self: center;
+    justify-self: center;
+    width: 130%;
+    max-width: 610px;
+    margin: 0;
+    opacity: 1;
+    animation: none;
+  }
+
+  /* 5人の共通サイズ・高さ */
+  .stage .figure {
+    grid-row: 1;
+    align-self: end;
+    justify-self: stretch;
     width: 100%;
-    height: 70%;
+    height: 92%;
+    min-width: 0;
+    padding: 0;
+    z-index: 2;
   }
 
-  .front-row {
-    width: 86%;
-    height: 58%;
-    gap: 2%;
+  .stage .figure .character-art {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center bottom;
   }
 
-  .figure {
-    width: 30%;
+  /* 1：ないふ */
+  .stage .figure.knife {
+    grid-column: 2;
+    order: 1;
   }
 
-  .figure.mochitora {
-    width: 20%;
-    height: 45%;
+  /* 2：ふぉーく */
+  .stage .figure.fork {
+    grid-column: 3;
+    order: 2;
   }
 
-  .figure.spoon,
-  .figure.fork {
-    width: 49%;
+  /* 3：もちとら
+     他の4人と同じ枠の中で画像を60%に */
+  .stage .figure.mochitora {
+    grid-column: 4;
+    order: 3;
+    height: 92%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
   }
 
-  .logo-halo {
-    width: 82%;
-    max-width: 360px;
+  .stage .figure.mochitora .character-art {
+    width: 60%;
+    height: 60%;
+    flex: 0 0 60%;
+    object-fit: contain;
+    object-position: center bottom;
+  }
+
+  /* 4：すぷーん */
+  .stage .figure.spoon {
+    grid-column: 5;
+    order: 4;
+  }
+
+  /* 5：はし */
+  .stage .figure.hashi {
+    grid-column: 6;
+    order: 5;
+  }
+
+  .hero-bottom {
     margin-top: 0;
   }
 }
 
-/* ===== メイドル TOP レイアウト最終調整 ===== */
+/* ========================================
+   スマートフォン版
+   後列3人
+       前列2人
+         ロゴ
+======================================== */
 
-/* 立ち絵の背景・枠を完全に消す */
-.stage .figure,
-.stage .figure.knife,
-.stage .figure.mochitora,
-.stage .figure.hashi,
-.stage .figure.spoon,
-.stage .figure.fork {
-  background: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-  border-radius: 0 !important;
-  padding: 0 !important;
-  overflow: visible !important;
-}
-
-.stage .figure:before {
-  display: none !important;
-}
-
-.stage .character-art {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  object-position: center bottom;
-}
-
-/* ロゴ画像の表示 */
-.stage .site-logo {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-
-/* ===== PC版 ===== */
-@media (min-width: 651px) {
-  .hero {
-    min-height: 100vh;
-    padding: 100px 4vw 35px;
-  }
-
-  .stage {
-    display: grid;
-    grid-template-columns: minmax(220px, 32%) minmax(0, 68%);
-    align-items: center;
-    width: min(100%, 1400px);
-    height: min(72vh, 760px);
-    min-height: 560px;
-    margin: 10px auto 0;
-  }
-
-  /* 左側にロゴ */
-  .stage .logo-halo {
-    grid-column: 1;
-    grid-row: 1;
-    position: relative;
-    inset: auto;
-    transform: none;
-    width: min(100%, 340px);
-    max-width: 100%;
-    margin: 0 auto;
-    opacity: 1;
-    animation: none;
-    z-index: 5;
-  }
-
-  /* 右側にキャラクター5人 */
-  .stage .character-row {
-    position: absolute;
-    left: auto;
-    transform: none;
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-    width: 68%;
-    gap: 0;
-  }
-
-  .stage .back-row {
-    right: 0;
-    bottom: 0;
-    height: 92%;
-    z-index: 1;
-  }
-
-  .stage .front-row {
-    right: 0;
-    bottom: 0;
-    height: 78%;
-    width: 68%;
-    gap: 0;
-    z-index: 3;
-  }
-
-  .stage .figure {
-    flex: 1 1 0;
-    width: 20%;
-    height: 100%;
-    min-width: 0;
-  }
-
-  .stage .figure.mochitora {
-    flex: 0 1 16%;
-    width: 16%;
-    height: 52%;
-    align-self: flex-end;
-  }
-
-  .stage .figure.spoon,
-  .stage .figure.fork {
-    flex: 0 1 25%;
-    width: 25%;
-    height: 100%;
-  }
-
-  .stage .logo-halo,
-  .stage .character-row {
-    min-width: 0;
-  }
-}
-
-/* ===== スマートフォン版 ===== */
 @media (max-width: 650px) {
+
   .hero {
-    padding-left: 8px;
-    padding-right: 8px;
+    padding: 95px 8px 34px;
+    min-height: 100svh;
+  }
+
+  .hero-kicker {
+    font-size: .65rem;
   }
 
   .stage {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    display: block;
     width: 100%;
-    height: auto;
+    height: 610px;
     min-height: 0;
-    margin-top: 10px;
+    margin-top: 12px;
   }
 
-  /* 後ろの3人を上段に */
+  /* 後列：ないふ・もちとら・はし
+     上端を揃える */
   .stage .back-row {
-    position: relative;
-    left: auto;
-    bottom: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
     transform: none;
     display: flex;
-    order: 1;
-    width: 100%;
-    height: 300px;
-    align-items: flex-end;
+    align-items: flex-start;
     justify-content: center;
+    width: 100%;
+    height: 58%;
     gap: 0;
     z-index: 1;
   }
 
-  /* 前の2人を下段に。すぷーんを左、ふぉーくを右 */
-  .stage .front-row {
-    position: relative;
-    left: auto;
-    bottom: auto;
-    transform: none;
-    display: flex;
-    order: 2;
-    width: 88%;
-    height: 330px;
-    align-items: flex-end;
-    justify-content: center;
-    gap: 0;
-    margin-top: -5px;
-    z-index: 3;
-  }
-
-  .stage .figure {
-    flex: 1 1 0;
+  .stage .back-row .figure {
+    flex: 0 0 33.333%;
     width: 33.333%;
     height: 100%;
     min-width: 0;
+    padding: 0;
+    margin: 0;
+    align-self: flex-start;
   }
 
-  .stage .figure.mochitora {
-    flex: 0 1 23%;
-    width: 23%;
-    height: 48%;
+  .stage .back-row .character-art {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center top;
   }
 
-  .stage .figure.spoon,
-  .stage .figure.fork {
-    flex: 0 1 50%;
+  /* 前列：ふぉーく・すぷーん
+     後列より低い位置に置き、後列と重ねる */
+  .stage .front-row {
+    position: absolute;
+    left: 50%;
+    bottom: 82px;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    width: 84%;
+    height: 64%;
+    gap: 0;
+    z-index: 3;
+  }
+
+  .stage .front-row .figure {
+    flex: 0 0 50%;
     width: 50%;
     height: 100%;
-  }
-
-  /* ロゴは前列の立ち絵の下 */
-  .stage .logo-halo {
-    position: relative;
-    inset: auto;
-    transform: none;
-    order: 3;
-    width: min(78%, 340px);
-    max-width: 100%;
-    margin: 8px auto 0;
-    opacity: 1;
-    animation: none;
-    z-index: 5;
-  }
-
-  .hero-bottom {
-    margin-top: 24px;
-  }
-}
-
-/* ===== PC版：前後の立ち絵に高さの差をつける ===== */
-@media (min-width: 651px) {
-  /* 後ろ：ないふ・もちとら・はし */
-  .stage .back-row {
-    height: 92%;
-    bottom: 0;
-    align-items: flex-end;
-  }
-
-  .stage .figure.knife,
-  .stage .figure.hashi {
-    height: 100%;
-  }
-
-  /* もちとらは後ろの中央で小さめに */
-  .stage .figure.mochitora {
-    height: 48%;
-    align-self: flex-end;
-  }
-
-  /* 前：すぷーん・ふぉーくを少し低く */
-  .stage .front-row {
-    height: 68%;
-    bottom: 0;
-    align-items: flex-end;
-    z-index: 3;
-  }
-
-  .stage .figure.spoon,
-  .stage .figure.fork {
-    height: 100%;
-  }
-}
-
-/* ===== PC版レイアウト調整・最新版 ===== */
-@media (min-width: 651px) {
-
-  /* 左側のロゴを少し大きく */
-  .stage .logo-halo {
-    width: min(100%, 410px);
-  }
-
-  /* ステージをロゴ左・キャラクター右に */
-  .stage {
-    display: grid;
-    grid-template-columns: 34% 66%;
-    width: min(100%, 1500px);
-  }
-
-  /* キャラクター5人を右側に均等配置 */
-  .stage .character-row {
-    position: absolute;
-    right: 0;
-    left: auto;
-    transform: none;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    width: 66%;
-    gap: 0;
-  }
-
-  /* 並び順：ないふ・ふぉーく・もちとら・すぷーん・はし */
-  .stage .back-row {
-    bottom: 0;
-    height: 88%;
-    z-index: 1;
-  }
-
-  .stage .front-row {
-    bottom: 0;
-    height: 88%;
-    width: 66%;
-    z-index: 3;
-  }
-
-  /* 5人を同じ幅・同じ高さに統一 */
-  .stage .figure,
-  .stage .figure.knife,
-  .stage .figure.hashi,
-  .stage .figure.mochitora,
-  .stage .figure.spoon,
-  .stage .figure.fork {
-    flex: 0 0 20%;
-    width: 20%;
-    height: 100%;
     min-width: 0;
-    align-self: flex-end;
+    padding: 0;
+    margin: 0;
   }
 
-  /* 前後の重なりをなくし、横一列にするための設定 */
-  .stage .back-row {
-    display: contents;
+  .stage .front-row .character-art {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center bottom;
   }
 
-  .stage .front-row {
-    display: contents;
-  }
-
-  /* 並び順を指定 */
-  .stage .figure.knife {
+  /* 左：ふぉーく、右：すぷーん */
+  .stage .figure.fork {
     order: 1;
   }
 
-  .stage .figure.fork {
+  .stage .figure.spoon {
     order: 2;
   }
 
+  /* 後列の中央にいるもちとら */
   .stage .figure.mochitora {
-    order: 3;
+    height: 58%;
+    align-self: flex-start;
   }
 
-  .stage .figure.spoon {
-    order: 4;
-  }
-
-  .stage .figure.hashi {
-    order: 5;
-  }
-
-  /* ロゴとキャラクターが重ならないようにする */
+  /* ロゴは前列の足元に重ねる */
   .stage .logo-halo {
-    grid-column: 1;
-    grid-row: 1;
-    z-index: 5;
-  }
-
-  .stage .character-row {
-    position: static;
-  }
-
-  .stage .figure {
     position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+    width: min(72%, 330px);
+    max-width: 100%;
+    margin: 0;
+    opacity: 1;
+    animation: none;
+    z-index: 8;
   }
 
-  .stage .figure.knife {
-    left: 34%;
+  .stage .logo-halo:before {
+    inset: -12% -10%;
+    filter: blur(12px);
   }
 
-  .stage .figure.fork {
-    left: 47.2%;
+  .hero-bottom {
+    position: relative;
+    z-index: 10;
+    margin-top: 12px;
   }
 
-  .stage .figure.mochitora {
-    left: 60.4%;
+  .hero-bottom p {
+    font-size: .78rem;
   }
 
-  .stage .figure.spoon {
-    left: 73.6%;
+  .pill-link {
+    padding: 11px 18px;
+    font-size: .8rem;
   }
 
-  .stage .figure.hashi {
-    left: 86.8%;
+  .home-links {
+    grid-template-columns: 1fr;
+    margin: 28px auto;
+  }
+}
+
+/* ========================================
+   下部リンク
+======================================== */
+
+.home-links {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  width: min(850px, calc(100% - 36px));
+  margin: 48px auto;
+}
+
+.home-links > a {
+  display: flex;
+  align-items: center;
+  gap: 17px;
+  padding: 22px;
+  border-radius: 20px;
+  background: #fff;
+  border: 1px solid #f4e1ef;
+  box-shadow: 0 9px 30px #b47da00c;
+  transition: transform .2s;
+}
+
+.home-links > a:hover {
+  transform: translateY(-3px);
+}
+
+.link-number {
+  font-size: 1.7rem;
+  font-weight: 900;
+  color: #efb6d7;
+}
+
+.home-links b {
+  display: block;
+  font-size: .9rem;
+  letter-spacing: .1em;
+  color: #c46a9f;
+}
+
+.home-links small {
+  display: block;
+  color: #a68ca7;
+  margin-top: 4px;
+  font-family: 'Kiwi Maru', sans-serif;
+  font-size: .72rem;
+}
+
+.home-links i {
+  font-style: normal;
+  margin-left: auto;
+  color: #d98fbc;
+  font-size: 1.2rem;
+}
+
+/* ===== ヒーロー下部リンク ===== */
+
+.hero-bottom {
+  z-index: 10;
+  text-align: center;
+  animation: fade-up .8s 1.8s both;
+}
+
+.hero-bottom p {
+  font-family: 'Kiwi Maru', sans-serif;
+  font-size: .86rem;
+  color: #8f7894;
+  margin: 0 0 14px;
+}
+
+.pill-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid white;
+  border-radius: 99px;
+  padding: 12px 22px;
+  background: linear-gradient(100deg, #fff8fd, #fff);
+  box-shadow: 0 5px 20px #d59cc526;
+  color: #c75e9d;
+  font-size: .83rem;
+  font-weight: 800;
+}
+
+.pill-link span {
+  font-size: 1.1rem;
+}
+
+.scroll-cue {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: .55rem;
+  letter-spacing: .2em;
+  color: #c39ab8;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.scroll-cue span {
+  width: 20px;
+  height: 1px;
+  background: #dca6c8;
+}
+
+/* ===== アニメーション ===== */
+
+@keyframes holo-rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes light-flow {
+  0%, 100% {
+    background-position: 120% 0;
+  }
+  50% {
+    background-position: -120% 0;
+  }
+}
+
+@keyframes sparkle-drift {
+  to {
+    background-position:
+      125px -137px,
+      0 281px,
+      -201px 303px;
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== 動きを減らす設定 ===== */
+
+@media (prefers-reduced-motion: reduce) {
+  .hero:before,
+  .hero:after,
+  .sparkle-field,
+  .hero-kicker,
+  .hero-bottom {
+    animation: none !important;
+  }
+
+  .hero-kicker,
+  .hero-bottom {
+    opacity: 1 !important;
   }
 }
