@@ -795,7 +795,8 @@ body.top-page {
 
 .mini-brand img {
   display: block;
-  width: 40px;
-  height: auto;
+  width: 30px !important;
+  height: auto !important;
+  max-width: 30px !important;
   object-fit: contain;
 }
