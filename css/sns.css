@@ -1,0 +1,10 @@
+.sns-page{max-width:780px}
+.sns-list{display:grid;gap:16px;max-width:620px;margin:40px auto 0}
+.sns-card{display:flex;align-items:center;gap:18px;padding:20px 24px;border:1px solid #fff;border-radius:22px;background:#ffffffc9;box-shadow:0 10px 30px #ad82a915;transition:transform .2s,box-shadow .2s}
+.sns-card:hover{transform:translateY(-3px);box-shadow:0 14px 35px #ad82a926}
+.sns-symbol{width:58px;height:58px;display:grid;place-items:center;flex:none;border-radius:18px;background:#fff0f8;color:#d05b9d;font-size:2rem;font-weight:900}
+.x-card .sns-symbol{background:#f1eff4;color:#28232b}.instagram-card .sns-symbol{background:linear-gradient(135deg,#ffe1ef,#f5d9ff,#d7e7ff);color:#b95f9e}.tiktok-card .sns-symbol{background:#e4fbfa;color:#3b9c9b}
+.sns-copy{display:flex;flex-direction:column;gap:4px}.sns-copy b{font-size:1.1rem;color:#6c5873}.sns-copy small{font-family:'Kiwi Maru',sans-serif;font-size:.75rem;color:#a38da6}
+.sns-arrow{margin-left:auto;font-size:1.4rem;color:#cf8bb7}
+.sns-caution{text-align:center;margin:22px auto 0;font-size:.7rem;color:#aa96ab}
+@media(max-width:500px){.sns-card{padding:16px;gap:13px}.sns-symbol{width:50px;height:50px;border-radius:15px}.sns-copy b{font-size:1rem}.sns-copy small{font-size:.68rem}}
