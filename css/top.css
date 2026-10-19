@@ -1067,6 +1067,120 @@ body.top-page {
 /* PC版：ふぉーくを少し右へ */
 @media (min-width: 651px) {
   .stage .figure.fork {
-    transform: translateX(0%) !important;
+    transform: translateX(0
+/* ========================================
+   PC版：中央キャラクター＋足元ロゴ
+======================================== */
+
+@media (min-width: 651px) {
+
+  /* ステージ全体を中央に配置 */
+  .stage {
+    display: block;
+    position: relative;
+    width: min(100%, 1500px);
+    height: clamp(760px, 88vh, 1000px);
+    min-height: 760px;
+    margin: 0 auto;
+    transform: none;
+  }
+
+  /* キャラクター行のラッパーを解除 */
+  .stage .character-row {
+    display: contents;
+  }
+
+  /* 5人を中央に横並びで配置 */
+  .stage .figure {
+    position: absolute;
+    bottom: 0;
+    height: 100%;
+    width: 22%;
+    margin: 0;
+    padding: 0;
+    align-self: auto;
+    overflow: visible;
+  }
+
+  /* ないふ */
+  .stage .figure.knife {
+    left: 3%;
+    transform: none !important;
+    z-index: 2;
+  }
+
+  /* ふぉーく */
+  .stage .figure.fork {
+    left: 19%;
+    transform: none !important;
+    z-index: 5;
+  }
+
+  /* もちとら：小さくし、上端を揃える */
+  .stage .figure.mochitora {
+    left: 39%;
+    top: 0;
+    bottom: auto;
+    width: 13.2%;
+    height: 60%;
+    transform: none !important;
+    display: block;
+    z-index: 3;
+  }
+
+  .stage .figure.mochitora .character-art {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center top;
+  }
+
+  /* すぷーん */
+  .stage .figure.spoon {
+    left: 59%;
+    transform: none !important;
+    z-index: 5;
+  }
+
+  /* はし */
+  .stage .figure.hashi {
+    left: 75%;
+    transform: none !important;
+    z-index: 2;
+  }
+
+  /* 4人の画像は大きく、足元を同じ高さに */
+  .stage .figure.knife .character-art,
+  .stage .figure.fork .character-art,
+  .stage .figure.spoon .character-art,
+  .stage .figure.hashi .character-art {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center bottom;
+  }
+
+  /* ロゴを中央・足元に重ねる */
+  .stage .logo-halo {
+    position: absolute;
+    left: 50%;
+    top: auto;
+    bottom: -1%;
+    transform: translateX(-50%);
+    width: min(55%, 650px);
+    max-width: 100%;
+    margin: 0;
+    z-index: 10;
+    opacity: 1;
+    animation: none;
+  }
+
+  .stage .logo-halo:before {
+    inset: -15% -12%;
+    filter: blur(18px);
+  }
+}
+%) !important;
   }
 }
