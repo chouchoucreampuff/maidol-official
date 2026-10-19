@@ -763,10 +763,31 @@ body.top-page {
 }
 
 /* メインロゴは最後に登場 */
-.stage .logo-halo {
-  animation: maidol-pop 0.75s 0.7s both;
+/* メインロゴ：その場でぽよんっと登場 */
+@keyframes maidol-logo-bounce {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) scale(0.5);
+  }
+
+  60% {
+    opacity: 1;
+    transform: translateX(-50%) scale(1.12);
+  }
+
+  80% {
+    transform: translateX(-50%) scale(0.94);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+  }
 }
-/* 左上の小さいロゴ画像 */
+
+.stage .logo-halo {
+  animation: maidol-logo-bounce 0.8s 0.7s both;
+}/* 左上の小さいロゴ画像 */
 .mini-brand {
   display: inline-flex;
   align-items: center;
