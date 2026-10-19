@@ -206,11 +206,13 @@ body.top-page{background:#fff9fe;overflow-x:hidden}
   }
 }
 
-/* ===== スマホ版：もちとらを上へ ===== */
+
+/* スマホ版：もちとらを前列より高い位置へ */
 @media (max-width: 650px) {
   .figure.mochitora {
     position: relative;
-    top: -35px;
+    top: -100px;
+    z-index: 2;
   }
 }
 
