@@ -47,3 +47,80 @@ body.top-page{background:#fff9fe;overflow-x:hidden}
 @keyframes fade-up{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 @media(max-width:650px){.hero{padding-top:95px;min-height:760px;min-height:100svh}.stage{height:clamp(440px,65vh,570px);min-height:430px;width:100%;margin-top:20px}.back-row{height:67%;width:100%;gap:0}.front-row{height:53%;width:88%;gap:5px}.figure{width:31%;padding-bottom:16px}.figure.mochitora{width:23%;height:48%}.figure.spoon,.figure.fork{width:40%}.logo-halo{top:43%;width:90%}.logo-placeholder strong{-webkit-text-stroke:1px white}.hero-bottom{margin-top:2px}.home-links{grid-template-columns:1fr;margin:28px auto}.hero-bottom p{font-size:.78rem}}
 @media(prefers-reduced-motion:reduce){.figure,.logo-halo,.hero-kicker,.hero-bottom,.sparkle-field,.hero:before,.hero:after{animation:none!important;opacity:1!important;transform:none!important}.logo-halo{transform:translate(-50%,-50%)!important}}
+
+/* ===== トップページ配置調整 ===== */
+
+/* キャラクターを表示するスペースを確保 */
+.stage {
+  height: clamp(480px, 69vh, 700px);
+  margin-top: 12px;
+  margin-bottom: 0;
+}
+
+/* 後列を少し高く配置 */
+.back-row {
+  height: 73%;
+  bottom: 14%;
+  z-index: 1;
+}
+
+/* 前列は下側に配置 */
+.front-row {
+  height: 59%;
+  bottom: 0;
+  z-index: 3;
+}
+
+/* キャラクターの立ち位置を調整 */
+.figure {
+  overflow: hidden;
+}
+
+/* ロゴをキャラクターの下に配置 */
+.logo-halo {
+  top: auto;
+  bottom: 0;
+  transform: translateX(-50%) scale(.75);
+  width: min(77%, 590px);
+  animation: logo-below-pop .85s 1.35s
+    cubic-bezier(.2, 1.45, .4, 1) forwards;
+}
+
+/* ロゴの登場アニメーション */
+@keyframes logo-below-pop {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) scale(.68);
+  }
+  70% {
+    opacity: 1;
+    transform: translateX(-50%) scale(1.06);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+  }
+}
+
+/* スマートフォン */
+@media (max-width: 650px) {
+  .stage {
+    height: clamp(440px, 65vh, 570px);
+    margin-top: 20px;
+  }
+
+  .back-row {
+    height: 67%;
+    bottom: 14%;
+  }
+
+  .front-row {
+    height: 53%;
+    bottom: 0;
+  }
+
+  .logo-halo {
+    width: 90%;
+  }
+}
+
