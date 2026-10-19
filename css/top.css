@@ -708,3 +708,10 @@ body.top-page {
   }
 }
 
+
+/* PC版：ふぉーくだけ少し左へ */
+@media (min-width: 651px) {
+  .stage .figure.fork {
+    left: 27% !important;
+  }
+}
