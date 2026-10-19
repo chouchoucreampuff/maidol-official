@@ -12,15 +12,15 @@ body.top-page {
 /* ===== メイン背景 ===== */
 
 .hero {
-  min-height: 790px;
-  min-height: 100svh;
   position: relative;
-  overflow: hidden;
+  isolation: isolate;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  padding: 105px 14px 34px;
+  min-height: 100svh;
+  padding: 35px 14px 34px;
+  overflow: hidden;
   background: linear-gradient(
     125deg,
     #fff5fb 0%,
@@ -30,7 +30,6 @@ body.top-page {
     #fff8e9 83%,
     #f6efff 100%
   );
-  isolation: isolate;
 }
 
 .hero:before {
@@ -67,6 +66,8 @@ body.top-page {
 }
 
 .hero-kicker {
+  position: relative;
+  z-index: 2;
   margin: 0;
   color: #c47eac;
   font-size: clamp(.62rem, 1.4vw, .8rem);
@@ -81,8 +82,8 @@ body.top-page {
 .sparkle-field {
   position: absolute;
   inset: 0;
-  pointer-events: none;
   z-index: 0;
+  pointer-events: none;
   background-image:
     radial-gradient(circle, #fff 0 1.5px, transparent 2px),
     radial-gradient(circle, #fff 0 1px, transparent 2px),
@@ -99,14 +100,12 @@ body.top-page {
   opacity: .7;
 }
 
-/* ========================================
-   キャラクター共通
-======================================== */
+/* ===== キャラクター共通 ===== */
 
 .stage {
   position: relative;
   z-index: 2;
-  width: min(100%, 1400px);
+  width: min(100%, 1500px);
   margin: 12px auto 0;
 }
 
@@ -186,116 +185,138 @@ body.top-page {
 
 /* ========================================
    PC版
-   左：ロゴ
-   右：ないふ・ふぉーく・もちとら・すぷーん・はし
+   キャラクターを中央に横並び
+   ロゴを足元に重ねる
 ======================================== */
 
 @media (min-width: 651px) {
 
   .hero {
-    padding: 100px 3vw 34px;
+    padding: 35px 20px 34px;
   }
 
   .stage {
-    display: grid;
-    grid-template-columns: 34% repeat(5, minmax(0, 1fr));
-    grid-template-rows: 1fr;
-    align-items: end;
-    height: clamp(500px, 70vh, 700px);
-    min-height: 500px;
-    margin-top: 12px;
+    display: block;
+    position: relative;
+    width: min(100%, 1500px);
+    height: clamp(650px, 82vh, 900px);
+    min-height: 650px;
+    margin: 0 auto;
+    transform: none;
   }
 
-  /* 行の入れ物をなくして、5人をGridに直接配置 */
-  .character-row {
+  /* ラッパーを解除し、各キャラクターを直接配置 */
+  .stage .character-row {
     display: contents;
   }
 
-  /* 左側のロゴ：約1.5倍を目指して拡大 */
-  .stage .logo-halo {
-    grid-column: 1;
-    grid-row: 1;
-    align-self: center;
-    justify-self: center;
-    width: 130%;
-    max-width: 610px;
+  /* 4人のメインキャラクター
+     横方向の位置は固定し、足元を同じ高さにする */
+  .stage .figure.knife,
+  .stage .figure.fork,
+  .stage .figure.spoon,
+  .stage .figure.hashi {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 25%;
+    height: 100%;
     margin: 0;
-    opacity: 1;
-    animation: none;
-  }
-
-  /* 5人の共通サイズ・高さ */
-  .stage .figure {
-    grid-row: 1;
-    align-self: end;
-    justify-self: stretch;
-    width: 100%;
-    height: 92%;
-    min-width: 0;
     padding: 0;
-    z-index: 2;
+    transform: none !important;
   }
 
-  .stage .figure .character-art {
+  .stage .figure.knife .character-art,
+  .stage .figure.fork .character-art,
+  .stage .figure.spoon .character-art,
+  .stage .figure.hashi .character-art {
     width: 100%;
     height: 100%;
     object-fit: contain;
     object-position: center bottom;
   }
 
-  /* 1：ないふ */
+  /* 左から：ないふ */
   .stage .figure.knife {
-    grid-column: 2;
-    order: 1;
+    left: 2%;
+    z-index: 2;
   }
 
-  /* 2：ふぉーく */
+  /* 左から：ふぉーく
+     ないふと横方向に重ねる */
   .stage .figure.fork {
-    grid-column: 3;
-    order: 2;
+    left: 17%;
+    z-index: 5;
   }
 
-  /* 3：もちとら
-     他の4人と同じ枠の中で画像を60%に */
+  /* 左から：すぷーん
+     はしと横方向に重ねる */
+  .stage .figure.spoon {
+    left: 53%;
+    z-index: 5;
+  }
+
+  /* 左から：はし */
+  .stage .figure.hashi {
+    left: 68%;
+    z-index: 2;
+  }
+
+  /* もちとら：上端を揃え、小さめに配置 */
   .stage .figure.mochitora {
-    grid-column: 4;
-    order: 3;
-    height: 92%;
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
+    position: absolute;
+    top: 0;
+    bottom: auto;
+    left: 40%;
+    width: 15%;
+    height: 60%;
+    margin: 0;
+    padding: 0;
+    display: block;
+    transform: none !important;
+    z-index: 3;
   }
 
   .stage .figure.mochitora .character-art {
-    width: 60%;
-    height: 60%;
-    flex: 0 0 60%;
+    display: block;
+    width: 100%;
+    height: 100%;
     object-fit: contain;
-    object-position: center bottom;
+    object-position: center top;
   }
 
-  /* 4：すぷーん */
-  .stage .figure.spoon {
-    grid-column: 5;
-    order: 4;
+  /* ロゴ：中央の足元に重ねる */
+  .stage .logo-halo {
+    position: absolute;
+    left: 50%;
+    top: auto;
+    bottom: 0;
+    transform: translateX(-50%);
+    width: min(48%, 580px);
+    max-width: 100%;
+    margin: 0;
+    z-index: 10;
+    opacity: 1;
+    animation: none;
   }
 
-  /* 5：はし */
-  .stage .figure.hashi {
-    grid-column: 6;
-    order: 5;
+  .stage .logo-halo:before {
+    inset: -15% -12%;
+    filter: blur(18px);
   }
 
   .hero-bottom {
+    position: relative;
+    z-index: 10;
     margin-top: 0;
   }
 }
 
 /* ========================================
    スマートフォン版
-   後列3人
-       前列2人
-         ロゴ
+   後列：ないふ・もちとら・はし
+   前列：ふぉーく・すぷーん
+   ロゴは足元に重ねる
 ======================================== */
 
 @media (max-width: 650px) {
@@ -311,71 +332,93 @@ body.top-page {
 
   .stage {
     display: block;
+    position: relative;
     width: 100%;
-    height: 610px;
+    height: 650px;
     min-height: 0;
-    margin-top: 12px;
+    margin: 12px auto 0;
+    overflow: visible;
   }
 
-  /* 後列：ないふ・もちとら・はし
-     上端を揃える */
+  /* 後列3人 */
   .stage .back-row {
     position: absolute;
     top: 0;
     left: 0;
-    transform: none;
     display: flex;
     align-items: flex-start;
-    justify-content: center;
+    justify-content: space-around;
     width: 100%;
-    height: 58%;
+    height: 62%;
     gap: 0;
+    transform: none;
     z-index: 1;
   }
 
   .stage .back-row .figure {
+    position: relative;
+    top: 0 !important;
+    bottom: auto;
+    align-self: flex-start;
     flex: 0 0 33.333%;
     width: 33.333%;
     height: 100%;
-    min-width: 0;
-    padding: 0;
     margin: 0;
-    align-self: flex-start;
+    padding: 0;
   }
 
   .stage .back-row .character-art {
+    display: block;
     width: 100%;
     height: 100%;
     object-fit: contain;
     object-position: center top;
   }
 
-  /* 前列：ふぉーく・すぷーん
-     後列より低い位置に置き、後列と重ねる */
+  /* もちとらは他の後列キャラクターより小さく */
+  .stage .back-row .figure.mochitora {
+    flex-basis: 23.333%;
+    width: 23.333%;
+    height: 70%;
+    margin: 0;
+  }
+
+  .stage .back-row .figure.mochitora .character-art {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center top;
+  }
+
+  /* 前列2人：後列と少し重ねる */
   .stage .front-row {
     position: absolute;
     left: 50%;
-    bottom: 82px;
-    transform: translateX(-50%);
+    bottom: 105px;
     display: flex;
+    flex-direction: row;
     align-items: flex-end;
     justify-content: center;
     width: 84%;
     height: 64%;
     gap: 0;
+    transform: translateX(-50%);
     z-index: 3;
   }
 
   .stage .front-row .figure {
+    position: relative;
+    top: auto;
+    bottom: auto;
     flex: 0 0 50%;
     width: 50%;
     height: 100%;
-    min-width: 0;
-    padding: 0;
     margin: 0;
+    padding: 0;
   }
 
   .stage .front-row .character-art {
+    display: block;
     width: 100%;
     height: 100%;
     object-fit: contain;
@@ -383,37 +426,32 @@ body.top-page {
   }
 
   /* 左：ふぉーく、右：すぷーん */
-  .stage .figure.fork {
-    order: 1;
+  .stage .front-row .figure.fork {
+    order: -2;
   }
 
-  .stage .figure.spoon {
+  .stage .front-row .figure.spoon {
     order: 2;
   }
 
-  /* 後列の中央にいるもちとら */
-  .stage .figure.mochitora {
-    height: 58%;
-    align-self: flex-start;
-  }
-
-  /* ロゴは前列の足元に重ねる */
+  /* ロゴを前列の足元に重ねる */
   .stage .logo-halo {
     position: absolute;
     left: 50%;
-    bottom: 0;
+    top: auto;
+    bottom: 65px;
     transform: translateX(-50%);
-    width: min(72%, 330px);
+    width: min(76%, 350px);
     max-width: 100%;
     margin: 0;
+    z-index: 10;
     opacity: 1;
     animation: none;
-    z-index: 8;
   }
 
   .stage .logo-halo:before {
-    inset: -12% -10%;
-    filter: blur(12px);
+    inset: -15% -12%;
+    filter: blur(14px);
   }
 
   .hero-bottom {
@@ -596,591 +634,5 @@ body.top-page {
   .hero-kicker,
   .hero-bottom {
     opacity: 1 !important;
-  }
-}
-
-/* ===== PC版：キャラクター全体を拡大 ===== */
-@media (min-width: 651px) {
-  .stage {
-    width: min(100%, 1600px);
-    grid-template-columns: 30% repeat(5, minmax(0, 1fr));
-    height: clamp(580px, 78vh, 820px);
-    min-height: 580px;
-  }
-
-  .stage .figure {
-    height: 100%;
-  }
-
-  /* もちとらは他のキャラクターの60% */
-  .stage .figure.mochitora {
-    height: 100%;
-  }
-
-  .stage .figure.mochitora .character-art {
-    width: 60%;
-    height: 60%;
-    flex-basis: 60%;
-  }
-
-  /* ロゴも少し大きく */
-  .stage .logo-halo {
-    width: 140%;
-    max-width: 680px;
-  }
-}
-
-/* ========================================
-   最終レイアウト調整
-======================================== */
-
-/* ===== スマホ版 ===== */
-@media (max-width: 650px) {
-
-  /* ステージの高さを確保 */
-  .stage {
-    position: relative;
-    height: 650px;
-    overflow: visible;
-  }
-
-  /* 後列3人：画像の上端を揃える */
-  .stage .back-row {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 62%;
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-around;
-    gap: 0;
-    transform: none;
-    z-index: 1;
-  }
-
-  .stage .back-row .figure {
-    position: relative;
-    top: 0 !important;
-    align-self: flex-start;
-    flex: 0 0 33.333%;
-    width: 33.333%;
-    height: 100%;
-    margin: 0;
-  }
-
-  .stage .back-row .character-art {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    object-position: center top;
-  }
-
-  /* 前列：少し上に重ねて、後列を隙間から見せる */
-  .stage .front-row {
-    position: absolute;
-    left: 50%;
-    bottom: 105px;
-    transform: translateX(-50%);
-    display: flex;
-    flex-direction: row;
-    align-items: flex-end;
-    justify-content: center;
-    width: 84%;
-    height: 64%;
-    gap: 0;
-    z-index: 3;
-  }
-
-  .stage .front-row .figure {
-    position: relative;
-    flex: 0 0 50%;
-    width: 50%;
-    height: 100%;
-    margin: 0;
-  }
-
-  .stage .front-row .character-art {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    object-position: center bottom;
-  }
-
-  /* DOM上の順番に左右されず、左をふぉーくにする */
-  .stage .front-row .figure.fork {
-    order: -2;
-  }
-
-  .stage .front-row .figure.spoon {
-    order: 2;
-  }
-
-  /* ロゴを前列の足元に重ねる */
-  .stage .logo-halo {
-    position: absolute;
-    left: 50%;
-    bottom: 65px;
-    transform: translateX(-50%);
-    width: min(76%, 350px);
-    max-width: 100%;
-    margin: 0;
-    z-index: 10;
-    opacity: 1;
-    animation: none;
-  }
-
-  .stage .logo-halo:before {
-    inset: -15% -12%;
-    filter: blur(14px);
-  }
-}
-
-/* ===== PC版 ===== */
-@media (min-width: 651px) {
-
-  /* キャラクターの横幅を増やして間隔を詰める */
-  .stage {
-    width: min(100%, 1600px);
-    grid-template-columns: 27% repeat(5, minmax(0, 1fr));
-    column-gap: 0;
-    height: clamp(650px, 85vh, 900px);
-    min-height: 650px;
-  }
-
-  /* 4人のキャラクターを約30%大きく */
-  .stage .figure.knife,
-  .stage .figure.fork,
-  .stage .figure.spoon,
-  .stage .figure.hashi {
-    height: 100%;
-  }
-
-  /* もちとらは他キャラの約60%のサイズを維持 */
-  .stage .figure.mochitora {
-    height: 100%;
-  }
-
-  .stage .figure.mochitora .character-art {
-    width: 60%;
-    height: 60%;
-    flex-basis: 60%;
-  }
-
-  /* ロゴとキャラクターの重なりを減らすため、
-     ロゴの幅を抑え、キャラの領域を広げる */
-  .stage .logo-halo {
-    width: 125%;
-    max-width: 620px;
-  }
-}
-
-/* ========================================
-   レイアウト微調整・第2弾
-======================================== */
-
-/* ===== PC版 ===== */
-@media (min-width: 651px) {
-
-  /* キャラクター全体を右へ寄せ、表示領域を広げる */
-  .stage {
-    width: min(100%, 1700px);
-    grid-template-columns: 24% repeat(5, minmax(0, 1fr));
-    column-gap: 0;
-    height: clamp(720px, 90vh, 1000px);
-    min-height: 720px;
-    transform: translateX(2%);
-  }
-
-  /* ないふ・ふぉーく・すぷーん・はしをさらに約30%拡大 */
-  .stage .figure.knife,
-  .stage .figure.fork,
-  .stage .figure.spoon,
-  .stage .figure.hashi {
-    height: 100%;
-  }
-
-  /* ふぉーく・もちとら・すぷーんを近づける */
-  .stage .figure.fork {
-    margin-right: -4%;
-  }
-
-  .stage .figure.mochitora {
-    margin-left: -4%;
-    margin-right: -4%;
-    height: 100%;
-  }
-
-  .stage .figure.spoon {
-    margin-left: -4%;
-  }
-
-  /* もちとらは他のキャラクターより小さく */
-  .stage .figure.mochitora .character-art {
-    width: 60%;
-    height: 60%;
-    flex-basis: 60%;
-  }
-
-  /* ロゴが画面からはみ出さないように縮小 */
-  .stage .logo-halo {
-    width: 110%;
-    max-width: 540px;
-    justify-self: center;
-  }
-}
-
-/* ===== スマホ版 ===== */
-@media (max-width: 650px) {
-
-  /* 後列3人の基本配置 */
-  .stage .back-row {
-    align-items: flex-start;
-  }
-
-  /* ないふ・はしを前列と同じ大きさに */
-  .stage .back-row .figure.knife,
-  .stage .back-row .figure.hashi {
-    flex-basis: 42%;
-    width: 42%;
-    height: 100%;
-  }
-
-  /* 左右のキャラクターが中央のもちとらに重なりすぎないよう調整 */
-  .stage .back-row .figure.knife {
-    margin-right: -4%;
-  }
-
-  .stage .back-row .figure.hashi {
-    margin-left: -4%;
-  }
-
-  /* もちとらは現在のサイズから約30%縮小 */
-  .stage .back-row .figure.mochitora {
-    flex-basis: 23.333%;
-    width: 23.333%;
-    height: 70%;
-    margin: 0;
-  }
-
-  .stage .back-row .figure.mochitora .character-art {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    object-position: center top;
-  }
-}
-
-/* ========================================
-   PC版：キャラクターを大胆に拡大・重ねる
-======================================== */
-
-@media (min-width: 651px) {
-
-  .stage {
-    width: min(100%, 1700px);
-    height: clamp(760px, 92vh, 1050px);
-    min-height: 760px;
-    grid-template-columns: 23% repeat(5, minmax(0, 1fr));
-    column-gap: 0;
-    transform: translateX(2%);
-  }
-
-  /* ロゴは左側に収める */
-  .stage .logo-halo {
-    width: 105%;
-    max-width: 500px;
-    justify-self: center;
-    z-index: 2;
-  }
-
-  /* キャラクター4人を約1.5倍の高さに */
-  .stage .figure.knife,
-  .stage .figure.fork,
-  .stage .figure.spoon,
-  .stage .figure.hashi {
-    height: 100%;
-    width: 135%;
-    justify-self: center;
-    position: relative;
-    overflow: visible;
-  }
-
-  .stage .figure .character-art {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    object-position: center bottom;
-  }
-
-  /* もちとらは小さめを維持 */
-  .stage .figure.mochitora {
-    height: 100%;
-    width: 100%;
-    position: relative;
-    z-index: 3;
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-  }
-
-  .stage .figure.mochitora .character-art {
-    width: 60%;
-    height: 60%;
-    flex: 0 0 60%;
-    object-fit: contain;
-    object-position: center bottom;
-  }
-
-  /* キャラクター同士の横間隔を詰める */
-  .stage .figure.knife {
-    z-index: 2;
-    transform: translateX(10%);
-  }
-
-  .stage .figure.fork {
-    z-index: 5;
-    transform: translateX(-10%) translateY(-8%);
-  }
-
-  .stage .figure.mochitora {
-    z-index: 3;
-    transform: scale(1.1);
-  }
-
-  .stage .figure.spoon {
-    z-index: 5;
-    transform: translateX(-10%) translateY(-8%);
-  }
-
-  .stage .figure.hashi {
-    z-index: 2;
-    transform: translateX(-10%);
-  }
-}
-
-/* ===== PC版：上部の余白を減らす ===== */
-@media (min-width: 651px) {
-  .hero {
-    padding-top: 35px;
-  }
-
-  .stage {
-    margin-top: 0;
-  }
-
-  .hero-kicker {
-    margin-bottom: 0;
-  }
-}
-
-/* ===== PC版：足元の高さと重なりを修正 ===== */
-@media (min-width: 651px) {
-  .stage .figure {
-    align-self: end;
-    bottom: 0;
-  }
-
-  /* ないふ・はし：基準の高さ */
-  .stage .figure.knife {
-    transform: translateX(10%);
-    z-index: 2;
-  }
-
-  .stage .figure.hashi {
-    transform: translateX(-10%);
-    z-index: 2;
-  }
-
-  /* ふぉーく・すぷーん：少し上に重ねる */
-  .stage .figure.fork {
-    transform: translateX(-10%) translateY(-4%);
-    z-index: 5;
-  }
-
-  .stage .figure.spoon {
-    transform: translateX(-10%) translateY(-4%);
-    z-index: 5;
-  }
-
-  /* もちとら：中央で足元を揃える */
-  .stage .figure.mochitora {
-    transform: none;
-    align-self: end;
-    z-index: 3;
-  }
-
-  .stage .figure .character-art {
-    object-position: center bottom;
-  }
-}
-
-
-/* ===== PC版：高さを統一し、横方向だけ重ねる ===== */
-@media (min-width: 651px) {
-
-  /* 5人とも同じ基準位置・同じ高さ */
-  .stage .figure.knife,
-  .stage .figure.fork,
-  .stage .figure.mochitora,
-  .stage .figure.spoon,
-  .stage .figure.hashi {
-    align-self: end;
-    bottom: auto;
-    margin-top: 0;
-  }
-
-  /* 上下方向のズレを完全に解除 */
-  .stage .figure.knife {
-    transform: translateX(10%) !important;
-    z-index: 2;
-  }
-
-  .stage .figure.fork {
-    transform: translateX(-10%) !important;
-    z-index: 5;
-  }
-
-  .stage .figure.mochitora {
-    transform: none !important;
-    z-index: 3;
-  }
-
-  .stage .figure.spoon {
-    transform: translateX(-10%) !important;
-    z-index: 5;
-  }
-
-  .stage .figure.hashi {
-    transform: translateX(-10%) !important;
-    z-index: 2;
-  }
-
-  /* 画像は下端を基準に表示 */
-  .stage .figure .character-art {
-    object-position: center bottom;
-  }
-}
-
-/* PC版：ふぉーくを少し右へ */
-@media (min-width: 651px) {
-  .stage .figure.fork {
-    transform: translateX(0
-/* ========================================
-   PC版：中央キャラクター＋足元ロゴ
-======================================== */
-
-@media (min-width: 651px) {
-
-  /* ステージ全体を中央に配置 */
-  .stage {
-    display: block;
-    position: relative;
-    width: min(100%, 1500px);
-    height: clamp(760px, 88vh, 1000px);
-    min-height: 760px;
-    margin: 0 auto;
-    transform: none;
-  }
-
-  /* キャラクター行のラッパーを解除 */
-  .stage .character-row {
-    display: contents;
-  }
-
-  /* 5人を中央に横並びで配置 */
-  .stage .figure {
-    position: absolute;
-    bottom: 0;
-    height: 100%;
-    width: 22%;
-    margin: 0;
-    padding: 0;
-    align-self: auto;
-    overflow: visible;
-  }
-
-  /* ないふ */
-  .stage .figure.knife {
-    left: 3%;
-    transform: none !important;
-    z-index: 2;
-  }
-
-  /* ふぉーく */
-  .stage .figure.fork {
-    left: 19%;
-    transform: none !important;
-    z-index: 5;
-  }
-
-  /* もちとら：小さくし、上端を揃える */
-  .stage .figure.mochitora {
-    left: 39%;
-    top: 0;
-    bottom: auto;
-    width: 13.2%;
-    height: 60%;
-    transform: none !important;
-    display: block;
-    z-index: 3;
-  }
-
-  .stage .figure.mochitora .character-art {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    object-position: center top;
-  }
-
-  /* すぷーん */
-  .stage .figure.spoon {
-    left: 59%;
-    transform: none !important;
-    z-index: 5;
-  }
-
-  /* はし */
-  .stage .figure.hashi {
-    left: 75%;
-    transform: none !important;
-    z-index: 2;
-  }
-
-  /* 4人の画像は大きく、足元を同じ高さに */
-  .stage .figure.knife .character-art,
-  .stage .figure.fork .character-art,
-  .stage .figure.spoon .character-art,
-  .stage .figure.hashi .character-art {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    object-position: center bottom;
-  }
-
-  /* ロゴを中央・足元に重ねる */
-  .stage .logo-halo {
-    position: absolute;
-    left: 50%;
-    top: auto;
-    bottom: -1%;
-    transform: translateX(-50%);
-    width: min(55%, 650px);
-    max-width: 100%;
-    margin: 0;
-    z-index: 10;
-    opacity: 1;
-    animation: none;
-  }
-
-  .stage .logo-halo:before {
-    inset: -15% -12%;
-    filter: blur(18px);
-  }
-}
-%) !important;
   }
 }
