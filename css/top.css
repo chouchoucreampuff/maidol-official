@@ -961,3 +961,18 @@ body.top-page {
   }
 }
 
+/* ===== PC版：上部の余白を減らす ===== */
+@media (min-width: 651px) {
+  .hero {
+    padding-top: 35px;
+  }
+
+  .stage {
+    margin-top: 0;
+  }
+
+  .hero-kicker {
+    margin-bottom: 0;
+  }
+}
+
