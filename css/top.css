@@ -673,3 +673,15 @@ body.top-page {
     left: 17%;
   }
 }
+
+/* PC版：すぷーんの位置は固定し、ふぉーくを左右対称に配置 */
+@media (min-width: 651px) {
+  .stage .figure.spoon {
+    left: 53%;
+  }
+
+  .stage .figure.fork {
+    left: 17%;
+  }
+}
+
