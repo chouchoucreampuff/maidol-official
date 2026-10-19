@@ -659,7 +659,7 @@ body.top-page {
 /* スマホ版：もちとらを1匹分ほど下げる */
 @media (max-width: 650px) {
   .stage .back-row .figure.mochitora {
-    transform: translateY(100%) !important;
+    transform: translateY(50%) !important;
   }
 }
 
