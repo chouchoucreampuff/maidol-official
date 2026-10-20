@@ -5,6 +5,7 @@ const characters = {
   spoon: {
     name: "すぷーん",
     en: "SPOON",
+    mark: "♡",
     tag: "レッド担当",
     grade: "高校2年生",
     birthday: "11/21",
@@ -20,6 +21,7 @@ const characters = {
   fork: {
     name: "ふぉーく",
     en: "FORK",
+    mark: "♤",
     tag: "ブルー担当",
     grade: "高校2年生",
     birthday: "8/8",
@@ -35,6 +37,7 @@ const characters = {
   knife: {
     name: "ないふ",
     en: "KNIFE",
+    mark: "♢",
     tag: "オレンジ担当",
     grade: "高校3年生",
     birthday: "2/9",
@@ -50,6 +53,7 @@ const characters = {
   hashi: {
     name: "はし",
     en: "HASHI",
+    mark: "♧",
     tag: "グリーン担当",
     grade: "高校1年生",
     birthday: "5/11",
@@ -65,6 +69,7 @@ const characters = {
   mochitora: {
     name: "もちとら",
     en: "MOCHITORA",
+    mark: "☆",
     tag: "メイドルのマスコット",
     grade: "3さい",
     birthday: "未設定",
@@ -100,6 +105,12 @@ function renderCharacter() {
 
   if (imageIndex >= images.length) {
     imageIndex = 0;
+  }
+
+  // PROFILE横のマークをキャラクターごとに変更
+  const profileMark = document.querySelector(".profile-mark");
+  if (profileMark) {
+    profileMark.textContent = character.mark;
   }
 
   document.getElementById("profile-en").textContent = character.en;
