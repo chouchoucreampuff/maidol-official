@@ -4,7 +4,7 @@
 const characters = {
   spoon: {
     name: "すぷーん/蘭莉 澄香",
-    en: "SPOON",
+    en: "SPOON/SUMIKA RANRI",
     mark: "♡",
     tag: "レッド担当",
     grade: "高校2年生",
@@ -19,8 +19,8 @@ const characters = {
   },
 
   fork: {
-    name: "ふぉーく",
-    en: "FORK",
+    name: "ふぉーく/加藤 文乃",
+    en: "FORK/FUMINO KATO",
     mark: "♤",
     tag: "ブルー担当",
     grade: "高校2年生",
@@ -35,8 +35,8 @@ const characters = {
   },
 
   knife: {
-    name: "ないふ",
-    en: "KNIFE",
+    name: "ないふ/刀根 夏芽",
+    en: "KNIFE/NATSUME TONE",
     mark: "♢",
     tag: "オレンジ担当",
     grade: "高校3年生",
@@ -51,8 +51,8 @@ const characters = {
   },
 
   hashi: {
-    name: "はし",
-    en: "HASHI",
+    name: "はし/橋本 はづき",
+    en: "HASHI/HAZUKI HASHIMOTO",
     mark: "♧",
     tag: "グリーン担当",
     grade: "高校1年生",
