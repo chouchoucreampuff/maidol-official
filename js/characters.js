@@ -3,7 +3,7 @@
 
 const characters = {
   spoon: {
-    name: "すぷーん",
+    name: "すぷーん/蘭莉 澄香",
     en: "SPOON",
     mark: "♡",
     tag: "レッド担当",
@@ -29,7 +29,7 @@ const characters = {
     food: "ツナおにぎり",
     hobby: "ランニング",
     favorite: "おしゃれ",
-    description: "サブカル好きで、すぷーんと仲良し。",
+    description: "サブカル好きなおばあちゃんっ子。すぷーんと仲良し。",
     tone: "blue",
     images: ["assets/fork.png"]
   },
@@ -45,7 +45,7 @@ const characters = {
     food: "クレープ",
     hobby: "コスメ収集",
     favorite: "ダンス",
-    description: "明るく元気なムードメーカー。",
+    description: "明るく元気なムードメーカー。アイドル志望。",
     tone: "orange",
     images: ["assets/knife.png"]
   },
@@ -61,7 +61,7 @@ const characters = {
     food: "お茶漬け",
     hobby: "お茶会",
     favorite: "お茶全般",
-    description: "おとなしく落ち着いた雰囲気の女の子。",
+    description: "落ち着いた雰囲気の和菓子屋の一人娘。",
     tone: "green",
     images: ["assets/hashi.png"]
   },
