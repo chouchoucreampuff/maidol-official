@@ -745,3 +745,55 @@ body.top-page {
     max-height: 51px !important;
   }
 }
+
+/* ===== メイドル診断バナー ===== */
+.diagnosis-banner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 9px;
+  width: min(520px, calc(100% - 32px));
+  margin: 35px auto;
+  padding: 28px 18px;
+  border: 3px solid white;
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at 10% 20%, #ffe1f1, transparent 40%),
+    linear-gradient(120deg, #fff8fc, #f0eaff, #fff0f8);
+  box-shadow: 0 8px 24px #d59ac52a, inset 0 0 0 1px #f3d4e9;
+  color: #c65d9d;
+  text-align: center;
+  transition: transform .2s, box-shadow .2s;
+}
+
+.diagnosis-banner:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 13px 28px #d59ac540;
+}
+
+.diagnosis-banner-icon {
+  font-size: 1.35rem;
+  letter-spacing: .25em;
+}
+
+.diagnosis-banner-label {
+  font-size: .7rem;
+  font-weight: 900;
+  letter-spacing: .2em;
+}
+
+.diagnosis-banner strong {
+  font-size: clamp(1.8rem, 6vw, 2.5rem);
+  font-weight: 900;
+  text-shadow: 2px 3px white, 3px 4px #f1cfe5;
+}
+
+.diagnosis-banner-button {
+  margin-top: 5px;
+  padding: 10px 25px;
+  border-radius: 999px;
+  background: linear-gradient(100deg, #f19bc9, #c7a5ed);
+  color: white;
+  font-size: .9rem;
+  font-weight: 900;
+}
