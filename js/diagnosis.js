@@ -163,7 +163,7 @@
       answers: [
         {
           text: "ワクワクドキドキなサプライズ！",
-          character: "fork"
+          character: "knife"
         },
         {
           text: "相手が喜んでくれそうなものをリサーチ。",
@@ -189,7 +189,7 @@
       answers: [
         {
           text: "直感を信じて、「これだ！」と思ったものを選ぶ。",
-          character: "knife"
+          character: "fork"
         },
         {
           text: "いくつか比べて、納得できるものを選ぶ。",
