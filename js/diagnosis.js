@@ -1,131 +1,84 @@
+
 /* ========================================
-メイドル診断
-10問・二択・5キャラクター
+   メイドル診断
+   10問・二択・5キャラクター
 ======================================== */
 
 (() => {
-"use strict";
+  "use strict";
 
-const characters = {
-spoon: {
-name: "すぷーん",
-en: "SPOON",
-mark: "♡",
-image: "assets/spoon.png",
-catch: "やさしさでみんなを笑顔にする、おもてなしタイプ！",
-description:
-"あなたは、相手の気持ちを考えられる思いやりの持ち主。大切な人が喜んでくれることに幸せを感じるタイプです。細やかな気配りや、誰かのために頑張れるところがあなたの魅力。あなたのやさしさが、周りをあたたかくしているはず。",
-message:
-"あなたのやさしさ、とってもすてき！ これからも大切な人たちに、たくさんの笑顔を届けてね♡",
-tone: "pink"
-},
+  // ===== キャラクター設定 =====
 
-fork: {  
-  name: "ふぉーく",  
-  en: "FORK",  
-  mark: "♤",  
-  image: "assets/fork.png",  
-  catch: "好きなものはゆずれない、自分らしさ全開タイプ！",  
-  description:  
-    "あなたは、自分の好きなものや世界観を大切にするタイプ。周りと違っていても、自分がいいと思ったものを貫けるのが強みです。こだわりを持って好きなことを楽しむ姿は、きっと誰かの憧れになるはず。",  
-  message:  
-    "好きなものは好き！ その気持ちを大事にして、自分だけの世界をもっと楽しんじゃおう♤",  
-  tone: "blue"  
-},  
+  const characters = {
+    spoon: {
+      name: "すぷーん",
+      en: "SPOON",
+      mark: "♡",
+      image: "assets/spoon.png",
+      catch: "やさしさでみんなを笑顔にする、おもてなしタイプ！",
+      description:
+        "あなたは、相手の気持ちを考えられる思いやりの持ち主。大切な人が喜んでくれることに幸せを感じるタイプです。細やかな気配りや、誰かのために頑張れるところがあなたの魅力。あなたのやさしさが、周りをあたたかくしているはず。",
+      message:
+        "あなたのやさしさ、とってもすてき！ これからも大切な人たちに、たくさんの笑顔を届けてね♡",
+      tone: "pink"
+    },
 
-hashi: {  
-  name: "はし",  
-  en: "HASHI",  
-  mark: "♧",  
-  image: "assets/hashi.png",  
-  catch: "静かにみんなを支える、ほっと安心タイプ！",  
-  description:  
-    "あなたは、落ち着いて周りを見られるタイプ。目立つことよりも、自分のペースや居心地のよさを大切にします。相手の変化に気づいたり、そっと寄り添ったりできるところが魅力。あなたがいるだけで安心する人もいるはず。",  
-  message:  
-    "いつも頑張りすぎなくて大丈夫。あなたらしいペースで、のんびり歩いていこうね♧",  
-  tone: "green"  
-},  
+    fork: {
+      name: "ふぉーく",
+      en: "FORK",
+      mark: "♤",
+      image: "assets/fork.png",
+      catch: "好きなものはゆずれない、自分らしさ全開タイプ！",
+      description:
+        "あなたは、自分の好きなものや世界観を大切にするタイプ。周りと違っていても、自分がいいと思ったものを貫けるのが強みです。こだわりを持って好きなことを楽しむ姿は、きっと誰かの憧れになるはず。",
+      message:
+        "好きなものは好き！ その気持ちを大事にして、自分だけの世界をもっと楽しんじゃおう♤",
+      tone: "blue"
+    },
 
-knife: {  
-  name: "ないふ",  
-  en: "KNIFE",  
-  mark: "♢",  
-  image: "assets/knife.png",  
-  catch: "楽しそうなら一直線！ 笑顔いっぱいの行動派タイプ！",  
-  description:  
-    "あなたは、好奇心いっぱいで行動力のあるタイプ。新しいことに挑戦したり、みんなを明るい気分にしたりするのが得意です。失敗を恐れずに動けることや、場を盛り上げられることがあなたの強み。毎日を楽しくする才能の持ち主です。",  
-  message:  
-    "楽しそう！ と思ったら、まずは一歩踏み出してみよう！ あなたの明るさで毎日をキラキラにしちゃおう♢",  
-  tone: "orange"  
-},  
+    hashi: {
+      name: "はし",
+      en: "HASHI",
+      mark: "♧",
+      image: "assets/hashi.png",
+      catch: "静かにみんなを支える、ほっと安心タイプ！",
+      description:
+        "あなたは、落ち着いて周りを見られるタイプ。目立つことよりも、自分のペースや居心地のよさを大切にします。相手の変化に気づいたり、そっと寄り添ったりできるところが魅力。あなたがいるだけで安心する人もいるはず。",
+      message:
+        "いつも頑張りすぎなくて大丈夫。あなたらしいペースで、のんびり歩いていこうね♧",
+      tone: "green"
+    },
 
-mochitora: {  
-  name: "もちとら",  
-  en: "MOCHITORA",  
-  mark: "☆",  
-  image: "assets/mochitora.png",  
-  catch: "自分のペースがいちばん！ みんなを癒やすマイペースタイプ！",  
-  description:  
-    "あなたは、無理をせず自分らしく過ごすことを大切にするタイプ。好きなものを楽しんだり、安心できる場所でくつろいだりする時間がエネルギーになります。飾らない自然体の魅力があり、一緒にいる人をほっとさせる存在です。",  
-  message:  
-    "おいしいものを食べて、いっぱい休んで、今日ももちもち元気にいこうね☆",  
-  tone: "white"  
-}
+    knife: {
+      name: "ないふ",
+      en: "KNIFE",
+      mark: "♢",
+      image: "assets/knife.png",
+      catch: "楽しそうなら一直線！ 笑顔いっぱいの行動派タイプ！",
+      description:
+        "あなたは、好奇心いっぱいで行動力のあるタイプ。新しいことに挑戦したり、みんなを明るい気分にしたりするのが得意です。失敗を恐れずに動けることや、場を盛り上げられることがあなたの強み。毎日を楽しくする才能の持ち主です。",
+      message:
+        "楽しそう！ と思ったら、まずは一歩踏み出してみよう！ あなたの明るさで毎日をキラキラにしちゃおう♢",
+      tone: "orange"
+    },
 
-};
+    mochitora: {
+      name: "もちとら",
+      en: "MOCHITORA",
+      mark: "☆",
+      image: "assets/mochitora.png",
+      catch: "自分のペースがいちばん！ みんなを癒やすマイペースタイプ！",
+      description:
+        "あなたは、無理をせず自分らしく過ごすことを大切にするタイプ。好きなものを楽しんだり、安心できる場所でくつろいだりする時間がエネルギーになります。飾らない自然体の魅力があり、一緒にいる人をほっとさせる存在です。",
+      message:
+        "おいしいものを食べて、いっぱい休んで、今日ももちもち元気にいこうね☆",
+      tone: "white"
+    }
+  };
 
-/*
+  // ===== 質問設定 =====
+  // 各キャラクターの回答割り当ては4回ずつ
 
-- 各選択肢を選ぶと、対応するキャラクターに1点。
-- どちらの選択肢も正解・不正解はありません。
-  */
-  const questions = [
-  {
-  text: "友達とお出かけ！ あなたはどっち？",
-  answers: [
-  {
-  text: "行き先や予定を考えて、みんなを楽しませたい",
-  character: "spoon"
-  },
-  {
-  text: "気になる場所を見つけて、自由に楽しみたい",
-  character: "fork"
-  }
-  ]
-  },
-  {
-  text: "友達が悩んでいるみたい。どうする？",
-  answers: [
-  {
-  text: "そばにいて、気持ちが落ち着くまで話を聞く",
-  character: "hashi"
-  },
-  {
-  text: "気分転換できるように、明るく声をかける",
-  character: "knife"
-  }
-  ]
-  },
-  {
-  text: "何も予定がない休日、理想の過ごし方は？",
-  answers: [
-  {
-  text: "好きなものに囲まれて、のんびり過ごす",
-  character: "mochitora"
-  },
-  {
-  text: "お菓子を作ったり、誰かのために何かしたりする",
-  character: "spoon"
-  }
-  ]
-  },
-  {
-  text: "グループで何かをするとき、得意なのは？",
-  answers: [
-  {
-  text: "周りの様子を見ながら、必要なことを見つける",
-  character: "hashi"
-  },
   const questions = [
     {
       text: "友達と遊びに行くなら？",
@@ -259,203 +212,284 @@ mochitora: {
     }
   ];
 
-const $ = (selector) => document.querySelector(selector);
+  // ===== HTML要素の取得 =====
 
-const hero = $("#diagnosis-top");
-const quizPanel = $("#quiz-panel");
-const resultPanel = $("#result-panel");
-const startButton = $("#start-button");
-const retryButton = $("#retry-button");
-const backButton = $("#back-button");
-const shareButton = $("#share-button");
+  const $ = (selector) => document.querySelector(selector);
 
-const questionNumber = $("#question-number");
-const questionText = $("#question-text");
-const quizCount = $("#quiz-count");
-const progressFill = $("#progress-fill");
-const answerButtons = Array.from(
-document.querySelectorAll(".answer-button")
-);
+  const hero = $("#diagnosis-top");
+  const quizPanel = $("#quiz-panel");
+  const resultPanel = $("#result-panel");
+  const startButton = $("#start-button");
+  const retryButton = $("#retry-button");
+  const backButton = $("#back-button");
+  const shareButton = $("#share-button");
 
-const resultCard = $("#result-card");
-const resultMark = $("#result-mark");
-const resultImage = $("#result-image");
-const resultType = $("#result-type");
-const resultName = $("#result-name");
-const resultCatch = $("#result-catch");
-const resultDescription = $("#result-description");
-const resultMessage = $("#result-message");
-const characterLink = $("#character-link");
+  const questionNumber = $("#question-number");
+  const questionText = $("#question-text");
+  const quizCount = $("#quiz-count");
+  const progressFill = $("#progress-fill");
 
-let currentQuestion = 0;
-let answers = [];
-let currentResult = null;
+  const answerButtons = Array.from(
+    document.querySelectorAll(".answer-button")
+  );
 
-function showSection(section) {
-hero.hidden = section !== "hero";
-quizPanel.hidden = section !== "quiz";
-resultPanel.hidden = section !== "result";
-}
+  const resultCard = $("#result-card");
+  const resultMark = $("#result-mark");
+  const resultImage = $("#result-image");
+  const resultType = $("#result-type");
+  const resultName = $("#result-name");
+  const resultCatch = $("#result-catch");
+  const resultDescription = $("#result-description");
+  const resultMessage = $("#result-message");
+  const characterLink = $("#character-link");
 
-function startDiagnosis() {
-currentQuestion = 0;
-answers = [];
-currentResult = null;
-showSection("quiz");
-renderQuestion();
-window.scrollTo({ top: 0, behavior: "smooth" });
-}
+  // HTML側のIDやボタンが不足していないか確認
+  const requiredElements = [
+    hero,
+    quizPanel,
+    resultPanel,
+    startButton,
+    retryButton,
+    backButton,
+    shareButton,
+    questionNumber,
+    questionText,
+    quizCount,
+    progressFill,
+    resultCard,
+    resultMark,
+    resultImage,
+    resultType,
+    resultName,
+    resultCatch,
+    resultDescription,
+    resultMessage,
+    characterLink
+  ];
 
-function renderQuestion() {
-const question = questions[currentQuestion];
+  if (
+    requiredElements.some((element) => !element) ||
+    answerButtons.length < 2 ||
+    answerButtons.some(
+      (button) => !button.querySelector(".answer-text")
+    )
+  ) {
+    console.error(
+      "メイドル診断：必要なHTML要素が見つかりません。diagnosis.htmlのIDとクラス名を確認してください。"
+    );
+    return;
+  }
 
-questionNumber.textContent =  
-  "Q." + String(currentQuestion + 1).padStart(2, "0");  
+  // ===== 診断の状態 =====
 
-quizCount.textContent =  
-  "QUESTION " + (currentQuestion + 1) + " / " + questions.length;  
+  let currentQuestion = 0;
+  let answers = [];
+  let currentResult = null;
 
-questionText.textContent = question.text;  
+  // ===== 画面切り替え =====
 
-progressFill.style.width =  
-  ((currentQuestion + 1) / questions.length) * 100 + "%";  
+  function showSection(section) {
+    hero.hidden = section !== "hero";
+    quizPanel.hidden = section !== "quiz";
+    resultPanel.hidden = section !== "result";
+  }
 
-answerButtons.forEach((button, index) => {  
-  button.querySelector(".answer-text").textContent =  
-    question.answers[index].text;  
-});  
+  // ===== 診断スタート・リトライ =====
 
-backButton.disabled = currentQuestion === 0;
+  function startDiagnosis() {
+    currentQuestion = 0;
+    answers = [];
+    currentResult = null;
 
-}
+    showSection("quiz");
+    renderQuestion();
 
-function chooseAnswer(answerIndex) {
-const question = questions[currentQuestion];
-answers[currentQuestion] = question.answers[answerIndex].character;
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  }
 
-if (currentQuestion < questions.length - 1) {  
-  currentQuestion++;  
-  renderQuestion();  
-  return;  
-}  
+  // ===== 質問表示 =====
 
-showResult();
+  function renderQuestion() {
+    const question = questions[currentQuestion];
 
-}
+    if (!question) {
+      console.error("メイドル診断：質問データが見つかりません。");
+      return;
+    }
 
-function calculateResult() {
-const scores = {};
+    questionNumber.textContent =
+      "Q." + String(currentQuestion + 1).padStart(2, "0");
 
-Object.keys(characters).forEach((id) => {  
-  scores[id] = 0;  
-});  
+    quizCount.textContent =
+      "QUESTION " + (currentQuestion + 1) + " / " + questions.length;
 
-answers.forEach((id) => {  
-  if (Object.prototype.hasOwnProperty.call(scores, id)) {  
-    scores[id]++;  
-  }  
-});  
+    questionText.textContent = question.text;
 
-const highestScore = Math.max(...Object.values(scores));  
+    progressFill.style.width =
+      ((currentQuestion + 1) / questions.length) * 100 + "%";
 
-const tiedCharacters = Object.keys(scores).filter(  
-  (id) => scores[id] === highestScore  
-);  
+    answerButtons.forEach((button, index) => {
+      button.querySelector(".answer-text").textContent =
+        question.answers[index].text;
+    });
 
-/*  
- * 同点の場合：  
- * 同点キャラクターのうち、回答の後半で最後に選ばれた  
- * キャラクターを結果にする。  
- */  
-for (let i = answers.length - 1; i >= 0; i--) {  
-  if (tiedCharacters.includes(answers[i])) {  
-    return answers[i];  
-  }  
-}  
+    backButton.disabled = currentQuestion === 0;
+  }
 
-return "spoon";
+  // ===== 回答選択 =====
 
-}
+  function chooseAnswer(answerIndex) {
+    const question = questions[currentQuestion];
 
-function showResult() {
-const resultId = calculateResult();
-const character = characters[resultId];
+    if (
+      !question ||
+      !question.answers[answerIndex]
+    ) {
+      return;
+    }
 
-currentResult = {  
-  id: resultId,  
-  character  
-};  
+    answers[currentQuestion] =
+      question.answers[answerIndex].character;
 
-resultCard.dataset.tone = character.tone;  
-resultMark.textContent = character.mark;  
-resultImage.src = character.image;  
-resultImage.alt = character.name + "の立ち絵";  
-resultType.textContent = character.en + " TYPE";  
-resultName.textContent = character.name + "タイプ！";  
-resultCatch.textContent = character.catch;  
-resultDescription.textContent = character.description;  
-resultMessage.textContent = character.message;  
+    if (currentQuestion < questions.length - 1) {
+      currentQuestion++;
+      renderQuestion();
+      return;
+    }
 
-characterLink.href =  
-  "characters.html?ch=" + encodeURIComponent(resultId);  
+    showResult();
+  }
 
-showSection("result");  
-window.scrollTo({ top: 0, behavior: "smooth" });
+  // ===== ポイント集計・診断結果決定 =====
 
-}
+  function calculateResult() {
+    const scores = {};
 
-function shareResult() {
-if (!currentResult) return;
+    Object.keys(characters).forEach((id) => {
+      scores[id] = 0;
+    });
 
-const character = currentResult.character;  
-const shareText =  
-  "メイドル診断の結果は……\n" +  
-  "「" + character.name + "タイプ！」" +  
-  "\n" + character.catch +  
-  "\nあなたも診断してみてね♡";  
+    answers.forEach((id) => {
+      if (Object.prototype.hasOwnProperty.call(scores, id)) {
+        scores[id]++;
+      }
+    });
 
-const shareUrl = new URL("diagnosis.html", window.location.href);  
-const xUrl = new URL("https://twitter.com/intent/tweet");  
+    const highestScore = Math.max(...Object.values(scores));
 
-xUrl.searchParams.set("text", shareText);  
-xUrl.searchParams.set("url", shareUrl.href);  
-xUrl.searchParams.set("hashtags", "メイドル診断,メイドル");  
+    const tiedCharacters = Object.keys(scores).filter(
+      (id) => scores[id] === highestScore
+    );
 
-window.open(  
-  xUrl.href,  
-  "_blank",  
-  "noopener,noreferrer"  
-);
+    // 同点の場合は、同点キャラクターのうち
+    // 最後に選んだキャラクターを結果にする
+    for (let i = answers.length - 1; i >= 0; i--) {
+      if (tiedCharacters.includes(answers[i])) {
+        return answers[i];
+      }
+    }
 
-}
+    return "spoon";
+  }
 
-startButton.addEventListener("click", startDiagnosis);
-retryButton.addEventListener("click", startDiagnosis);
-shareButton.addEventListener("click", shareResult);
+  // ===== 結果表示 =====
 
-answerButtons.forEach((button) => {
-button.addEventListener("click", () => {
-chooseAnswer(Number(button.dataset.answer));
-});
-});
+  function showResult() {
+    const resultId = calculateResult();
+    const character = characters[resultId];
 
-backButton.addEventListener("click", () => {
-if (currentQuestion === 0) return;
-currentQuestion--;
-renderQuestion();
-});
+    currentResult = {
+      id: resultId,
+      character
+    };
 
-/*
+    resultCard.dataset.tone = character.tone;
 
-- キャラクター画像が見つからない場合の案内。
-- 画像名を変更したときも気づきやすくする。
-  */
-  resultImage.addEventListener("error", () => {
-  resultImage.alt = "画像が読み込めません。画像ファイル名を確認してください。";
-  resultImage.style.display = "none";
+    resultMark.textContent = character.mark;
+    resultImage.style.display = "block";
+    resultImage.src = character.image;
+    resultImage.alt = character.name + "の立ち絵";
+
+    resultType.textContent = character.en + " TYPE";
+    resultName.textContent = character.name + "タイプ！";
+    resultCatch.textContent = character.catch;
+    resultDescription.textContent = character.description;
+    resultMessage.textContent = character.message;
+
+    characterLink.href =
+      "characters.html?ch=" + encodeURIComponent(resultId);
+
+    showSection("result");
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  }
+
+  // ===== Xで結果をシェア =====
+
+  function shareResult() {
+    if (!currentResult) return;
+
+    const character = currentResult.character;
+
+    const shareText =
+      "メイドル診断の結果は……\n" +
+      "「" + character.name + "タイプ！」" +
+      "\n" + character.catch +
+      "\nあなたも診断してみてね♡";
+
+    const shareUrl = new URL(
+      "diagnosis.html",
+      window.location.href
+    );
+
+    const xUrl = new URL("https://twitter.com/intent/tweet");
+
+    xUrl.searchParams.set("text", shareText);
+    xUrl.searchParams.set("url", shareUrl.href);
+    xUrl.searchParams.set("hashtags", "メイドル診断,メイドル");
+
+    window.open(
+      xUrl.href,
+      "_blank",
+      "noopener,noreferrer"
+    );
+  }
+
+  // ===== ボタンのイベント登録 =====
+
+  startButton.addEventListener("click", startDiagnosis);
+  retryButton.addEventListener("click", startDiagnosis);
+  shareButton.addEventListener("click", shareResult);
+
+  answerButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      chooseAnswer(Number(button.dataset.answer));
+    });
   });
 
-resultImage.addEventListener("load", () => {
-resultImage.style.display = "block";
-});
+  backButton.addEventListener("click", () => {
+    if (currentQuestion === 0) return;
+
+    currentQuestion--;
+    renderQuestion();
+  });
+
+  // ===== 画像読み込みエラー対策 =====
+
+  resultImage.addEventListener("error", () => {
+    resultImage.alt =
+      "画像が読み込めません。画像ファイル名を確認してください。";
+    resultImage.style.display = "none";
+  });
+
+  resultImage.addEventListener("load", () => {
+    resultImage.style.display = "block";
+  });
+
 })();
