@@ -13,7 +13,7 @@ const characters = {
     food: "いちご",
     hobby: "お菓子作り",
     favorite: "ぬいぐるみ",
-    description: "ふんわり優しい、蘭莉財閥のお嬢様。ふぉーくと仲良し。",
+    description: "ふんわり優しい、蘭莉財閥のお嬢様。かわいいものが好きで、ふぉーくとは大の仲良し！",
     tone: "red",
     images: ["assets/spoon.png"]
   },
@@ -29,7 +29,7 @@ const characters = {
     food: "ツナおにぎり",
     hobby: "ランニング",
     favorite: "おしゃれ",
-    description: "自分を貫くサブカル好き。おばあちゃんと二人暮らしをしている。すぷーんと仲良し。",
+    description: "自分らしさを大切にする、サブカル好きの女の子。おばあちゃんと二人暮らし。すぷーんとは大の仲良し！",
     tone: "blue",
     images: ["assets/fork.png"]
   },
