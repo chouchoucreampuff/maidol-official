@@ -13,7 +13,7 @@ const characters = {
     food: "いちご",
     hobby: "お菓子作り",
     favorite: "ぬいぐるみ",
-    description: "ふんわり優しいお嬢様。ふぉーくと仲良し。",
+    description: "ふんわり優しい、蘭莉財閥のお嬢様。ふぉーくと仲良し。",
     tone: "red",
     images: ["assets/spoon.png"]
   },
@@ -29,7 +29,7 @@ const characters = {
     food: "ツナおにぎり",
     hobby: "ランニング",
     favorite: "おしゃれ",
-    description: "サブカル好きなおばあちゃんっ子。すぷーんと仲良し。",
+    description: "自分を貫くサブカル好き。おばあちゃんと二人暮らしをしている。すぷーんと仲良し。",
     tone: "blue",
     images: ["assets/fork.png"]
   },
@@ -45,7 +45,7 @@ const characters = {
     food: "クレープ",
     hobby: "コスメ収集",
     favorite: "ダンス",
-    description: "明るく元気なムードメーカー。アイドル志望。",
+    description: "明るく元気なムードメーカー。アイドル志望で、日々の練習は欠かさない。",
     tone: "orange",
     images: ["assets/knife.png"]
   },
@@ -61,7 +61,7 @@ const characters = {
     food: "お茶漬け",
     hobby: "お茶会",
     favorite: "お茶全般",
-    description: "落ち着いた雰囲気の和菓子屋の一人娘。",
+    description: "和菓子屋の一人娘。大人しそうに見えるが、お茶への情熱は人一倍。",
     tone: "green",
     images: ["assets/hashi.png"]
   },
