@@ -72,7 +72,7 @@ const characters = {
     mark: "☆",
     tag: "メイドルのマスコット",
     grade: "3さい",
-    birthday: "未設定",
+    birthday: "4/13",
     color: "WHITE",
     food: "ケーキ",
     hobby: "おさんぽ",
