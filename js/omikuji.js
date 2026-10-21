@@ -148,6 +148,9 @@
   const resultSection = document.querySelector("#result-section");
   const paper = document.querySelector("#omikuji-paper");
 
+const magicOverlay = document.querySelector("#omikuji-magic");
+
+   
   const drawButton = document.querySelector("#draw-button");
   const retryButton = document.querySelector("#retry-button");
   const shareButton = document.querySelector("#share-button");
@@ -160,19 +163,20 @@
   const menuComment = document.querySelector("#menu-comment");
 
   const requiredElements = [
-    hero,
-    resultSection,
-    paper,
-    drawButton,
-    retryButton,
-    shareButton,
-    fortuneSeal,
-    characterImage,
-    characterName,
-    characterMessage,
-    menuName,
-    menuComment
-  ];
+  hero,
+  resultSection,
+  paper,
+  magicOverlay,
+  drawButton,
+  retryButton,
+  shareButton,
+  fortuneSeal,
+  characterImage,
+  characterName,
+  characterMessage,
+  menuName,
+  menuComment
+];
 
   if (requiredElements.some((element) => !element)) {
     console.error(
@@ -194,7 +198,8 @@
     return pickRandom(messages);
   }
 
-  // ===== おみくじを引く =====
+
+  // ===== 魔法演出つきのおみくじ抽選 =====
 
   function drawOmikuji() {
     if (isDrawing) return;
@@ -203,6 +208,7 @@
     drawButton.disabled = true;
     retryButton.disabled = true;
 
+    // キャラクター・運勢・メニューを独立して抽選
     const character = pickRandom(characters);
     const fortune = pickRandom(fortunes);
     const menu = pickRandom(menus);
@@ -212,6 +218,75 @@
       fortune,
       menu
     };
+
+    // 結果の内容をセット
+    fortuneSeal.textContent = fortune.name;
+    fortuneSeal.dataset.fortune = fortune.name;
+    fortuneSeal.setAttribute(
+      "aria-label",
+      "運勢：" + fortune.name
+    );
+
+    characterImage.src = character.image;
+    characterImage.alt = character.name + "の立ち絵";
+
+    characterName.textContent = character.name;
+
+    characterMessage.textContent =
+      pickMessage(character.messages) +
+      "\n" +
+      pickMessage(fortune.comments);
+
+    menuName.textContent = menu.name;
+    menuComment.textContent = menu.comment;
+
+    // 前回の演出をリセット
+    paper.classList.remove("is-opening");
+    magicOverlay.classList.remove("is-active");
+
+    // CSSアニメーションを最初から再生する
+    void paper.offsetWidth;
+    void magicOverlay.offsetWidth;
+
+    // 魔法の光を表示
+    magicOverlay.hidden = false;
+    magicOverlay.classList.add("is-active");
+
+    // 最初の抽選ではトップ画面を残し、
+    // 引き直しでは前の結果を魔法レイヤーで覆う
+    resultSection.hidden = true;
+
+    // 約1.3秒後、魔法からおみくじの紙へ切り替える
+    window.setTimeout(() => {
+      magicOverlay.classList.remove("is-active");
+      magicOverlay.hidden = true;
+
+      hero.hidden = true;
+      resultSection.hidden = false;
+
+      // 紙が開く演出を再生
+      paper.classList.remove("is-opening");
+      void paper.offsetWidth;
+      paper.classList.add("is-opening");
+
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+
+      // 紙・運勢・キャラクターの演出が終わってから
+      // 次のおみくじを引けるようにする
+      window.setTimeout(() => {
+        paper.classList.remove("is-opening");
+
+        isDrawing = false;
+        drawButton.disabled = false;
+        retryButton.disabled = false;
+      }, 2300);
+
+    }, 1300);
+  }
+
 
     // 結果を表示
     hero.hidden = true;
