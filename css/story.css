@@ -48,15 +48,7 @@
   letter-spacing: 0.2em;
 }
 
-.story-hero h1 {
-  margin: 0;
-  color: #e78db9;
-  font-family: inherit;
-  font-size: clamp(3rem, 9vw, 5.5rem);
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-shadow: 2px 3px 0 #fff, 4px 5px 0 #f9d8e9;
-}
+
 
 .story-jp-title {
   margin: 12px 0 0;
