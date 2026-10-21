@@ -449,3 +449,413 @@
     transition: none;
   }
 }
+
+/* ========================================
+   魔法のおみくじ演出
+======================================== */
+
+/* 魔法の演出で画面全体を覆う */
+.omikuji-magic[hidden] {
+  display: none !important;
+}
+
+.omikuji-magic {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background:
+    radial-gradient(
+      circle at center,
+      #fffaff 0%,
+      #ffe9f7 38%,
+      #e9ddff 72%,
+      #d9d5ff 100%
+    );
+  opacity: 0;
+  pointer-events: none;
+}
+
+.omikuji-magic.is-active {
+  animation: magic-background-in 0.45s ease forwards;
+}
+
+.magic-glow {
+  position: absolute;
+  width: min(80vw, 380px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    #ffffff 0%,
+    #ffe1f6 24%,
+    #e7baff 46%,
+    #c9a3ff44 68%,
+    transparent 72%
+  );
+  filter: blur(3px);
+  opacity: 0;
+}
+
+.omikuji-magic.is-active .magic-glow {
+  animation: magic-glow-pulse 1.6s ease-in-out forwards;
+}
+
+.magic-ring {
+  position: absolute;
+  width: min(62vw, 270px);
+  aspect-ratio: 1;
+  border: 2px solid #ffffffbb;
+  border-radius: 50%;
+  box-shadow:
+    0 0 12px #f6b4ff,
+    inset 0 0 12px #f6b4ff66;
+  opacity: 0;
+}
+
+.magic-ring-one {
+  transform: scale(0.3) rotate(0deg);
+}
+
+.magic-ring-two {
+  width: min(78vw, 340px);
+  border-color: #f2c76e99;
+  transform: scale(0.3) rotate(45deg);
+}
+
+.omikuji-magic.is-active .magic-ring-one {
+  animation: magic-ring-in 1.4s ease-out forwards;
+}
+
+.omikuji-magic.is-active .magic-ring-two {
+  animation: magic-ring-in 1.6s 0.1s ease-out forwards;
+}
+
+.magic-star {
+  position: absolute;
+  z-index: 2;
+  color: #ffffff;
+  font-size: 2rem;
+  text-shadow:
+    0 0 8px #e68de8,
+    0 0 18px #d99aff;
+  opacity: 0;
+}
+
+.star-one {
+  top: 20%;
+  left: 18%;
+  --star-x: 90px;
+  --star-y: 100px;
+}
+
+.star-two {
+  top: 24%;
+  right: 18%;
+  --star-x: -80px;
+  --star-y: 85px;
+}
+
+.star-three {
+  top: 45%;
+  left: 12%;
+  --star-x: 100px;
+  --star-y: 0px;
+}
+
+.star-four {
+  top: 55%;
+  right: 12%;
+  --star-x: -100px;
+  --star-y: -20px;
+}
+
+.star-five {
+  bottom: 23%;
+  left: 23%;
+  --star-x: 50px;
+  --star-y: -100px;
+}
+
+.star-six {
+  bottom: 20%;
+  right: 23%;
+  --star-x: -50px;
+  --star-y: -100px;
+}
+
+.star-seven {
+  top: 35%;
+  left: 30%;
+  --star-x: 20px;
+  --star-y: 80px;
+}
+
+.star-eight {
+  bottom: 32%;
+  right: 30%;
+  --star-x: -20px;
+  --star-y: -80px;
+}
+
+.omikuji-magic.is-active .magic-star {
+  animation: magic-star-gather 1.25s ease-in-out forwards;
+}
+
+.star-two,
+.star-four {
+  animation-delay: 0.08s !important;
+}
+
+.star-three,
+.star-six {
+  animation-delay: 0.16s !important;
+}
+
+.star-five,
+.star-eight {
+  animation-delay: 0.24s !important;
+}
+
+.magic-scroll {
+  position: relative;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  width: 94px;
+  height: 94px;
+  border: 3px double #ffffff;
+  border-radius: 28px;
+  color: #fff;
+  background: linear-gradient(145deg, #f49ccf, #bc8aef);
+  box-shadow:
+    0 0 0 5px #f7d5f0aa,
+    0 0 35px #df9cff,
+    0 0 75px #ffffff;
+  font-size: 3rem;
+  opacity: 0;
+  transform: scale(0.1) rotate(-35deg);
+}
+
+.omikuji-magic.is-active .magic-scroll {
+  animation: magic-scroll-appear 1.35s 0.2s ease-in-out forwards;
+}
+
+.magic-message {
+  position: relative;
+  z-index: 3;
+  margin-top: 30px;
+  color: #bd73b4;
+  font-size: 0.75rem;
+  font-weight: 900;
+  letter-spacing: 0.24em;
+  opacity: 0;
+}
+
+.omikuji-magic.is-active .magic-message {
+  animation: magic-text-in 0.6s 0.4s ease forwards;
+}
+
+/* ===== 紙が開く演出を強化 ===== */
+
+.omikuji-paper {
+  overflow: visible;
+}
+
+.omikuji-paper.is-opening {
+  animation: omikuji-paper-open 0.9s cubic-bezier(.2,.8,.2,1) both;
+}
+
+.omikuji-paper.is-opening::before {
+  content: "✦  ✧  ♡  ✧  ✦";
+  position: absolute;
+  top: 8%;
+  left: 50%;
+  z-index: 5;
+  color: #e4a4e0;
+  font-size: 1.3rem;
+  white-space: nowrap;
+  pointer-events: none;
+  animation: result-sparkle 1.1s 0.45s ease-out both;
+}
+
+/* 運勢の文字がポンッと現れる */
+.omikuji-fortune-seal {
+  transform: scale(0.7);
+}
+
+.omikuji-paper.is-opening .omikuji-fortune-seal {
+  animation: fortune-reveal 0.65s 0.7s cubic-bezier(.2,1.5,.5,1) both;
+}
+
+/* キャラクター・メッセージ・メニューも順番に登場 */
+.omikuji-paper.is-opening .omikuji-character-frame {
+  animation: result-content-in 0.55s 0.95s ease both;
+}
+
+.omikuji-paper.is-opening .omikuji-character-name {
+  animation: result-content-in 0.45s 1.05s ease both;
+}
+
+.omikuji-paper.is-opening .omikuji-character-message {
+  animation: result-content-in 0.5s 1.15s ease both;
+}
+
+.omikuji-paper.is-opening .omikuji-menu-box {
+  animation: result-content-in 0.5s 1.3s ease both;
+}
+
+/* ===== アニメーション定義 ===== */
+
+@keyframes magic-background-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes magic-glow-pulse {
+  0% {
+    opacity: 0;
+    transform: scale(0.15);
+  }
+  45% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+  75% {
+    opacity: 0.95;
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.5);
+  }
+}
+
+@keyframes magic-ring-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.25) rotate(0deg);
+  }
+  35% {
+    opacity: 0.95;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.25) rotate(180deg);
+  }
+}
+
+@keyframes magic-star-gather {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) scale(0.3) rotate(0deg);
+  }
+  25% {
+    opacity: 1;
+  }
+  78% {
+    opacity: 1;
+    transform:
+      translate(var(--star-x), var(--star-y))
+      scale(1.25)
+      rotate(160deg);
+  }
+  100% {
+    opacity: 0;
+    transform:
+      translate(var(--star-x), var(--star-y))
+      scale(0.1)
+      rotate(250deg);
+  }
+}
+
+@keyframes magic-scroll-appear {
+  0% {
+    opacity: 0;
+    transform: scale(0.1) rotate(-35deg);
+  }
+  45% {
+    opacity: 1;
+    transform: scale(1.2) rotate(8deg);
+  }
+  65% {
+    opacity: 1;
+    transform: scale(0.92) rotate(-4deg);
+  }
+  82% {
+    opacity: 1;
+    transform: scale(1.05) rotate(2deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+@keyframes magic-text-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fortune-reveal {
+  0% {
+    opacity: 0;
+    transform: scale(0.25) rotate(-18deg);
+  }
+  70% {
+    opacity: 1;
+    transform: scale(1.18) rotate(5deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+@keyframes result-content-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes result-sparkle {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 15px) scale(0.5);
+  }
+  35% {
+    opacity: 1;
+    transform: translate(-50%, -5px) scale(1.1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -35px) scale(1.3);
+  }
+}
+
+/* 動きを減らす設定の端末では演出を簡略化 */
+@media (prefers-reduced-motion: reduce) {
+  .omikuji-magic.is-active,
+  .omikuji-magic.is-active *,
+  .omikuji-paper.is-opening,
+  .omikuji-paper.is-opening::before,
+  .omikuji-paper.is-opening * {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+  }
+}
