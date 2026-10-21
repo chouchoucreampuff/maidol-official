@@ -1,1 +1,451 @@
 
+
+/* ========================================
+   メイドルおみくじ
+======================================== */
+
+.omikuji-page {
+  min-height: 100vh;
+  margin: 0;
+  color: #71445f;
+  background:
+    radial-gradient(ellipse at 10% 10%, #ffe0f0 0, transparent 35%),
+    radial-gradient(ellipse at 90% 25%, #e6e3ff 0, transparent 35%),
+    radial-gradient(ellipse at 50% 90%, #fff0cc 0, transparent 40%),
+    linear-gradient(135deg, #fff9fd, #fff4fb 45%, #f5f5ff);
+  overflow-x: hidden;
+}
+
+.omikuji-main {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  padding: 28px 16px 20px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.omikuji-hero {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 78vh;
+  text-align: center;
+  animation: omikuji-fade-in 0.7s ease both;
+}
+
+.omikuji-logo {
+  display: block;
+  width: min(68vw, 310px);
+  max-height: 260px;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 12px #e9a5cc55);
+  margin: 0 auto 12px;
+}
+
+.omikuji-eyebrow {
+  margin: 8px 0;
+  color: #c77ca7;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+}
+
+.omikuji-hero h1 {
+  margin: 4px 0 12px;
+  color: #d45d9c;
+  font-size: clamp(1.7rem, 7vw, 2.5rem);
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  text-shadow: 0 2px 0 #fff, 0 5px 12px #e8b2d544;
+}
+
+.omikuji-lead {
+  margin: 0 0 24px;
+  color: #88647d;
+  font-size: 0.95rem;
+  line-height: 1.9;
+}
+
+.omikuji-button,
+.omikuji-share-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: min(100%, 300px);
+  min-height: 54px;
+  padding: 13px 22px;
+  border: 2px solid #fff;
+  border-radius: 999px;
+  box-sizing: border-box;
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 800;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    filter 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.omikuji-button {
+  color: #fff;
+  background: linear-gradient(110deg, #f28cbe, #c88cf1);
+  box-shadow: 0 6px 0 #d8a0cc, 0 12px 24px #d9a0cf44;
+}
+
+.omikuji-button:hover,
+.omikuji-share-button:hover {
+  filter: brightness(1.04);
+  transform: translateY(-2px);
+}
+
+.omikuji-button:active,
+.omikuji-share-button:active {
+  transform: translateY(2px);
+}
+
+.omikuji-button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.omikuji-note {
+  margin: 18px 0 0;
+  color: #b38ba8;
+  font-size: 0.8rem;
+}
+
+.omikuji-sparkle {
+  position: absolute;
+  z-index: -1;
+  color: #e8a7d1;
+  pointer-events: none;
+  animation: omikuji-float 3.5s ease-in-out infinite;
+}
+
+.sparkle-one {
+  top: 14%;
+  left: 8%;
+  font-size: 2.2rem;
+}
+
+.sparkle-two {
+  top: 28%;
+  right: 7%;
+  font-size: 2.5rem;
+  animation-delay: -1s;
+}
+
+.sparkle-three {
+  bottom: 19%;
+  left: 12%;
+  font-size: 2rem;
+  animation-delay: -2s;
+}
+
+.sparkle-four {
+  right: 13%;
+  bottom: 12%;
+  font-size: 1.6rem;
+  animation-delay: -0.5s;
+}
+
+/* ===== 結果 ===== */
+
+.omikuji-result-section {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 12px 0 28px;
+  text-align: center;
+  animation: omikuji-fade-in 0.45s ease both;
+}
+
+.omikuji-result-section[hidden],
+.omikuji-hero[hidden] {
+  display: none !important;
+}
+
+.omikuji-result-heading {
+  margin: 0 0 18px;
+  color: #c77ca7;
+  font-size: 0.75rem;
+  font-weight: 900;
+  letter-spacing: 0.22em;
+}
+
+.omikuji-paper-stage {
+  perspective: 1000px;
+  padding: 0 4px 14px;
+}
+
+.omikuji-paper {
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0 18px;
+  overflow: hidden;
+  border: 2px solid #f3c7df;
+  border-radius: 18px;
+  background:
+    radial-gradient(ellipse at top, #fff 0%, transparent 75%),
+    linear-gradient(145deg, #fffdf8, #fff2f8);
+  box-shadow: 0 10px 28px #d9a0c644;
+  transform-origin: top center;
+}
+
+.omikuji-paper.is-opening {
+  animation: omikuji-paper-open 0.85s cubic-bezier(.2,.8,.2,1) both;
+}
+
+.omikuji-paper-inner {
+  padding: 20px 0 18px;
+}
+
+.omikuji-paper-label {
+  margin: 0 0 12px;
+  color: #bc7ca4;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.omikuji-fortune-seal {
+  display: grid;
+  place-items: center;
+  width: 112px;
+  height: 112px;
+  margin: 0 auto 12px;
+  border: 4px double #fff;
+  border-radius: 50%;
+  outline: 2px solid #e9a4c8;
+  color: #fff;
+  background: linear-gradient(145deg, #f39bc5, #d67cc1);
+  box-shadow: 0 4px 12px #d99ac744;
+  font-size: 2.15rem;
+  font-weight: 900;
+  text-shadow: 0 2px 3px #9e4b8066;
+}
+
+.omikuji-fortune-seal[data-fortune="大吉"] {
+  background: linear-gradient(145deg, #ff8caa, #ed5c8b);
+}
+
+.omikuji-fortune-seal[data-fortune="中吉"] {
+  background: linear-gradient(145deg, #f3ad8b, #e98b70);
+}
+
+.omikuji-fortune-seal[data-fortune="小吉"] {
+  background: linear-gradient(145deg, #a6c5ef, #7ca5e2);
+}
+
+.omikuji-fortune-seal[data-fortune="吉"] {
+  background: linear-gradient(145deg, #b7dba1, #7bbd89);
+}
+
+.omikuji-fortune-seal[data-fortune="末吉"] {
+  background: linear-gradient(145deg, #c9b2ec, #a18bd4);
+}
+
+.omikuji-paper-subtitle {
+  margin: 10px 0 12px;
+  color: #9b718e;
+  font-size: 0.85rem;
+}
+
+.omikuji-character-frame {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 210px;
+  max-height: 290px;
+  overflow: hidden;
+}
+
+.omikuji-character-frame img {
+  display: block;
+  width: auto;
+  height: 260px;
+  max-width: 85%;
+  object-fit: contain;
+  filter: drop-shadow(0 5px 8px #c99abc33);
+}
+
+.omikuji-character-name {
+  margin: 8px 0 4px;
+  color: #d15d9a;
+  font-size: 1.35rem;
+  font-weight: 900;
+}
+
+.omikuji-character-message {
+  max-width: 340px;
+  margin: 0 auto;
+  color: #77566c;
+  font-size: 0.95rem;
+  line-height: 1.9;
+}
+
+.omikuji-divider {
+  margin: 17px 0;
+  color: #e2a1ca;
+  letter-spacing: 0.4em;
+}
+
+.omikuji-menu-box {
+  padding: 15px 12px;
+  border: 1px dashed #e6a9ce;
+  border-radius: 14px;
+  background: #fff8fcbb;
+}
+
+.omikuji-menu-label {
+  margin: 0 0 8px;
+  color: #b67c9e;
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+
+.omikuji-menu-name {
+  margin: 0 0 5px;
+  color: #d15d9a;
+  font-size: 1.15rem;
+  font-weight: 900;
+}
+
+.omikuji-menu-comment {
+  margin: 0;
+  color: #896a80;
+  font-size: 0.83rem;
+  line-height: 1.7;
+}
+
+.omikuji-paper-footer {
+  margin: 17px 0 0;
+  color: #bd8aa9;
+  font-size: 0.7rem;
+  letter-spacing: 0.05em;
+}
+
+.omikuji-result-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  margin-top: 22px;
+}
+
+.omikuji-share-button {
+  color: #bd5e98;
+  border-color: #f0c7df;
+  background: #fff;
+  box-shadow: 0 4px 12px #d9a0c622;
+}
+
+.omikuji-back-link {
+  display: inline-block;
+  margin-top: 5px;
+  color: #a97899;
+  font-size: 0.85rem;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.omikuji-footer {
+  position: relative;
+  z-index: 1;
+  padding: 16px 0 4px;
+  color: #bd9bb2;
+  font-size: 0.7rem;
+  text-align: center;
+}
+
+@keyframes omikuji-paper-open {
+  0% {
+    opacity: 0;
+    transform: rotateX(-75deg) translateY(-22px) scale(0.92);
+    filter: blur(3px);
+  }
+  65% {
+    opacity: 1;
+    transform: rotateX(8deg) translateY(3px) scale(1.01);
+    filter: blur(0);
+  }
+  100% {
+    opacity: 1;
+    transform: rotateX(0) translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+@keyframes omikuji-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes omikuji-float {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 0.65;
+  }
+  50% {
+    transform: translateY(-12px) rotate(12deg);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 420px) {
+  .omikuji-main {
+    padding: 18px 12px 16px;
+  }
+
+  .omikuji-hero {
+    min-height: 76vh;
+  }
+
+  .omikuji-logo {
+    width: min(72vw, 270px);
+  }
+
+  .omikuji-paper {
+    padding: 0 13px;
+  }
+
+  .omikuji-character-frame img {
+    height: 225px;
+  }
+
+  .omikuji-fortune-seal {
+    width: 96px;
+    height: 96px;
+    font-size: 1.85rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .omikuji-sparkle,
+  .omikuji-hero,
+  .omikuji-result-section,
+  .omikuji-paper.is-opening {
+    animation: none !important;
+  }
+
+  .omikuji-button,
+  .omikuji-share-button {
+    transition: none;
+  }
+}
