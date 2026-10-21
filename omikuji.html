@@ -1,1 +1,131 @@
 
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#fff5fb">
+  <meta name="description" content="萌え萌え♡きゅ～と メイドル!!のおみくじ。今日の運勢とメイドルからのメッセージを引いてみよう！">
+  <title>メイドルおみくじ｜萌え萌え♡きゅ～と メイドル!!</title>
+
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/omikuji.css">
+</head>
+
+<body class="omikuji-page">
+  <main class="omikuji-main">
+    <section class="omikuji-hero" id="omikuji-top">
+      <div class="omikuji-sparkle sparkle-one">✦</div>
+      <div class="omikuji-sparkle sparkle-two">♡</div>
+      <div class="omikuji-sparkle sparkle-three">✧</div>
+      <div class="omikuji-sparkle sparkle-four">♡</div>
+
+      <img
+        class="omikuji-logo"
+        src="assets/logo.png"
+        alt="萌え萌え♡きゅ～と メイドル!!"
+      >
+
+      <p class="omikuji-eyebrow">TODAY'S FORTUNE</p>
+      <h1>メイドルおみくじ</h1>
+      <p class="omikuji-lead">
+        今日のあなたにぴったりの運勢は？<br>
+        メイドルと一緒に運試し♡
+      </p>
+
+      <button class="omikuji-button" id="draw-button" type="button">
+        おみくじを引く♡
+      </button>
+
+      <p class="omikuji-note">何が出るかはお楽しみ！</p>
+    </section>
+
+    <section
+      class="omikuji-result-section"
+      id="result-section"
+      hidden
+      aria-live="polite"
+    >
+      <p class="omikuji-result-heading">YOUR FORTUNE</p>
+
+      <div class="omikuji-paper-stage" id="paper-stage">
+        <div class="omikuji-paper" id="omikuji-paper">
+          <div class="omikuji-paper-inner">
+            <p class="omikuji-paper-label">♡ メイドルおみくじ ♡</p>
+
+            <div class="omikuji-fortune-seal" id="fortune-seal">
+              大吉
+            </div>
+
+            <p class="omikuji-paper-subtitle">
+              今日のあなたの運勢は……
+            </p>
+
+            <div class="omikuji-character-frame">
+              <img
+                id="character-image"
+                src="assets/spoon.png"
+                alt=""
+              >
+            </div>
+
+            <p class="omikuji-character-name" id="character-name">
+              すぷーん
+            </p>
+
+            <p class="omikuji-character-message" id="character-message">
+              今日も笑顔いっぱいの一日になりますように♡
+            </p>
+
+            <div class="omikuji-divider">✧ ♡ ✧</div>
+
+            <div class="omikuji-menu-box">
+              <p class="omikuji-menu-label">今日のおすすめメニュー</p>
+              <p class="omikuji-menu-name" id="menu-name">
+                いちごのショートケーキ
+              </p>
+              <p class="omikuji-menu-comment" id="menu-comment">
+                甘いものを食べて、ほっとひと息♡
+              </p>
+            </div>
+
+            <p class="omikuji-paper-footer">
+              萌え萌え♡きゅ～と メイドル!!
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="omikuji-result-actions">
+        <button
+          class="omikuji-button"
+          id="retry-button"
+          type="button"
+        >
+          もう一度引く♡
+        </button>
+
+        <button
+          class="omikuji-share-button"
+          id="share-button"
+          type="button"
+        >
+          𝕏 で結果をシェア
+        </button>
+
+        <a class="omikuji-back-link" href="index.html">
+          トップページへ戻る
+        </a>
+      </div>
+    </section>
+
+    <footer class="omikuji-footer">
+      <p>© 萌え萌え♡きゅ～と メイドル!!</p>
+    </footer>
+  </main>
+
+  <script src="js/common.js"></script>
+  <script src="js/omikuji.js"></script>
+</body>
+</html>
