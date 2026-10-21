@@ -683,14 +683,33 @@
   animation: result-sparkle 1.1s 0.45s ease-out both;
 }
 
-/* 運勢の文字がポンッと現れる */
+
+/* ===== 運勢の丸がポンッと登場して、その大きさを維持 ===== */
 .omikuji-fortune-seal {
-  transform: scale(0.7);
+  transform: scale(1);
+  transform-origin: center;
 }
 
 .omikuji-paper.is-opening .omikuji-fortune-seal {
   animation: fortune-reveal 0.65s 0.7s cubic-bezier(.2,1.5,.5,1) both;
 }
+
+/* アニメーション終了後も最終サイズを維持 */
+@keyframes fortune-reveal {
+  0% {
+    opacity: 0;
+    transform: scale(0.25) rotate(-18deg);
+  }
+  70% {
+    opacity: 1;
+    transform: scale(1.18) rotate(5deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
 
 /* キャラクター・メッセージ・メニューも順番に登場 */
 .omikuji-paper.is-opening .omikuji-character-frame {
