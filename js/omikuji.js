@@ -295,14 +295,30 @@ const magicOverlay = document.querySelector("#omikuji-magic");
     fortuneSeal.textContent = fortune.name;
     fortuneSeal.dataset.fortune = fortune.name;
     fortuneSeal.setAttribute(
-      "aria-label",
-      "運勢：" + fortune.name
-    );
+
+  // ===== 魔法演出つきのおみくじ抽選 =====
+
+  function drawOmikuji() {
+    if (isDrawing) return;
+
+    isDrawing = true;
+    drawButton.disabled = true;
+    retryButton.disabled = true;
+
+    const character = pickRandom(characters);
+    const fortune = pickRandom(fortunes);
+    const menu = pickRandom(menus);
+
+    currentResult = { character, fortune, menu };
+
+    fortuneSeal.textContent = fortune.name;
+    fortuneSeal.dataset.fortune = fortune.name;
+    fortuneSeal.setAttribute("aria-label", "運勢：" + fortune.name);
 
     characterImage.src = character.image;
     characterImage.alt = character.name + "の立ち絵";
-
     characterName.textContent = character.name;
+
     characterMessage.textContent =
       pickMessage(character.messages) +
       "\n" +
@@ -311,36 +327,45 @@ const magicOverlay = document.querySelector("#omikuji-magic");
     menuName.textContent = menu.name;
     menuComment.textContent = menu.comment;
 
-    // アニメーションを毎回最初から再生
+    // 前回の演出をリセット
     paper.classList.remove("is-opening");
+    magicOverlay.classList.remove("is-active");
 
-    // ブラウザにアニメーション解除を反映させる
     void paper.offsetWidth;
+    void magicOverlay.offsetWidth;
 
-    paper.classList.add("is-opening");
+    // 魔法演出を開始
+    magicOverlay.hidden = false;
+    magicOverlay.classList.add("is-active");
 
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth"
-    });
+    resultSection.hidden = true;
 
-    // 紙が開く演出が終わったら、次の抽選を可能にする
-    const finishDrawing = () => {
-      isDrawing = false;
-      drawButton.disabled = false;
-      retryButton.disabled = false;
-    };
-
-    paper.addEventListener("animationend", finishDrawing, {
-      once: true
-    });
-
-    // アニメーションが無効な環境でも操作できるようにする
+    // 魔法演出が終わったら紙を表示
     window.setTimeout(() => {
-      if (isDrawing) {
-        finishDrawing();
-      }
-    }, 1200);
+      magicOverlay.classList.remove("is-active");
+      magicOverlay.hidden = true;
+
+      hero.hidden = true;
+      resultSection.hidden = false;
+
+      paper.classList.remove("is-opening");
+      void paper.offsetWidth;
+      paper.classList.add("is-opening");
+
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+
+      // 演出終了後に再び引けるようにする
+      window.setTimeout(() => {
+        paper.classList.remove("is-opening");
+        isDrawing = false;
+        drawButton.disabled = false;
+        retryButton.disabled = false;
+      }, 2300);
+
+    }, 1300);
   }
 
   // ===== Xで結果をシェア =====
@@ -378,3 +403,4 @@ const magicOverlay = document.querySelector("#omikuji-magic");
   shareButton.addEventListener("click", shareResult);
 
 })();
+
