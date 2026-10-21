@@ -365,35 +365,50 @@
 
   // ===== ポイント集計・診断結果決定 =====
 
-  function calculateResult() {
-    const scores = {};
+  
+function calculateResult() {
+  const scores = {};
 
-    Object.keys(characters).forEach((id) => {
-      scores[id] = 0;
-    });
+  Object.keys(characters).forEach((id) => {
+    scores[id] = 0;
+  });
 
-    answers.forEach((id) => {
-      if (Object.prototype.hasOwnProperty.call(scores, id)) {
-        scores[id]++;
-      }
-    });
-
-    const highestScore = Math.max(...Object.values(scores));
-
-    const tiedCharacters = Object.keys(scores).filter(
-      (id) => scores[id] === highestScore
-    );
-
-    // 同点の場合は、同点キャラクターのうち
-    // 最後に選んだキャラクターを結果にする
-    for (let i = answers.length - 1; i >= 0; i--) {
-      if (tiedCharacters.includes(answers[i])) {
-        return answers[i];
-      }
+  answers.forEach((id) => {
+    if (Object.prototype.hasOwnProperty.call(scores, id)) {
+      scores[id]++;
     }
+  });
 
-    return "spoon";
+  const highestScore = Math.max(...Object.values(scores));
+
+  const tiedCharacters = Object.keys(scores).filter(
+    (id) => scores[id] === highestScore
+  );
+
+  // 1位が1人だけなら、そのキャラクターを結果にする
+  if (tiedCharacters.length === 1) {
+    return tiedCharacters[0];
   }
+
+  // 同点キャラクター同士が選択肢になっていた質問を探す
+  for (let i = 0; i < questions.length; i++) {
+    const question = questions[i];
+    const characterA = question.answers[0].character;
+    const characterB = question.answers[1].character;
+
+    if (
+      tiedCharacters.includes(characterA) &&
+      tiedCharacters.includes(characterB)
+    ) {
+      // その質問で実際に選んだキャラクターを結果にする
+      return answers[i];
+    }
+  }
+
+  // 同点キャラクター同士の質問が見つからない場合の予備処理
+  // （通常の10問の組み合わせでは、同点が複数人なら直接対決の質問がある）
+  return tiedCharacters[0];
+}
 
   // ===== 結果表示 =====
 
