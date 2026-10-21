@@ -859,3 +859,33 @@
     animation-delay: 0ms !important;
   }
 }
+
+/* ===== おみくじページの共通ヘッダー ===== */
+body.omikuji-page .site-header {
+  position: absolute;
+  z-index: 100;
+}
+
+/* ミニロゴのサイズ */
+body.omikuji-page .mini-brand {
+  display: inline-flex;
+  align-items: center;
+  max-width: 130px;
+}
+
+body.omikuji-page .mini-brand img {
+  display: block;
+  width: 100%;
+  max-width: 130px;
+  height: auto;
+  object-fit: contain;
+}
+
+/* スマートフォン */
+@media (max-width: 600px) {
+  body.omikuji-page .mini-brand,
+  body.omikuji-page .mini-brand img {
+    max-width: 105px;
+  }
+}
+
