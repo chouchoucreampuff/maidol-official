@@ -444,3 +444,53 @@
     transition: none;
   }
 }
+
+/* ===== STORYの見出しをCHARACTERと統一 ===== */
+
+.story-main {
+  padding-top: 125px;
+}
+
+.story-hero {
+  padding: 0 12px 45px;
+  text-align: center;
+}
+
+.story-hero .page-heading {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.story-hero .page-heading h1 {
+  margin: 0;
+  color: #c75c9b;
+  font-family: 'Nunito', 'Kiwi Maru', sans-serif;
+  font-size: clamp(2rem, 6vw, 4rem);
+  letter-spacing: .07em;
+  font-weight: 900;
+  text-shadow: 2px 3px 0 #fff, 4px 5px 0 #f7d9ec;
+}
+
+.story-hero .eyebrow {
+  font-size: .72rem;
+  font-weight: 900;
+  letter-spacing: .24em;
+  color: #d47daf;
+  margin: 0 0 9px;
+}
+
+.story-hero .page-heading > p:not(.eyebrow) {
+  font-family: 'Kiwi Maru', sans-serif;
+  font-size: .9rem;
+  color: #927d97;
+}
+
+@media (max-width: 600px) {
+  .story-main {
+    padding-top: 100px;
+  }
+
+  .story-hero {
+    padding: 0 5px 30px;
+  }
+}
