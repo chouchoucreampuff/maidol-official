@@ -1,0 +1,144 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#fff0fa">
+  <meta name="description" content="10の質問で、あなたにぴったりのメイドルを診断！">
+  <title>メイドル診断｜萌え萌え♡きゅ～と メイドル!!</title>
+  <link rel="stylesheet" href="css/common.css">
+  <link rel="stylesheet" href="css/diagnosis.css">
+</head>
+<body class="diagnosis-page">
+
+  <header class="site-header">
+    <a class="mini-brand" href="index.html" aria-label="メイドル トップ">
+      <img src="assets/mini-logo.png" alt="メイドル!!">
+    </a>
+
+    <button class="menu-toggle" aria-label="メニューを開く"
+      aria-expanded="false" aria-controls="site-menu">
+      <span></span><span></span><span></span>
+    </button>
+
+  <nav class="site-menu" id="site-menu" aria-hidden="true">
+      <a href="index.html">TOP <small>トップ</small></a>
+      <a href="characters.html">CHARACTER <small>キャラクター</small></a>
+       <a href="story.html">STORY <small>ストーリー</small></a>
+    <a href="diagnosis.html">WHICH MAIDOL? <small>メイドル診断</small></a>
+      <a href="omikuji.html">TODAY'S FORTUNE <small>メイドルおみくじ</small></a>
+      <a href="sns.html">OFFICIAL SNS <small>公式SNS</small></a>
+    </nav>
+  </header>
+
+  <main class="diagnosis-wrap">
+    <section class="diagnosis-hero" id="diagnosis-top">
+      <span class="deco deco-one">✧</span>
+      <span class="deco deco-two">♡</span>
+      <span class="deco deco-three">✦</span>
+
+      <p class="diagnosis-eyebrow">WHICH MAIDOL?</p>
+      <h1>メイドル診断</h1>
+      <p class="diagnosis-lead">
+        10の質問に答えてね！<br>
+        あなたにぴったりのメイドルはだれ？
+      </p>
+
+  <div class="hero-character-row">
+  <img src="assets/knife.png" alt="ないふ">
+  <img src="assets/fork.png" alt="ふぉーく">
+  <img src="assets/mochitora.png" alt="もちとら">
+  <img src="assets/spoon.png" alt="すぷーん">
+  <img src="assets/hashi.png" alt="はし">
+</div>
+
+      <button type="button" class="start-button" id="start-button">
+        診断スタート！
+        <span>♡</span>
+      </button>
+      <p class="hero-note">全10問・二択でかんたん診断♪</p>
+    </section>
+
+    <section class="quiz-panel" id="quiz-panel" hidden>
+      <div class="quiz-topline">
+        <span class="quiz-label">MAIDOL CHECK!</span>
+        <span class="quiz-count" id="quiz-count">QUESTION 1 / 10</span>
+      </div>
+
+      <div class="progress-track" aria-label="診断の進行状況">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+
+      <p class="question-number" id="question-number">Q.01</p>
+      <h2 class="question-text" id="question-text"></h2>
+      <p class="question-hint">直感でえらんでね！</p>
+
+      <div class="answer-list" id="answer-list">
+        <button type="button" class="answer-button" data-answer="0">
+          <span class="answer-letter">A</span>
+          <span class="answer-text"></span>
+          <span class="answer-arrow">♡</span>
+        </button>
+        <button type="button" class="answer-button" data-answer="1">
+          <span class="answer-letter">B</span>
+          <span class="answer-text"></span>
+          <span class="answer-arrow">♡</span>
+        </button>
+      </div>
+
+      <button type="button" class="back-button" id="back-button">
+        ◀ ひとつ前の質問へ
+      </button>
+    </section>
+
+    <section class="result-panel" id="result-panel" hidden>
+      <p class="result-eyebrow">YOUR MEIDOL TYPE</p>
+      <h2 class="result-heading">あなたは……</h2>
+
+      <div class="result-card" id="result-card">
+        <div class="result-ribbon">診断結果</div>
+        <p class="result-mark" id="result-mark">♡</p>
+        <div class="result-art">
+          <img id="result-image" src="assets/spoon.png" alt="">
+        </div>
+        <p class="result-type" id="result-type">SPOON TYPE</p>
+        <h3 class="result-name" id="result-name">すぷーんタイプ！</h3>
+        <p class="result-catch" id="result-catch"></p>
+        <div class="result-description" id="result-description"></div>
+        <div class="result-message">
+          <span>♡ MESSAGE ♡</span>
+          <p id="result-message"></p>
+        </div>
+      </div>
+
+      <p class="result-footer-note">
+        どのメイドルも、あなたの中にいるかも？
+      </p>
+
+      <div class="result-actions">
+        <button type="button" class="start-button" id="retry-button">
+          もう一度診断する ↻
+        </button>
+        <button type="button" class="share-button" id="share-button">
+          結果をXでシェア ♡
+        </button>
+        <a class="character-link" id="character-link"
+          href="characters.html">
+          キャラクター紹介を見る →
+        </a>
+      </div>
+    </section>
+
+    <a class="back-home" href="index.html">← TOPへもどる</a>
+  </main>
+
+  <footer class="site-footer">
+    <span>萌え萌え♡きゅ～と メイドル!!</span>
+    <small>© メイドル</small>
+  </footer>
+
+  <script src="js/common.js"></script>
+  <script src="js/diagnosis.js"></script>
+</body>
+</html>

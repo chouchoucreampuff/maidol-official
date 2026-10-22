@@ -29,3 +29,35 @@ button{font:inherit}
 .back-home:hover{transform:translateY(-2px)}
 @media(max-width:600px){.site-header{padding:14px 16px}.menu-toggle{width:43px;height:43px}.site-menu{top:67px;right:16px}.page-wrap{padding-top:100px}.site-footer{flex-direction:column;text-align:center;gap:5px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
+/* ===== 左上のミニロゴ ===== */
+
+.mini-brand {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+  max-width: 210px;
+  line-height: 1;
+}
+
+.mini-brand img {
+  display: block;
+  width: auto;
+  height: 98px;
+  max-width: 210px;
+  max-height: 98px;
+  object-fit: contain;
+}
+
+/* スマートフォン版 */
+@media (max-width: 650px) {
+  .mini-brand {
+    max-width: 128px;
+  }
+
+  .mini-brand img {
+    width: auto;
+    height: 51px;
+    max-width: 128px;
+    max-height: 51px;
+  }
+}

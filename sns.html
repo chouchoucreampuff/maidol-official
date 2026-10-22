@@ -1,45 +1,252 @@
-<!doctype html>
+
+<!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#fff2fb">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#fff9fe">
+  <meta name="description" content="萌え萌え♡きゅ～と メイドル!!の公式SNS一覧。TikTok・X・Instagramはこちらから！">
   <title>OFFICIAL SNS｜萌え萌え♡きゅ～と メイドル!!</title>
+
   <link rel="stylesheet" href="css/common.css">
-  <link rel="stylesheet" href="css/sns.css">
+
+  <style>
+    /* ===== SNSページ ===== */
+
+    .sns-list {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+      width: min(900px, 100%);
+      margin: 36px auto 0;
+    }
+
+    .sns-card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-width: 0;
+      min-height: 230px;
+      padding: 28px 14px 24px;
+      overflow: hidden;
+      border: 2px solid #fff;
+      border-radius: 25px;
+      background: linear-gradient(145deg, #fff, #fff5fb);
+      box-shadow: 0 8px 25px #c38bb31c;
+      text-align: center;
+      transition: transform .2s, box-shadow .2s;
+    }
+
+    .sns-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 13px 30px #c38bb32e;
+    }
+
+    .sns-symbol {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 66px;
+      height: 66px;
+      margin-bottom: 15px;
+      border-radius: 22px;
+      background: white;
+      box-shadow: 0 4px 15px #b47da01a;
+      font-family: Arial, sans-serif;
+      font-size: 2rem;
+      font-weight: 900;
+    }
+
+    .sns-card.tiktok .sns-symbol {
+      color: #171717;
+      background: #f5fdff;
+    }
+
+    .sns-card.x-social .sns-symbol {
+      color: #171717;
+    }
+
+    .sns-card.instagram .sns-symbol {
+      color: #d95b9f;
+      background: #fff0f8;
+    }
+
+    .sns-name {
+      margin: 0;
+      color: #bd5d9b;
+      font-size: 1.15rem;
+      font-weight: 900;
+      letter-spacing: .06em;
+    }
+
+    .sns-account {
+      margin: 7px 0 14px;
+      color: #99839d;
+      font-size: .78rem;
+      overflow-wrap: anywhere;
+    }
+
+    .sns-open {
+      display: inline-block;
+      padding: 9px 18px;
+      border: 1px solid #f2d5e7;
+      border-radius: 99px;
+      background: white;
+      color: #c45e9b;
+      font-size: .78rem;
+      font-weight: 900;
+    }
+
+    .sns-note {
+      margin: 30px auto 0;
+      color: #a18ba4;
+      font-family: 'Kiwi Maru', sans-serif;
+      font-size: .8rem;
+      line-height: 1.9;
+      text-align: center;
+    }
+
+    @media (max-width: 650px) {
+      .sns-list {
+        grid-template-columns: 1fr;
+        gap: 14px;
+        max-width: 400px;
+        margin-top: 25px;
+      }
+
+      .sns-card {
+        flex-direction: row;
+        justify-content: flex-start;
+        min-height: 120px;
+        padding: 18px;
+        gap: 15px;
+        text-align: left;
+      }
+
+      .sns-symbol {
+        flex: 0 0 58px;
+        width: 58px;
+        height: 58px;
+        margin: 0;
+        border-radius: 18px;
+        font-size: 1.8rem;
+      }
+
+      .sns-info {
+        flex: 1;
+        min-width: 0;
+      }
+
+      .sns-name {
+        font-size: 1rem;
+      }
+
+      .sns-account {
+        margin: 5px 0 0;
+        font-size: .75rem;
+      }
+
+      .sns-open {
+        flex: 0 0 auto;
+        padding: 8px 11px;
+        font-size: .72rem;
+      }
+    }
+  </style>
 </head>
-<body class="sub-page">
+
+<body>
+  <!-- 共通ヘッダー -->
   <header class="site-header">
-    <a class="mini-brand" href="index.html" aria-label="メイドル トップ">♡ メイドル!!</a>
-    <button class="menu-toggle" aria-label="メニューを開く" aria-expanded="false" aria-controls="site-menu"><span></span><span></span><span></span></button>
-    <nav class="site-menu" id="site-menu" aria-hidden="true">
+    <a class="mini-brand" href="index.html" aria-label="メイドル トップ">
+      <img src="assets/mini-logo.png" alt="メイドル!!">
+    </a>
+
+    <button class="menu-toggle"
+      aria-label="メニューを開く"
+      aria-expanded="false"
+      aria-controls="site-menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+     <nav class="site-menu" id="site-menu" aria-hidden="true">
       <a href="index.html">TOP <small>トップ</small></a>
       <a href="characters.html">CHARACTER <small>キャラクター</small></a>
+       <a href="story.html">STORY <small>ストーリー</small></a>
+    <a href="diagnosis.html">WHICH MAIDOL? <small>メイドル診断</small></a>
+      <a href="omikuji.html">TODAY'S FORTUNE <small>メイドルおみくじ</small></a>
       <a href="sns.html">OFFICIAL SNS <small>公式SNS</small></a>
     </nav>
   </header>
-  <main class="page-wrap sns-page">
+
+  <main class="page-wrap">
     <div class="page-heading">
-      <p class="eyebrow">LET'S CONNECT!</p>
+      <p class="eyebrow">FOLLOW US ♡</p>
       <h1>OFFICIAL SNS</h1>
-      <p>フォローして、メイドルの最新情報をチェックしてね♡</p>
-      <span class="heading-sparkle">✧　♡　✧</span>
+      <p>メイドルの最新情報はこちらから！</p>
+      
     </div>
-    <div class="sns-list">
-      <a class="sns-card x-card" href="https://x.com/" target="_blank" rel="noopener noreferrer">
-        <span class="sns-symbol">𝕏</span><span class="sns-copy"><b>X</b><small>お知らせ・最新情報</small></span><span class="sns-arrow">↗</span>
+
+    <section class="sns-list" aria-label="メイドル公式SNS">
+
+      <!-- TikTok -->
+      <a class="sns-card tiktok"
+        href="https://www.tiktok.com/@moe2cute_maidol"
+        target="_blank"
+        rel="noopener noreferrer">
+        <span class="sns-symbol" aria-hidden="true">♪</span>
+        <span class="sns-info">
+          <span class="sns-name">TikTok</span>
+          <span class="sns-account">@moe2cute_maidol</span>
+        </span>
+        <span class="sns-open">OPEN ↗</span>
       </a>
-      <a class="sns-card instagram-card" href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer">
-        <span class="sns-symbol">◎</span><span class="sns-copy"><b>Instagram</b><small>写真・ビジュアル</small></span><span class="sns-arrow">↗</span>
+
+      <!-- X -->
+      <a class="sns-card x-social"
+        href="https://x.com/moe2cute_maidol"
+        target="_blank"
+        rel="noopener noreferrer">
+        <span class="sns-symbol" aria-hidden="true">𝕏</span>
+        <span class="sns-info">
+          <span class="sns-name">X</span>
+          <span class="sns-account">@moe2cute_maidol</span>
+        </span>
+        <span class="sns-open">OPEN ↗</span>
       </a>
-      <a class="sns-card tiktok-card" href="https://www.tiktok.com/" target="_blank" rel="noopener noreferrer">
-        <span class="sns-symbol">♪</span><span class="sns-copy"><b>TikTok</b><small>メイキング・動画</small></span><span class="sns-arrow">↗</span>
+
+      <!-- Instagram -->
+      <a class="sns-card instagram"
+        href="https://www.instagram.com/moe2cute_maidol/"
+        target="_blank"
+        rel="noopener noreferrer">
+        <span class="sns-symbol" aria-hidden="true">♡</span>
+        <span class="sns-info">
+          <span class="sns-name">Instagram</span>
+          <span class="sns-account">@moe2cute_maidol</span>
+        </span>
+        <span class="sns-open">OPEN ↗</span>
       </a>
-    </div>
-    <p class="sns-caution">※ リンク先は仮設定です。公式アカウントのURLに差し替えてください。</p>
-    <a class="back-home" href="index.html">♡ TOPページへ戻る</a>
+
+    </section>
+
+    <p class="sns-note">
+      フォローして、メイドルのみんなを応援してね！<br>
+      最新のお知らせや制作の様子もお届け予定 ♡
+    </p>
+
+    <a class="back-home" href="index.html">♡ TOPへ戻る</a>
   </main>
-  <footer class="site-footer"><span>♡ 萌え萌え♡きゅ～と メイドル!!</span><small>© MAIDOL / かとらりびより</small></footer>
+
+  <footer class="site-footer">
+    <span>萌え萌え♡きゅ～と メイドル!!</span>
+    <small>© メイドル!!</small>
+  </footer>
+
   <script src="js/common.js"></script>
 </body>
 </html>

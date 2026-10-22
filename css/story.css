@@ -1,0 +1,496 @@
+
+/* ========================================
+   メイドル公式サイト STORY
+======================================== */
+
+.story-page {
+  --story-pink: #e78db9;
+  --story-dark-pink: #bd6294;
+  --story-text: #71576b;
+  --story-border: #f1cce0;
+
+  margin: 0;
+  color: var(--story-text);
+  background:
+    radial-gradient(ellipse at 10% 10%, #fff0f8 0, transparent 38%),
+    radial-gradient(ellipse at 90% 35%, #f4f0ff 0, transparent 35%),
+    #fffafd;
+  overflow-x: hidden;
+}
+
+.story-page *,
+.story-page *::before,
+.story-page *::after {
+  box-sizing: border-box;
+}
+
+.story-main {
+  width: min(100% - 32px, 1000px);
+  margin: 0 auto;
+  padding-bottom: 60px;
+}
+
+/* ===== 共通タイトル ===== */
+
+.story-hero {
+  padding: 0 12px 45px;
+  text-align: center;
+}
+
+.story-eyebrow,
+.story-section-heading > p,
+.world-eyebrow,
+.story-character-link > p:first-child {
+  margin: 0 0 10px;
+  color: var(--story-dark-pink);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+}
+
+
+
+.story-jp-title {
+  margin: 12px 0 0;
+  color: #8b6481;
+  font-size: clamp(1rem, 3vw, 1.3rem);
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.story-title-decoration {
+  margin: 18px 0;
+  color: #efb1d1;
+  letter-spacing: 0.5em;
+}
+
+.story-intro {
+  margin: 0 auto 28px;
+  font-size: 0.94rem;
+  line-height: 2;
+}
+
+/* ===== メインビジュアル ===== */
+
+.story-hero-visual {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  min-height: 150px;
+  aspect-ratio: 16 / 7;
+  overflow: hidden;
+  border: 2px solid #fff;
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at 20% 25%, #fff 0 3px, transparent 4px),
+    radial-gradient(circle at 80% 70%, #fff 0 4px, transparent 5px),
+    linear-gradient(120deg, #ffe3f1, #f4e8ff 55%, #e6f8ff);
+  box-shadow: 0 8px 24px #dba5c52b;
+}
+
+.story-hero-visual img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.story-image-placeholder {
+  color: #c28bad;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+}
+
+.story-hero-visual:not(.no-image) .story-image-placeholder {
+  display: none;
+}
+
+/* ===== エピソード一覧 ===== */
+
+.story-episodes {
+  padding-top: 25px;
+}
+
+.story-section-heading {
+  margin-bottom: 32px;
+  text-align: center;
+}
+
+.story-section-heading h2,
+.story-world h2 {
+  margin: 0;
+  color: #d77eae;
+  font-family: inherit;
+  font-size: clamp(2rem, 6vw, 3rem);
+  letter-spacing: 0.1em;
+}
+
+.story-section-heading > span {
+  display: block;
+  margin-top: 8px;
+  font-size: 0.85rem;
+}
+
+.story-episode {
+  --episode-color: #e78db9;
+  position: relative;
+  margin: 0 0 30px;
+  padding: 22px;
+  border: 1px solid var(--story-border);
+  border-radius: 24px;
+  background: #ffffffdc;
+  box-shadow: 0 8px 24px #c89ab018;
+}
+
+.episode-pink {
+  --episode-color: #e78db9;
+  --story-border: #f3cce0;
+}
+
+.episode-blue {
+  --episode-color: #87aee8;
+  --story-border: #d1e0f8;
+}
+
+.episode-green {
+  --episode-color: #8dbd91;
+  --story-border: #d4ead4;
+}
+
+.episode-orange {
+  --episode-color: #e9a46f;
+  --story-border: #f4dcc6;
+}
+
+.episode-number {
+  margin-bottom: 16px;
+  color: var(--episode-color);
+  font-size: 0.75rem;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+}
+
+.episode-number span {
+  margin-left: 4px;
+  font-size: 1.25rem;
+}
+
+.episode-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: 24px;
+  align-items: center;
+}
+
+.episode-visual {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-width: 0;
+  min-height: 220px;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border: 1px solid #fff;
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at 80% 20%, #fff 0 3px, transparent 4px),
+    linear-gradient(145deg, color-mix(in srgb, var(--episode-color) 22%, white), #fff);
+}
+
+.episode-visual img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.episode-image-placeholder {
+  color: var(--episode-color);
+  font-size: 0.75rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+}
+
+.episode-visual:not(.no-image) .episode-image-placeholder {
+  display: none;
+}
+
+.episode-content {
+  min-width: 0;
+}
+
+.episode-tag {
+  margin: 0 0 8px;
+  color: var(--episode-color);
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 0.15em;
+}
+
+.episode-content h3 {
+  margin: 0 0 16px;
+  color: #795b73;
+  font-size: clamp(1.2rem, 3vw, 1.65rem);
+  line-height: 1.5;
+}
+
+.episode-content > p:not(.episode-tag):not(.episode-dialogue):not(.episode-end) {
+  font-size: 0.9rem;
+  line-height: 2;
+}
+
+.episode-dialogue {
+  margin: 18px 0 12px;
+  padding: 12px 14px;
+  border-left: 4px solid var(--episode-color);
+  border-radius: 0 12px 12px 0;
+  background: color-mix(in srgb, var(--episode-color) 12%, white);
+  color: #795b73;
+  font-weight: 800;
+  line-height: 1.8;
+}
+
+.episode-end {
+  margin: 16px 0 0;
+  color: var(--episode-color);
+  font-size: 0.88rem;
+  font-weight: 800;
+  line-height: 1.8;
+}
+
+/* ===== 世界観 ===== */
+
+.story-world {
+  position: relative;
+  margin-top: 55px;
+  padding: 42px 24px;
+  overflow: hidden;
+  border: 2px solid #fff;
+  border-radius: 28px;
+  background: linear-gradient(135deg, #fff0f8, #f5efff, #effaff);
+  box-shadow: 0 8px 24px #dba5c52b;
+  text-align: center;
+}
+
+.story-world::before,
+.story-world::after {
+  position: absolute;
+  color: #edb8d5;
+  font-size: 2rem;
+  content: "✧";
+}
+
+.story-world::before {
+  top: 18px;
+  left: 20px;
+}
+
+.story-world::after {
+  right: 20px;
+  bottom: 18px;
+}
+
+.world-title {
+  margin: 16px 0;
+  color: #a86e9a;
+  font-size: 1.1rem;
+  font-weight: 800;
+}
+
+.world-description {
+  font-size: 0.92rem;
+  line-height: 2.1;
+}
+
+.world-note {
+  margin: 25px auto 0;
+  padding: 16px;
+  max-width: 480px;
+  border-radius: 18px;
+  background: #ffffffb8;
+}
+
+.world-note span {
+  color: #e78db9;
+  font-size: 1.5rem;
+}
+
+.world-note p {
+  margin: 8px 0 0;
+  font-size: 0.85rem;
+  line-height: 1.9;
+}
+
+/* ===== キャラクター紹介リンク ===== */
+
+.story-character-link {
+  margin-top: 45px;
+  padding: 32px 16px;
+  text-align: center;
+}
+
+.story-character-link h2 {
+  margin: 0 0 12px;
+  color: #a86e9a;
+  font-size: 1.5rem;
+}
+
+.story-character-link > p:not(:first-child) {
+  font-size: 0.9rem;
+}
+
+.story-link-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  width: min(100%, 340px);
+  margin: 24px auto 0;
+  padding: 17px 20px;
+  border: 2px solid #fff;
+  border-radius: 999px;
+  background: linear-gradient(100deg, #f5c4df, #e7d4fb);
+  box-shadow: 0 5px 0 #e6b5d3;
+  color: #795b73;
+  font-weight: 900;
+  text-decoration: none;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.story-link-button span {
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.story-link-button:hover {
+  transform: translateY(2px);
+  box-shadow: 0 3px 0 #e6b5d3;
+}
+
+/* ===== フッター ===== */
+
+.story-footer {
+  padding: 25px 16px 35px;
+  border-top: 1px solid #f3d6e6;
+  background: #fff7fc;
+  text-align: center;
+}
+
+.story-footer a {
+  color: #bd6294;
+  font-size: 0.9rem;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.story-footer p {
+  margin: 12px 0 0;
+  color: #a68a9e;
+  font-size: 0.72rem;
+}
+
+/* ===== スマートフォン ===== */
+
+@media (max-width: 600px) {
+  .story-main {
+    width: min(100% - 22px, 1000px);
+  }
+
+  .story-hero {
+    padding: 45px 5px 30px;
+  }
+
+  .story-hero-visual {
+    aspect-ratio: 4 / 3;
+    border-radius: 20px;
+  }
+
+  .story-episode {
+    padding: 16px;
+    margin-bottom: 22px;
+    border-radius: 20px;
+  }
+
+  .episode-layout {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .episode-visual {
+    min-height: 0;
+    aspect-ratio: 5 / 3;
+  }
+
+  .episode-content h3 {
+    margin-bottom: 12px;
+  }
+
+  .episode-content > p:not(.episode-tag):not(.episode-dialogue):not(.episode-end) {
+    font-size: 0.88rem;
+  }
+
+  .story-world {
+    padding: 35px 16px;
+  }
+}
+
+/* 動きを控えたい設定への配慮 */
+@media (prefers-reduced-motion: reduce) {
+  .story-link-button {
+    transition: none;
+  }
+}
+
+/* ===== STORYの見出しをCHARACTERと統一 ===== */
+
+.story-main {
+  padding-top: 125px;
+}
+
+.story-hero {
+  padding: 0 12px 45px;
+  text-align: center;
+}
+
+.story-hero .page-heading {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.story-hero .page-heading h1 {
+  margin: 0;
+  color: #c75c9b;
+  font-family: 'Nunito', 'Kiwi Maru', sans-serif;
+  font-size: clamp(2rem, 6vw, 4rem);
+  letter-spacing: .07em;
+  font-weight: 900;
+  text-shadow: 2px 3px 0 #fff, 4px 5px 0 #f7d9ec;
+}
+
+.story-hero .eyebrow {
+  font-size: .72rem;
+  font-weight: 900;
+  letter-spacing: .24em;
+  color: #d47daf;
+  margin: 0 0 9px;
+}
+
+.story-hero .page-heading > p:not(.eyebrow) {
+  font-family: 'Kiwi Maru', sans-serif;
+  font-size: .9rem;
+  color: #927d97;
+}
+
+@media (max-width: 600px) {
+  .story-main {
+    padding-top: 100px;
+  }
+
+  .story-hero {
+    padding: 0 5px 30px;
+  }
+}

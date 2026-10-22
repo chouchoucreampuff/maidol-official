@@ -3,49 +3,65 @@
 
 const characters = {
   spoon: {
-    name: "すぷーん",
-    en: "SPOON",
+    name: "すぷーん/蘭莉 澄香",
+    en: "SPOON/SUMIKA RANRI",
+    mark: "♡",
     tag: "レッド担当",
     grade: "高校2年生",
-    color: "RED / PINK",
-    favorite: "準備中",
-    description: "お嬢様気質の、メイドルを彩る女の子。",
-    tone: "pink",
+    birthday: "11/21",
+    color: "RED",
+    food: "いちご",
+    hobby: "お菓子作り",
+    favorite: "ぬいぐるみ",
+    description: "ふんわり優しい、蘭莉財閥のお嬢様。かわいいものが好きで、ふぉーくとは大の仲良し！",
+    tone: "red",
     images: ["assets/spoon.png"]
   },
 
   fork: {
-    name: "ふぉーく",
-    en: "FORK",
+    name: "ふぉーく/加藤 文乃",
+    en: "FORK/FUMINO KATO",
+    mark: "♤",
     tag: "ブルー担当",
     grade: "高校2年生",
+    birthday: "8/8",
     color: "BLUE",
-    favorite: "準備中",
-    description: "サブカル好きで、すぷーんと仲良し。",
+    food: "ツナおにぎり",
+    hobby: "ランニング",
+    favorite: "おしゃれ",
+    description: "自分らしさを大切にする、サブカル好きの女の子。おばあちゃんと二人暮らし。すぷーんとは大の仲良し！",
     tone: "blue",
     images: ["assets/fork.png"]
   },
 
   knife: {
-    name: "ないふ",
-    en: "KNIFE",
+    name: "ないふ/刀根 夏芽",
+    en: "KNIFE/NATSUME TONE",
+    mark: "♢",
     tag: "オレンジ担当",
     grade: "高校3年生",
+    birthday: "2/9",
     color: "ORANGE",
-    favorite: "ジャンクフード",
-    description: "明るく元気なムードメーカー。ジャンクフードが好き。",
+    food: "クレープ",
+    hobby: "コスメ収集",
+    favorite: "ダンス",
+    description: "明るく元気なムードメーカー。アイドル志望で、日々の練習は欠かさない。",
     tone: "orange",
     images: ["assets/knife.png"]
   },
 
   hashi: {
-    name: "はし",
-    en: "HASHI",
+    name: "はし/橋本 はづき",
+    en: "HASHI/HAZUKI HASHIMOTO",
+    mark: "♧",
     tag: "グリーン担当",
     grade: "高校1年生",
+    birthday: "5/11",
     color: "GREEN",
-    favorite: "和食",
-    description: "おとなしく落ち着いた雰囲気の女の子。和食が好き。",
+    food: "お茶漬け",
+    hobby: "お茶会",
+    favorite: "お茶全般",
+    description: "和菓子屋の一人娘。大人しそうに見えるが、お茶への情熱は人一倍。",
     tone: "green",
     images: ["assets/hashi.png"]
   },
@@ -53,10 +69,14 @@ const characters = {
   mochitora: {
     name: "もちとら",
     en: "MOCHITORA",
+    mark: "☆",
     tag: "メイドルのマスコット",
     grade: "3さい",
+    birthday: "4/13",
     color: "WHITE",
-    favorite: "ケーキ",
+    food: "ケーキ",
+    hobby: "おさんぽ",
+    favorite: "マスター",
     description: "まるまるふっくら、もちもちの白いトラ。メイドルのみんなを見守るマスコット。",
     tone: "white",
     images: ["assets/mochitora.png"]
@@ -87,11 +107,20 @@ function renderCharacter() {
     imageIndex = 0;
   }
 
+  // PROFILE横のマークをキャラクターごとに変更
+  const profileMark = document.querySelector(".profile-mark");
+  if (profileMark) {
+    profileMark.textContent = character.mark;
+  }
+
   document.getElementById("profile-en").textContent = character.en;
   document.getElementById("profile-name").textContent = character.name;
   document.getElementById("profile-tag").textContent = character.tag;
   document.getElementById("profile-grade").textContent = character.grade;
+  document.getElementById("profile-birthday").textContent = character.birthday;
   document.getElementById("profile-color").textContent = character.color;
+  document.getElementById("profile-food").textContent = character.food;
+  document.getElementById("profile-hobby").textContent = character.hobby;
   document.getElementById("profile-favorite").textContent = character.favorite;
   document.getElementById("profile-description").textContent =
     character.description;
