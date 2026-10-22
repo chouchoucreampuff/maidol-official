@@ -879,10 +879,20 @@
   }
 }
 
-/* ===== おみくじページの共通ヘッダー ===== */
-body.omikuji-page .site-header {
-  position: absolute;
-  z-index: 100;
+/* ===== おみくじページのフッター位置調整 ===== */
+
+body.omikuji-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+body.omikuji-page main {
+  flex: 1;
+}
+
+body.omikuji-page .site-footer {
+  margin-top: auto;
 }
 
 /* ミニロゴのサイズ */
