@@ -4,17 +4,19 @@
    メイドルおみくじ
 ======================================== */
 
+
 .omikuji-page {
   min-height: 100vh;
   margin: 0;
   color: #71445f;
   background:
-    radial-gradient(ellipse at 10% 10%, #ffe0f0 0, transparent 35%),
-    radial-gradient(ellipse at 90% 25%, #e6e3ff 0, transparent 35%),
-    radial-gradient(ellipse at 50% 90%, #fff0cc 0, transparent 40%),
-    linear-gradient(135deg, #fff9fd, #fff4fb 45%, #f5f5ff);
+    radial-gradient(ellipse at 10% 10%, rgba(255, 224, 240, 0.9) 0, transparent 38%),
+    radial-gradient(ellipse at 90% 25%, rgba(230, 227, 255, 0.85) 0, transparent 38%),
+    radial-gradient(ellipse at 50% 90%, rgba(220, 240, 255, 0.8) 0, transparent 42%),
+    linear-gradient(135deg, #fff9fd 0%, #fff4fb 45%, #f5f5ff 100%);
   overflow-x: hidden;
 }
+
 
 .omikuji-main {
   position: relative;
@@ -143,8 +145,8 @@
 }
 
 .sparkle-three {
-  bottom: 19%;
-  left: 12%;
+  bottom: 25%;
+  left: 8%;
   font-size: 2rem;
   animation-delay: -2s;
 }
@@ -879,10 +881,20 @@
   }
 }
 
-/* ===== おみくじページの共通ヘッダー ===== */
-body.omikuji-page .site-header {
-  position: absolute;
-  z-index: 100;
+/* ===== おみくじページのフッター位置調整 ===== */
+
+body.omikuji-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+body.omikuji-page main {
+  flex: 1;
+}
+
+body.omikuji-page .site-footer {
+  margin-top: auto;
 }
 
 /* ミニロゴのサイズ */
@@ -908,3 +920,29 @@ body.omikuji-page .mini-brand img {
   }
 }
 
+/* ===== フッターを画面下部に配置 ===== */
+
+html,
+body.omikuji-page {
+  min-height: 100%;
+}
+
+body.omikuji-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+body.omikuji-page main {
+  flex: 1 0 auto;
+}
+
+body.omikuji-page .back-home {
+  margin: 35px auto 35px;
+}
+
+body.omikuji-page .site-footer {
+  flex-shrink: 0;
+  margin-top: auto;
+  width: 100%;
+}
