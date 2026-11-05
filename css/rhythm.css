@@ -1,0 +1,116 @@
+
+/* ========================================
+   MAIDOL RHYTHM GAME
+======================================== */
+
+.rhythm-page {
+  background:
+    radial-gradient(ellipse at 15% 25%, #ffe5f4 0, transparent 35%),
+    radial-gradient(ellipse at 85% 65%, #f0e6ff 0, transparent 35%),
+    #fff9fe;
+}
+
+/* ===== ページ全体 ===== */
+
+.rhythm-wrap {
+  width: min(1200px, calc(100% - 48px));
+  padding-top: 145px;
+  padding-bottom: 65px;
+}
+
+/* ===== タイトル ===== */
+
+.rhythm-wrap .page-heading {
+  margin-bottom: 35px;
+}
+
+.rhythm-wrap .page-heading h1 {
+  font-size: clamp(2.4rem, 5vw, 4rem);
+}
+
+.rhythm-wrap .heading-sparkle {
+  font-size: 1.1rem;
+}
+
+/* ===== ゲームエリア ===== */
+
+.game-section {
+  position: relative;
+  width: 100%;
+  padding: 22px;
+  background: rgba(255,255,255,.82);
+  border: 2px solid #f7d9eb;
+  border-radius: 25px;
+  box-shadow:
+    0 12px 35px #dca4c51c,
+    inset 0 0 20px #fff2fa;
+}
+
+.game-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 14px;
+  color: #c75c9b;
+  font-size: .78rem;
+  font-weight: 900;
+  letter-spacing: .12em;
+}
+
+.game-label span:last-child {
+  color: #e38ab9;
+}
+
+/* ===== Godotゲーム画面 ===== */
+
+.game-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #fff0fa;
+  border: 3px solid #f2c9e2;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 20px #c78bb522;
+}
+
+.game-frame iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: #fff0fa;
+}
+
+/* ===== 説明 ===== */
+
+.game-caption {
+  margin: 16px 0 0;
+  text-align: center;
+  color: #a58ba5;
+  font-family: 'Kiwi Maru', sans-serif;
+  font-size: .82rem;
+}
+
+/* ===== スマートフォン ===== */
+
+@media (max-width: 650px) {
+  .rhythm-wrap {
+    width: calc(100% - 24px);
+    padding-top: 100px;
+  }
+
+  .game-section {
+    padding: 10px;
+    border-radius: 17px;
+  }
+
+  .game-label {
+    font-size: .65rem;
+  }
+
+  .game-frame {
+    aspect-ratio: 16 / 9;
+  }
+}
