@@ -115,3 +115,57 @@
     aspect-ratio: 16 / 9;
   }
 }
+
+
+/* ===== タッチ操作ボタン（テスト版） ===== */
+
+.touch-controls {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  width: 100%;
+  max-width: 650px;
+  margin: 22px auto 8px;
+}
+
+.touch-key {
+  min-width: 0;
+  height: 75px;
+  border: 3px solid rgba(255,255,255,.9);
+  border-radius: 18px;
+  color: #fff;
+  font-size: 1.6rem;
+  font-weight: 900;
+  box-shadow: 0 5px 0 rgba(120,70,110,.15);
+  cursor: pointer;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: transform .08s, filter .08s;
+}
+
+.touch-key:active,
+.touch-key.pressed {
+  transform: translateY(4px) scale(.97);
+  filter: brightness(.9);
+  box-shadow: 0 1px 0 rgba(120,70,110,.15);
+}
+
+.key-d { background: #FF93B5; }
+.key-f { background: #FFBE81; }
+.key-j { background: #88CC6F; }
+.key-k { background: #85BDF0; }
+
+@media (max-width: 650px) {
+  .touch-controls {
+    gap: 7px;
+    margin-top: 14px;
+  }
+
+  .touch-key {
+    height: 65px;
+    border-radius: 13px;
+    font-size: 1.3rem;
+  }
+}
+
