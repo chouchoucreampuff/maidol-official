@@ -200,4 +200,35 @@ nextButton.addEventListener("click", () => {
   renderCharacter();
 });
 
+
 renderCharacter();
+
+/* ===== テレビ展示用・自動切り替え ===== */
+
+const displayMode = params.get("autoplay") === "1";
+
+if (displayMode) {
+  document.body.classList.add("display-mode");
+
+  const characterOrder = [
+    "spoon",
+    "fork",
+    "knife",
+    "hashi",
+    "mochitora"
+  ];
+
+  let displayIndex = characterOrder.indexOf(currentKey);
+
+  if (displayIndex < 0) displayIndex = 0;
+
+  setInterval(() => {
+    displayIndex = (displayIndex + 1) % characterOrder.length;
+
+    currentKey = characterOrder[displayIndex];
+    imageIndex = 0;
+
+    renderCharacter();
+  }, 8000);
+}
+
