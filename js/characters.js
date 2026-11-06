@@ -203,32 +203,73 @@ nextButton.addEventListener("click", () => {
 
 renderCharacter();
 
-/* ===== テレビ展示用・自動切り替え ===== */
+/* ===== 放置時の自動再生 ===== */
 
-const displayMode = params.get("autoplay") === "1";
+const characterOrder = [
+  "spoon",
+  "fork",
+  "knife",
+  "hashi",
+  "mochitora"
+];
 
-if (displayMode) {
-  document.body.classList.add("display-mode");
+const IDLE_TIME = 30000; // 30秒
+const SLIDE_TIME = 8000; // 8秒
 
-  const characterOrder = [
-    "spoon",
-    "fork",
-    "knife",
-    "hashi",
-    "mochitora"
-  ];
+let idleTimer = null;
+let slideTimer = null;
+
+// 自動再生を開始
+function startAutoplay() {
+  if (slideTimer !== null) return;
 
   let displayIndex = characterOrder.indexOf(currentKey);
 
   if (displayIndex < 0) displayIndex = 0;
 
-  setInterval(() => {
+  slideTimer = setInterval(() => {
     displayIndex = (displayIndex + 1) % characterOrder.length;
 
     currentKey = characterOrder[displayIndex];
     imageIndex = 0;
 
     renderCharacter();
-  }, 8000);
+  }, SLIDE_TIME);
 }
+
+// 自動再生を停止
+function stopAutoplay() {
+  if (slideTimer !== null) {
+    clearInterval(slideTimer);
+    slideTimer = null;
+  }
+}
+
+// 操作があったら停止し、30秒後に再開
+function resetIdleTimer() {
+  stopAutoplay();
+
+  clearTimeout(idleTimer);
+
+  idleTimer = setTimeout(() => {
+    startAutoplay();
+  }, IDLE_TIME);
+}
+
+// マウス・タッチ・キーボード操作を検知
+[
+  "pointerdown",
+  "pointermove",
+  "keydown",
+  "touchstart",
+  "wheel"
+].forEach(eventName => {
+  document.addEventListener(eventName, resetIdleTimer, {
+    passive: true
+  });
+});
+
+// 最初の30秒カウント開始
+resetIdleTimer();
+
 
