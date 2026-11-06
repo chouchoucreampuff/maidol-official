@@ -497,3 +497,40 @@ body.sub-page {
     padding: 15px 10px;
   }
 }
+/* ===== ローテーションバナー ===== */
+
+.rhythm-banner {
+  transition:
+    opacity 0.35s ease,
+    transform 0.2s,
+    box-shadow 0.2s;
+}
+
+/* リズムゲーム：ピンク */
+.rhythm-banner[data-banner="rhythm"] {
+  background: linear-gradient(135deg, #fff0fa, #ffe0f1, #fff7fc);
+  border-color: #ffacd8;
+  color: #ff69ad;
+  box-shadow: 0 5px 0 #f8c3df;
+}
+
+/* メイドル診断：水色 */
+.rhythm-banner[data-banner="diagnosis"] {
+  background: linear-gradient(135deg, #f0f7ff, #dcecff, #f8fbff);
+  border-color: #a9ceff;
+  color: #659bdc;
+  box-shadow: 0 5px 0 #c5dcfa;
+}
+
+/* メイドルおみくじ：黄色 */
+.rhythm-banner[data-banner="omikuji"] {
+  background: linear-gradient(135deg, #fff9e9, #fff0c9, #fffdf5);
+  border-color: #f5d58a;
+  color: #d6a344;
+  box-shadow: 0 5px 0 #f4dfb0;
+}
+
+/* 切り替え時 */
+.rhythm-banner.is-changing {
+  opacity: 0;
+}
