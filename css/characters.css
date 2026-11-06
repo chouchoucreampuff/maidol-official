@@ -446,3 +446,54 @@ body.sub-page {
     grid-template-columns: 95px minmax(0, 1fr);
   }
 }
+/* ===== リズムゲーム案内バナー ===== */
+
+.rhythm-banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+
+  width: min(90%, 850px);
+  min-height: 100px;
+  margin: 45px auto 35px;
+  padding: 20px;
+
+  box-sizing: border-box;
+  border: 3px solid #ffacd8;
+  border-radius: 22px;
+
+  background: linear-gradient(
+    135deg,
+    #fff0fa,
+    #ffe0f1,
+    #fff7fc
+  );
+
+  color: #ff69ad;
+  text-decoration: none;
+  text-align: center;
+  font-size: clamp(18px, 3vw, 27px);
+  font-weight: bold;
+
+  box-shadow: 0 5px 0 #f8c3df;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.rhythm-banner:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 9px 0 #f8c3df;
+}
+
+.rhythm-banner-arrow {
+  font-size: 25px;
+}
+
+@media (max-width: 600px) {
+  .rhythm-banner {
+    min-height: 80px;
+    gap: 10px;
+    margin: 30px auto;
+    padding: 15px 10px;
+  }
+}
