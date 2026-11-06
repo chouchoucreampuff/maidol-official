@@ -163,11 +163,14 @@
       </div>
       </section>
 
-    <!-- リズムゲーム案内バナー -->
-    <a class="rhythm-banner" href="rhythm.html">
-      <span>PCでリズムゲームが遊べるよ！</span>
-      <span class="rhythm-banner-arrow">♡</span>
-    </a>
+<!-- コンテンツ案内バナー -->
+<a class="rhythm-banner" id="rotate-banner"
+   href="rhythm.html" data-banner="rhythm">
+
+  <span id="banner-text">PCでリズムゲームが遊べるよ！</span>
+  <span class="rhythm-banner-arrow">♡</span>
+
+</a>
 
     <a class="back-home" href="index.html">♡ TOPへ戻る ♡</a>
 
@@ -180,6 +183,50 @@
 
   <script src="js/common.js"></script>
   <script src="js/characters.js"></script>
+  <script>
+/* ===== バナー自動切り替え ===== */
+
+const bannerItems = [
+  {
+    type: "rhythm",
+    text: "PCでリズムゲームが遊べるよ！",
+    url: "rhythm.html"
+  },
+  {
+    type: "diagnosis",
+    text: "あなたにぴったりのメイドルは？",
+    url: "diagnosis.html"
+  },
+  {
+    type: "omikuji",
+    text: "今日の運勢を占ってみよう！",
+    url: "omikuji.html"
+  }
+];
+
+const banner = document.getElementById("rotate-banner");
+const bannerText = document.getElementById("banner-text");
+
+let bannerIndex = 0;
+
+setInterval(() => {
+  banner.classList.add("is-changing");
+
+  setTimeout(() => {
+    bannerIndex = (bannerIndex + 1) % bannerItems.length;
+
+    const item = bannerItems[bannerIndex];
+
+    banner.dataset.banner = item.type;
+    bannerText.textContent = item.text;
+    banner.href = item.url;
+
+    banner.classList.remove("is-changing");
+  }, 350);
+
+}, 5000);
+
+</script>
 
 </body>
 </html>
