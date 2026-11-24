@@ -123,10 +123,12 @@ const selected = {
   SH: 1
 };
 
-// 前髪と後ろ髪は別々に反転
+// 前髪・後ろ髪・エフェクトを別々に反転
 const hairFlip = {
   HF: false,
-  HB: false
+  HB: false,
+  HFE: false,
+  HBE: false
 };
 
 // 画像キャッシュ
@@ -825,6 +827,9 @@ async function drawHairWithEffect(
   const fillPath = getItemPath(category, number);
   const linePath = getItemPath(category, number, "_LN");
 
+  // エフェクト専用の反転状態
+  const effectFlip = hairFlip[effectCategory] || false;
+
   // 1. 髪の塗り
   await drawAsset(fillPath, 1, flip, true);
 
@@ -836,7 +841,7 @@ async function drawHairWithEffect(
       effectCategory,
       effectNumber,
       1,
-      flip
+      effectFlip
     );
   }
 
@@ -1018,8 +1023,8 @@ function updateHairFlipButton() {
 
   if (!container || !button) return;
 
-  const isHairCategory =
-    currentCategory === "HF" || currentCategory === "HB";
+  const flipCategories = ["HF", "HB", "HFE", "HBE"];
+  const isHairCategory = flipCategories.includes(currentCategory);
 
   container.style.display = isHairCategory ? "flex" : "none";
 
@@ -1060,7 +1065,9 @@ function setupHairFlipButtons() {
   categoryTitle.after(container);
 
   button.addEventListener("click", async () => {
-    if (currentCategory !== "HF" && currentCategory !== "HB") {
+    const flipCategories = ["HF", "HB", "HFE", "HBE"];
+
+    if (!flipCategories.includes(currentCategory)) {
       return;
     }
 
