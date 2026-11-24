@@ -454,3 +454,100 @@
     gap: 6px;
   }
 }
+
+/* =================================
+   ユーザー設定式ヘアカラー
+================================= */
+
+#hair-color-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.hair-color-editor {
+  display: grid;
+  grid-template-columns: minmax(90px, 1fr) 48px minmax(100px, 1fr);
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border: 1px solid #f1ddeb;
+  border-radius: 13px;
+  background: #fffaff;
+}
+
+.hair-color-label {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  color: #76586d;
+}
+
+.hair-color-label strong {
+  font-size: 13px;
+}
+
+.hair-color-label small {
+  font-size: 10px;
+  color: #a891a9;
+}
+
+.hair-color-picker {
+  width: 44px;
+  height: 38px;
+  padding: 3px;
+  border: 1px solid #edc9dd;
+  border-radius: 9px;
+  background: white;
+  cursor: pointer;
+}
+
+.hair-color-code {
+  width: 100%;
+  min-width: 0;
+  padding: 9px 7px;
+  border: 1px solid #edc9dd;
+  border-radius: 9px;
+  background: white;
+  color: #76586d;
+  font-family: monospace;
+  font-size: 12px;
+  text-align: center;
+}
+
+.hair-color-code.invalid {
+  border-color: #e66c7c;
+  background: #fff0f0;
+}
+
+.hair-color-reset {
+  padding: 10px;
+  border: 1px solid #edb7d0;
+  border-radius: 20px;
+  background: #fff0f8;
+  color: #bd6792;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.hair-color-reset:hover {
+  background: #ffe3ef;
+}
+
+@media (max-width: 400px) {
+  .hair-color-editor {
+    grid-template-columns: minmax(75px, 1fr) 42px minmax(85px, 1fr);
+    gap: 6px;
+    padding: 8px;
+  }
+
+  .hair-color-picker {
+    width: 40px;
+  }
+
+  .hair-color-code {
+    font-size: 11px;
+  }
+}
+
