@@ -35,24 +35,23 @@ const DEFAULT_HAIR_COLORS = {
   highlight: "#EEEEEE"
 };
 
-// 17色相の基準色（以前のメインカラーを使用）
+// 14色相＋モノトーン
 const HAIR_HUES = [
-  { name: "赤", base: "#D94355", hue: 0 },
-  { name: "オレンジ", base: "#E97835", hue: 25 },
-  { name: "黄色", base: "#EBC34B", hue: 45 },
-  { name: "緑", base: "#329765", hue: 145 },
-  { name: "黄緑", base: "#9ABF3E", hue: 80 },
+  { name: "赤", base: "#D94355", hue: 355 },
+  { name: "橙", base: "#E97835", hue: 30 },
+  { name: "黄", base: "#EBC34B", hue: 55 },
+  { name: "黄緑", base: "#9ABF3E", hue: 85 },
+  { name: "緑", base: "#329765", hue: 135 },
   { name: "ミント", base: "#65C8B0", hue: 165 },
   { name: "水色", base: "#68BCE5", hue: 195 },
   { name: "青", base: "#456FC9", hue: 225 },
-  { name: "濃い紫", base: "#75418E", hue: 275 },
-  { name: "薄紫", base: "#B49AD1", hue: 285 },
-  { name: "濃いピンク", base: "#D84F91", hue: 325},
-  { name: "薄ピンク", base: "#F0A6C6", hue: 345 },
-  { name: "ベージュ", base: "#C6A77A", hue: 35 },
-  { name: "グレージュ", base: "#A49A91", hue: 10 },
-  { name: "ブラウン", base: "#805238", hue: 20 },
-{ name: "モノトーン", base: "#A5A5A5", hue: null }
+  { name: "濃紫", base: "#75418E", hue: 265 },
+  { name: "淡紫", base: "#B49AD1", hue: 290 },
+  { name: "濃桃", base: "#D84F91", hue: 325 },
+  { name: "淡桃", base: "#F0A6C6", hue: 345 },
+  { name: "ベージュ", base: "#C6A77A", hue: 45 },
+  { name: "茶", base: "#805238", hue: 15 },
+  { name: "モノトーン", base: "#A5A5A5", hue: null }
 ];
 
 const HAIR_SATURATION_LEVELS = [0.30, 0.60, 0.90];
