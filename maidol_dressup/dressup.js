@@ -87,18 +87,18 @@ let currentHairHue = 0;
 
 const selected = {
   SK: 1,
-  HB: null,
-  HF: null,
+  HB: 1,
+  HF: 1,
   HA: null,
-  ES: null,
-  IC: null,
-  BR: null,
-  MO: null,
+  ES: 1,
+  IC: 1,
+  BR: 1,
+  MO: 1,
   MK: null,
-  DR: null,
+  DR: 1,
   TP: null,
   BT: null,
-  SH: null
+  SH: 1
 };
 
 // 前髪と後ろ髪は別々に反転
@@ -922,10 +922,13 @@ function setupZoom() {
 function setupReset() {
   document.getElementById("reset-button").addEventListener("click", async () => {
     Object.keys(selected).forEach(key => {
-      selected[key] = null;
-    });
+  selected[key] = 1;
+});
 
-    selected.SK = 1;
+selected.TP = null;
+selected.BT = null;
+selected.HA = null;
+selected.MK = null;
 
   // 髪色を初期グレースケールに戻す
 hairColors = { ...DEFAULT_HAIR_COLORS };
