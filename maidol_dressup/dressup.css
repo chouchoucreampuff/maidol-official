@@ -621,3 +621,47 @@
 .item-remove-button:hover {
   background: #ffe1ed;
 }
+/* =================================
+   ヘアカラー・エフェクトカラー切り替え
+================================= */
+
+.color-mode-switch {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.color-mode-button {
+  min-width: 0;
+  padding: 11px 5px;
+  border: 1px solid #f0d5e3;
+  border-radius: 14px;
+  background: #fffafd;
+  color: #96788e;
+  font-size: 12px;
+  font-weight: 900;
+  transition:
+    background 0.2s,
+    border-color 0.2s,
+    transform 0.2s;
+}
+
+.color-mode-button:hover {
+  background: #fff0f8;
+  transform: translateY(-1px);
+}
+
+.color-mode-button.active {
+  border: 2px solid #e875a8;
+  background: #ffe3ef;
+  color: #c84d86;
+  box-shadow: 0 3px 10px #e875a820;
+}
+
+@media (max-width: 400px) {
+  .color-mode-button {
+    font-size: 11px;
+    padding: 10px 3px;
+  }
+}
