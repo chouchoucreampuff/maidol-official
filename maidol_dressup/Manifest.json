@@ -1,0 +1,59 @@
+
+{
+  "categories": {
+    "SK": {
+      "count": 3
+    },
+    "HB": {
+      "count": 26,
+      "lineArt": true
+    },
+    "HF": {
+      "count": 16,
+      "lineArt": true
+    },
+    "HA": {
+      "count": 1
+    },
+    "ES": {
+      "count": 6
+    },
+    "IC": {
+      "count": 11
+    },
+    "BR": {
+      "count": 8,
+      "lineArt": true,
+      "fillOptional": true
+    },
+    "MO": {
+      "count": 8
+    },
+    "MK": {
+      "count": 3
+    },
+    "DR": {
+      "count": 11,
+      "group": "DR_A"
+    },
+    "TP": {
+      "count": 0,
+      "optionalParts": ["BK", "AL", "AR"]
+    },
+    "BT": {
+      "count": 0
+    },
+    "SH": {
+      "count": 11
+    }
+  },
+  "groups": {
+    "DR_A": {
+      "category": "DR",
+      "items": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+      "sharedParts": {
+        "BK": "DR00001_BK.png"
+      }
+    }
+  }
+}
