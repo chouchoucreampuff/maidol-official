@@ -504,9 +504,7 @@ function createHairColorButtons() {
   updateHairPalette();
 }
 
-// パレットの表示更新
-function updateHairPalette() {
-  const hueList = document.getElementById("hair-hue-list");
+
 // ========================================
 // 現在編集中のカラー取得
 // ========================================
@@ -529,22 +527,16 @@ function updateHairPalette() {
 
   const colorsSet = getCurrentColorSet();
 
-  // 色相ボタンの選択状態
   hueList.querySelectorAll(".hair-hue-button").forEach((button, index) => {
-    button.classList.toggle(
-      "active",
-      index === currentHairHue
-    );
+    button.classList.toggle("active", index === currentHairHue);
   });
 
-  // 色相名
   const hueName = document.getElementById("hair-hue-name");
 
   if (hueName) {
     hueName.textContent = HAIR_HUES[currentHairHue].name;
   }
 
-  // 色の一覧を生成
   const colors = generateHairPalette(currentHairHue);
 
   shadeList.innerHTML = "";
@@ -572,7 +564,6 @@ function updateHairPalette() {
       }
 
       updateHairPalette();
-
       await renderCharacter();
 
       const stopName =
@@ -589,14 +580,12 @@ function updateHairPalette() {
     shadeList.appendChild(button);
   });
 
-  // 選択色の表示
   const selectedColor = document.getElementById("hair-selected-color");
 
   if (selectedColor) {
     selectedColor.textContent = colorsSet[currentHairStop];
   }
 
-  // 編集中のタブ
   document.querySelectorAll(".hair-color-tab").forEach(button => {
     button.classList.toggle(
       "active",
