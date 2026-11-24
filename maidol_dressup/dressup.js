@@ -14,7 +14,7 @@ const CATEGORY_NAMES = {
   HF: "前髪",
   HFE: "前髪エフェクト",
 HBE: "後ろ髪エフェクト",
-  HA: "髪飾り",
+  HA: "髪飾り", 
   ES: "目の形",
   IC: "瞳の色",
   BR: "眉毛",
@@ -84,6 +84,16 @@ let hairColors = { ...DEFAULT_HAIR_COLORS };
 // 現在編集中のグラデーション色
 let currentHairStop = "shadow";
 
+// エフェクト専用カラー
+const DEFAULT_HAIR_EFFECT_COLORS = {
+  HF: { ...DEFAULT_HAIR_COLORS },
+  HB: { ...DEFAULT_HAIR_COLORS }
+};
+
+let hairEffectColors = {
+  HF: { ...DEFAULT_HAIR_EFFECT_COLORS.HF },
+  HB: { ...DEFAULT_HAIR_EFFECT_COLORS.HB }
+};
 // 現在選択中の色相
 let currentHairHue = 0;
 
@@ -114,6 +124,7 @@ const hairFlip = {
 // 画像キャッシュ
 const imageCache = new Map();
 const coloredImageCache = new Map();
+const hairEffectCache = new Map();
 
 // ========================================
 // 共通処理
@@ -555,7 +566,217 @@ function updateHairPalette() {
   });
 }
 
+// ========================================
+// 髪エフェクト描画
+// ========================================
 
+async function drawHairEffect(
+  baseCategory,
+  baseNumber,
+  effectCategory,
+  effectNumber,
+  alpha = 1,
+  flip = false
+) {
+  if (!baseNumber || !effectNumber) return;
+
+  const basePath = getItemPath(baseCategory, baseNumber);
+  const effectPath = getItemPath(effectCategory, effectNumber);
+
+  const colors = hairEffectColors[baseCategory];
+
+  const cacheKey = [
+    basePath,
+    effectPath,
+    colors.shadow,
+    colors.main,
+    colors.highlight
+  ].join("_");
+
+  let effectCanvas = hairEffectCache.get(cacheKey);
+
+  if (!effectCanvas) {
+    const baseImage = await loadImage(basePath);
+    const maskImage = await loadImage(effectPath);
+
+    if (!baseImage || !maskImage) return;
+
+    const temp = document.createElement("canvas");
+    temp.width = CANVAS_WIDTH;
+    temp.height = CANVAS_HEIGHT;
+
+    const tempCtx = temp.getContext("2d", {
+      willReadFrequently: true
+    });
+
+    // 元の髪画像を読み込む
+    tempCtx.drawImage(
+      baseImage,
+      0, 0,
+      CANVAS_WIDTH,
+      CANVAS_HEIGHT
+    );
+
+    const baseData = tempCtx.getImageData(
+      0, 0,
+      CANVAS_WIDTH,
+      CANVAS_HEIGHT
+    );
+
+    // マスク画像を読み込む
+    const maskCanvas = document.createElement("canvas");
+    maskCanvas.width = CANVAS_WIDTH;
+    maskCanvas.height = CANVAS_HEIGHT;
+
+    const maskCtx = maskCanvas.getContext("2d", {
+      willReadFrequently: true
+    });
+
+    maskCtx.drawImage(
+      maskImage,
+      0, 0,
+      CANVAS_WIDTH,
+      CANVAS_HEIGHT
+    );
+
+    const maskData = maskCtx.getImageData(
+      0, 0,
+      CANVAS_WIDTH,
+      CANVAS_HEIGHT
+    );
+
+    const basePixels = baseData.data;
+    const maskPixels = maskData.data;
+
+    const gradientColors = [
+      hexToRgb(colors.shadow),
+      hexToRgb(colors.main),
+      hexToRgb(colors.highlight),
+      { r: 255, g: 255, b: 255 }
+    ];
+
+    for (let i = 0; i < basePixels.length; i += 4) {
+      const baseAlpha = basePixels[i + 3];
+      const maskAlpha = maskPixels[i + 3];
+
+      // 髪の外側は透明
+      if (baseAlpha === 0) {
+        basePixels[i + 3] = 0;
+        continue;
+      }
+
+      // マスクの明るさを効果の強さとして使用
+      const maskBrightness = (
+        0.299 * maskPixels[i] +
+        0.587 * maskPixels[i + 1] +
+        0.114 * maskPixels[i + 2]
+      ) / 255;
+
+      const effectAmount = maskBrightness * (maskAlpha / 255);
+
+      if (effectAmount <= 0) {
+        basePixels[i + 3] = 0;
+        continue;
+      }
+
+      // 元の髪画像の明るさでグラデーションを決定
+      const brightness = (
+        0.299 * basePixels[i] +
+        0.587 * basePixels[i + 1] +
+        0.114 * basePixels[i + 2]
+      ) / 255;
+
+      let segment = 0;
+
+      while (
+        segment < GRADIENT_POSITIONS.length - 2 &&
+        brightness > GRADIENT_POSITIONS[segment + 1]
+      ) {
+        segment++;
+      }
+
+      const start = GRADIENT_POSITIONS[segment];
+      const end = GRADIENT_POSITIONS[segment + 1];
+
+      const amount = Math.max(
+        0,
+        Math.min(1, (brightness - start) / (end - start))
+      );
+
+      const result = interpolateColor(
+        gradientColors[segment],
+        gradientColors[segment + 1],
+        amount
+      );
+
+      basePixels[i] = Math.round(result.r);
+      basePixels[i + 1] = Math.round(result.g);
+      basePixels[i + 2] = Math.round(result.b);
+
+      // マスクの明るさに応じて透明度を設定
+      basePixels[i + 3] = Math.round(
+        baseAlpha * effectAmount
+      );
+    }
+
+    tempCtx.putImageData(baseData, 0, 0);
+
+    effectCanvas = temp;
+    hairEffectCache.set(cacheKey, effectCanvas);
+  }
+
+  ctx.save();
+  ctx.globalAlpha = alpha;
+
+  if (flip) {
+    ctx.translate(CANVAS_WIDTH, 0);
+    ctx.scale(-1, 1);
+  }
+
+  ctx.drawImage(
+    effectCanvas,
+    0, 0,
+    CANVAS_WIDTH,
+    CANVAS_HEIGHT
+  );
+
+  ctx.restore();
+}
+
+// ========================================
+// エフェクト付き髪の描画
+// ========================================
+
+async function drawHairWithEffect(
+  category,
+  number,
+  effectCategory,
+  effectNumber,
+  flip = false
+) {
+  if (!number) return;
+
+  const fillPath = getItemPath(category, number);
+  const linePath = getItemPath(category, number, "_LN");
+
+  // 1. 髪の塗り
+  await drawAsset(fillPath, 1, flip, true);
+
+  // 2. エフェクト
+  if (effectNumber) {
+    await drawHairEffect(
+      category,
+      number,
+      effectCategory,
+      effectNumber,
+      1,
+      flip
+    );
+  }
+
+  // 3. 線画
+  await drawAsset(linePath, 1, flip);
+}
 // ========================================
 // 塗りと線画
 // ========================================
@@ -668,13 +889,13 @@ async function renderCharacter(includeOverlay = true) {
   ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
   // 1. 後ろ髪
-  await drawFillAndLine(
-    "HB",
-    selected.HB,
-    true,
-    1,
-    hairFlip.HB
-  );
+await drawHairWithEffect(
+  "HB",
+  selected.HB,
+  "HBE",
+  selected.HBE,
+  hairFlip.HB
+);
 
   // 2. 背面装飾
   await drawBackDecoration();
@@ -701,13 +922,13 @@ async function renderCharacter(includeOverlay = true) {
   await drawFaceParts();
 
   // 8. 前髪
-  await drawFillAndLine(
-    "HF",
-    selected.HF,
-    true,
-    1,
-    hairFlip.HF
-  );
+await drawHairWithEffect(
+  "HF",
+  selected.HF,
+  "HFE",
+  selected.HFE,
+  hairFlip.HF
+);
 
   // 9. 半透明の顔パーツ
   if (includeOverlay && faceOverlayEnabled) {
