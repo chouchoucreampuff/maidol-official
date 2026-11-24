@@ -815,8 +815,33 @@ function renderItemList() {
 
   const count = getCategoryCount(currentCategory);
 
+  // パーツを外すボタン
+  const removeButton = document.createElement("button");
+  removeButton.type = "button";
+  removeButton.className = "item-remove-button";
+  removeButton.textContent = "× このパーツを外す";
+
+  removeButton.addEventListener("click", async () => {
+    selected[currentCategory] = null;
+
+    // 服のカテゴリは関連する選択も解除
+    if (currentCategory === "DR") {
+      selected.TP = null;
+      selected.BT = null;
+    } else if (currentCategory === "TP" || currentCategory === "BT") {
+      selected.DR = null;
+    }
+
+    renderItemList();
+    await renderCharacter();
+  });
+
+  itemList.appendChild(removeButton);
+
   if (!count) {
-    itemList.textContent = "このカテゴリにはまだアイテムがありません。";
+    const message = document.createElement("p");
+    message.textContent = "このカテゴリにはまだアイテムがありません。";
+    itemList.appendChild(message);
     return;
   }
 
@@ -841,13 +866,7 @@ function renderItemList() {
 
     button.addEventListener("click", async () => {
       selectItem(currentCategory, number);
-
-      document.querySelectorAll(".item-button").forEach(el => {
-        el.classList.remove("active");
-      });
-
-      button.classList.add("active");
-
+      renderItemList();
       await renderCharacter();
     });
 
