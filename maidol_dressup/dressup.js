@@ -759,10 +759,9 @@ async function initialize() {
 
     updateStatus("読み込みが完了しました。");
 
-  } catch (error) {
-    console.error(error);
-    updateStatus("読み込みエラー：manifest.jsonを確認してください。");
-  }
+} catch (error) {
+  console.error(error);
+  updateStatus("エラー：" + error.message);
 }
 
 initialize();
