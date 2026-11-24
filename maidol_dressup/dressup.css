@@ -455,99 +455,153 @@
   }
 }
 
+
 /* =================================
-   ユーザー設定式ヘアカラー
+   パレット式ヘアカラー
 ================================= */
 
 #hair-color-list {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 14px;
 }
 
-.hair-color-editor {
+/* 影・メイン・ハイライトの切り替え */
+
+.hair-color-tabs {
   display: grid;
-  grid-template-columns: minmax(90px, 1fr) 48px minmax(100px, 1fr);
-  align-items: center;
-  gap: 10px;
-  padding: 10px;
-  border: 1px solid #f1ddeb;
-  border-radius: 13px;
-  background: #fffaff;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 7px;
 }
 
-.hair-color-label {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
+.hair-color-tab {
+  padding: 10px 4px;
+  border: 1px solid #f0d5e3;
+  border-radius: 12px;
+  background: #fffafd;
   color: #76586d;
-}
-
-.hair-color-label strong {
   font-size: 13px;
+  font-weight: 800;
 }
 
-.hair-color-label small {
-  font-size: 10px;
-  color: #a891a9;
-}
-
-.hair-color-picker {
-  width: 44px;
-  height: 38px;
-  padding: 3px;
-  border: 1px solid #edc9dd;
-  border-radius: 9px;
-  background: white;
-  cursor: pointer;
-}
-
-.hair-color-code {
-  width: 100%;
-  min-width: 0;
-  padding: 9px 7px;
-  border: 1px solid #edc9dd;
-  border-radius: 9px;
-  background: white;
-  color: #76586d;
-  font-family: monospace;
-  font-size: 12px;
-  text-align: center;
-}
-
-.hair-color-code.invalid {
-  border-color: #e66c7c;
-  background: #fff0f0;
-}
-
-.hair-color-reset {
-  padding: 10px;
-  border: 1px solid #edb7d0;
-  border-radius: 20px;
-  background: #fff0f8;
-  color: #bd6792;
-  font-size: 12px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.hair-color-reset:hover {
+.hair-color-tab.active {
+  border-color: #e875a8;
   background: #ffe3ef;
+  color: #c84d86;
+}
+
+/* 見出し */
+
+.hair-palette-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  color: #76586d;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+#hair-hue-name,
+#hair-selected-color {
+  color: #c75c9b;
+}
+
+/* 17色相 */
+
+.hair-hue-list {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 7px;
+}
+
+.hair-hue-button {
+  min-width: 0;
+  padding: 6px 2px;
+  border: 1px solid #f1ddeb;
+  border-radius: 10px;
+  background: #fffaff;
+  color: #76586d;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.hair-hue-button:hover {
+  background: #fff0f8;
+}
+
+.hair-hue-button.active {
+  border: 2px solid #e875a8;
+  background: #ffeaf3;
+}
+
+.hair-hue-swatch {
+  display: block;
+  width: 25px;
+  height: 25px;
+  margin: 0 auto 4px;
+  border: 1px solid #e5d6df;
+  border-radius: 50%;
+}
+
+/* 彩度・明度 3×3 */
+
+.hair-shade-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 9px;
+}
+
+.hair-shade-button {
+  position: relative;
+  min-width: 0;
+  aspect-ratio: 1 / 0.78;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  box-shadow: inset 0 0 0 1px #00000012;
+}
+
+.hair-shade-button:hover {
+  transform: scale(1.03);
+}
+
+.hair-shade-button.active {
+  border: 3px solid #d94d98;
+  box-shadow:
+    0 0 0 2px white,
+    0 0 0 4px #e875a8;
+}
+
+.hair-shade-button.active::after {
+  content: "✓";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 22px;
+  font-weight: 900;
+  text-shadow: 0 1px 4px #0008;
+}
+
+.hair-palette-note {
+  margin: 0;
+  color: #a891a9;
+  font-size: 11px;
+  text-align: center;
+  line-height: 1.6;
 }
 
 @media (max-width: 400px) {
-  .hair-color-editor {
-    grid-template-columns: minmax(75px, 1fr) 42px minmax(85px, 1fr);
-    gap: 6px;
-    padding: 8px;
+  .hair-hue-list {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
   }
 
-  .hair-color-picker {
-    width: 40px;
+  .hair-hue-button {
+    font-size: 9px;
   }
 
-  .hair-color-code {
-    font-size: 11px;
+  .hair-shade-list {
+    gap: 7px;
   }
 }
-
