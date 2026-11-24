@@ -1263,14 +1263,22 @@ function setupReset() {
     selected.HBE = null;
     selected.HFE = null;
 
-    // 髪色を初期グレースケールに戻す
-    hairColors = { ...DEFAULT_HAIR_COLORS };
+// 通常のヘアカラーを初期化
+hairColors = { ...DEFAULT_HAIR_COLORS };
 
-    // エフェクト専用カラーも初期化
-    hairEffectColors = {
-      HF: { ...DEFAULT_HAIR_EFFECT_COLORS.HF },
-      HB: { ...DEFAULT_HAIR_EFFECT_COLORS.HB }
-    };
+// エフェクトカラーを初期化
+effectColors = { ...DEFAULT_EFFECT_COLORS };
+
+// カラーモードを通常のヘアカラーに戻す
+currentColorMode = "hair";
+
+// カラーモードボタンの表示を更新
+document.querySelectorAll(".color-mode-button").forEach(button => {
+  button.classList.toggle(
+    "active",
+    button.dataset.colorMode === "hair"
+  );
+});
 
     currentHairStop = "shadow";
     currentHairHue = 0;
