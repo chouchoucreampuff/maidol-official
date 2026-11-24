@@ -272,3 +272,42 @@ button {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
+
+
+/* 上部ズーム */
+.preview-frame {
+  overflow: hidden;
+}
+
+#character-canvas {
+  transform-origin: center top;
+  transition: transform 0.15s ease;
+}
+
+.zoom-control {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  margin-top: 12px;
+  padding: 10px;
+  border: 1px solid #f3d5e4;
+  border-radius: 12px;
+  background: #fffafd;
+  font-size: 12px;
+}
+
+.zoom-control input[type="range"] {
+  width: 130px;
+  accent-color: #e875a8;
+}
+
+.zoom-control button {
+  padding: 5px 10px;
+  border: 1px solid #edb7d0;
+  border-radius: 15px;
+  background: white;
+  color: #bd6792;
+  font-size: 11px;
+}
