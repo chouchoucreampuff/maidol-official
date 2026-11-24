@@ -13,8 +13,8 @@ const CATEGORY_NAMES = {
   HB: "後ろ髪",
   HF: "前髪",
   HFE: "前髪エフェクト",
-HBE: "後ろ髪エフェクト",
-  HA: "髪飾り", 
+  HBE: "後ろ髪エフェクト",
+  HA: "髪飾り",
   ES: "目の形",
   IC: "瞳の色",
   BR: "眉毛",
@@ -28,7 +28,6 @@ HBE: "後ろ髪エフェクト",
 
 // グラデーション位置
 const GRADIENT_POSITIONS = [0.10, 0.30, 0.65, 1.00];
-
 
 // 初期カラー（グレースケール）
 const DEFAULT_HAIR_COLORS = {
@@ -59,7 +58,6 @@ const HAIR_HUES = [
 const HAIR_SATURATION_LEVELS = [0.30, 0.60, 0.90];
 const HAIR_LIGHTNESS_LEVELS = [0.90, 0.70, 0.50, 0.30];
 
-
 // ========================================
 // HTML要素
 // ========================================
@@ -81,6 +79,7 @@ let faceOverlayEnabled = false;
 
 // ユーザーが設定する髪色
 let hairColors = { ...DEFAULT_HAIR_COLORS };
+
 // 現在編集中のグラデーション色
 let currentHairStop = "shadow";
 
@@ -94,6 +93,7 @@ let hairEffectColors = {
   HF: { ...DEFAULT_HAIR_EFFECT_COLORS.HF },
   HB: { ...DEFAULT_HAIR_EFFECT_COLORS.HB }
 };
+
 // 現在選択中の色相
 let currentHairHue = 0;
 
@@ -102,7 +102,7 @@ const selected = {
   HB: 1,
   HF: 1,
   HFE: null,
-HBE: null,
+  HBE: null,
   HA: null,
   ES: 1,
   IC: 1,
@@ -166,6 +166,7 @@ function loadImage(path) {
     const img = new Image();
 
     img.onload = () => resolve(img);
+
     img.onerror = () => {
       console.warn("画像を読み込めませんでした:", path);
       resolve(null);
@@ -202,7 +203,7 @@ async function drawAsset(path, alpha = 1, flip = false, colorize = false) {
 }
 
 // ========================================
-// 髪色変更
+// 色変換・補間
 // ========================================
 
 function hexToRgb(hex) {
@@ -215,7 +216,6 @@ function hexToRgb(hex) {
   };
 }
 
-// 2色間を補間
 function interpolateColor(color1, color2, amount) {
   return {
     r: color1.r + (color2.r - color1.r) * amount,
@@ -224,7 +224,10 @@ function interpolateColor(color1, color2, amount) {
   };
 }
 
-// 現在の髪色からグラデーションを作成
+// ========================================
+// 髪色変更
+// ========================================
+
 function getGradientColors() {
   return [
     hexToRgb(hairColors.shadow),
@@ -310,21 +313,9 @@ async function getColoredImage(path) {
   return temp;
 }
 
-
 // ========================================
 // パレット式ヘアカラー
 // ========================================
-
-// HEX → RGB
-function hexToRgb(hex) {
-  const value = hex.replace("#", "");
-
-  return {
-    r: parseInt(value.slice(0, 2), 16),
-    g: parseInt(value.slice(2, 4), 16),
-    b: parseInt(value.slice(4, 6), 16)
-  };
-}
 
 // RGB → HSL
 function rgbToHsl(r, g, b) {
@@ -407,7 +398,6 @@ function hslToHex(h, s, l) {
 // 色相ごとに3×4の色を自動生成
 function generateHairPalette(hueIndex) {
   const selectedHue = HAIR_HUES[hueIndex];
-  const palette = [];
 
   // モノトーン専用12色
   if (selectedHue.hue === null) {
@@ -420,6 +410,7 @@ function generateHairPalette(hueIndex) {
   }
 
   // 通常色は彩度3段階×明度4段階
+  const palette = [];
   const hue = selectedHue.hue;
 
   HAIR_LIGHTNESS_LEVELS.forEach(lightness => {
@@ -431,13 +422,18 @@ function generateHairPalette(hueIndex) {
   return palette;
 }
 
-// パレット画面を作成
+// ========================================
+// パレット画面
+// ========================================
+
 function createHairColorButtons() {
   const container = document.getElementById("hair-color-list");
   if (!container) return;
 
   // 色相ボタン
   const hueList = document.getElementById("hair-hue-list");
+
+  if (!hueList) return;
 
   hueList.innerHTML = "";
 
@@ -486,8 +482,10 @@ function createHairColorButtons() {
     currentHairHue = 0;
 
     coloredImageCache.clear();
+    hairEffectCache.clear();
 
     updateHairPalette();
+
     await renderCharacter();
 
     updateStatus("髪色を初期状態に戻しました。");
@@ -514,15 +512,18 @@ function updateHairPalette() {
   });
 
   // 色相名
-  document.getElementById("hair-hue-name").textContent =
-    HAIR_HUES[currentHairHue].name;
+  const hueName = document.getElementById("hair-hue-name");
+
+  if (hueName) {
+    hueName.textContent = HAIR_HUES[currentHairHue].name;
+  }
 
   // 色の一覧を生成
   const colors = generateHairPalette(currentHairHue);
 
   shadeList.innerHTML = "";
 
-  colors.forEach((color, index) => {
+  colors.forEach(color => {
     const button = document.createElement("button");
 
     button.type = "button";
@@ -541,6 +542,7 @@ function updateHairPalette() {
       coloredImageCache.clear();
 
       updateHairPalette();
+
       await renderCharacter();
 
       updateStatus(
@@ -554,8 +556,11 @@ function updateHairPalette() {
   });
 
   // 色の表示
-  document.getElementById("hair-selected-color").textContent =
-    hairColors[currentHairStop];
+  const selectedColor = document.getElementById("hair-selected-color");
+
+  if (selectedColor) {
+    selectedColor.textContent = hairColors[currentHairStop];
+  }
 
   // 編集中のタブ
   document.querySelectorAll(".hair-color-tab").forEach(button => {
@@ -777,6 +782,7 @@ async function drawHairWithEffect(
   // 3. 線画
   await drawAsset(linePath, 1, flip);
 }
+
 // ========================================
 // 塗りと線画
 // ========================================
@@ -889,13 +895,13 @@ async function renderCharacter(includeOverlay = true) {
   ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
   // 1. 後ろ髪
-await drawHairWithEffect(
-  "HB",
-  selected.HB,
-  "HBE",
-  selected.HBE,
-  hairFlip.HB
-);
+  await drawHairWithEffect(
+    "HB",
+    selected.HB,
+    "HBE",
+    selected.HBE,
+    hairFlip.HB
+  );
 
   // 2. 背面装飾
   await drawBackDecoration();
@@ -922,13 +928,13 @@ await drawHairWithEffect(
   await drawFaceParts();
 
   // 8. 前髪
-await drawHairWithEffect(
-  "HF",
-  selected.HF,
-  "HFE",
-  selected.HFE,
-  hairFlip.HF
-);
+  await drawHairWithEffect(
+    "HF",
+    selected.HF,
+    "HFE",
+    selected.HFE,
+    hairFlip.HF
+  );
 
   // 9. 半透明の顔パーツ
   if (includeOverlay && faceOverlayEnabled) {
@@ -1127,6 +1133,8 @@ function selectItem(category, number) {
 function setupFaceOverlay() {
   const checkbox = document.getElementById("face-overlay");
 
+  if (!checkbox) return;
+
   checkbox.addEventListener("change", async event => {
     faceOverlayEnabled = event.target.checked;
     await renderCharacter();
@@ -1141,6 +1149,8 @@ function setupZoom() {
   const slider = document.getElementById("preview-zoom");
   const valueLabel = document.getElementById("zoom-value");
   const resetButton = document.getElementById("zoom-reset");
+
+  if (!slider || !valueLabel || !resetButton || !canvas) return;
 
   function updateZoom() {
     const zoom = Number(slider.value);
@@ -1164,38 +1174,72 @@ function setupZoom() {
 // ========================================
 
 function setupReset() {
-  document.getElementById("reset-button").addEventListener("click", async () => {
+  const resetButton = document.getElementById("reset-button");
+
+  if (!resetButton) return;
+
+  resetButton.addEventListener("click", async () => {
+    // 選択パーツを初期化
     Object.keys(selected).forEach(key => {
-  selected[key] = 1;
-});
+      selected[key] = 1;
+    });
 
-selected.TP = null;
-selected.BT = null;
-selected.HA = null;
-selected.MK = null;
-selected.HBE = null;
-selected.HFE = null;
+    selected.TP = null;
+    selected.BT = null;
+    selected.HA = null;
+    selected.MK = null;
+    selected.HBE = null;
+    selected.HFE = null;
 
-  // 髪色を初期グレースケールに戻す
-hairColors = { ...DEFAULT_HAIR_COLORS };
-currentHairStop = "shadow";
-currentHairHue = 0;
-coloredImageCache.clear();
+    // 髪色を初期グレースケールに戻す
+    hairColors = { ...DEFAULT_HAIR_COLORS };
 
+    // エフェクト専用カラーも初期化
+    hairEffectColors = {
+      HF: { ...DEFAULT_HAIR_EFFECT_COLORS.HF },
+      HB: { ...DEFAULT_HAIR_EFFECT_COLORS.HB }
+    };
+
+    currentHairStop = "shadow";
+    currentHairHue = 0;
+
+    // 色変更後の画像キャッシュを消去
+    coloredImageCache.clear();
+    hairEffectCache.clear();
+
+    // 髪の反転を解除
     hairFlip.HF = false;
     hairFlip.HB = false;
 
+    // 顔パーツの半透明表示を解除
     faceOverlayEnabled = false;
-    document.getElementById("face-overlay").checked = false;
 
+    const faceOverlay = document.getElementById("face-overlay");
+
+    if (faceOverlay) {
+      faceOverlay.checked = false;
+    }
+
+    // ズームを初期化
     const zoomSlider = document.getElementById("preview-zoom");
+    const zoomValue = document.getElementById("zoom-value");
 
-    zoomSlider.value = 1;
-    canvas.style.transform = "scale(1)";
-    document.getElementById("zoom-value").textContent = "100%";
+    if (zoomSlider) {
+      zoomSlider.value = 1;
+    }
 
+    if (canvas) {
+      canvas.style.transform = "scale(1)";
+    }
+
+    if (zoomValue) {
+      zoomValue.textContent = "100%";
+    }
+
+    // パレット表示を更新
     updateHairPalette();
 
+    // カテゴリを前髪に戻す
     document.querySelectorAll("[data-category]").forEach(el => {
       el.classList.remove("active");
     });
@@ -1209,7 +1253,10 @@ coloredImageCache.clear();
     }
 
     currentCategory = "HF";
-    categoryTitle.textContent = CATEGORY_NAMES.HF;
+
+    if (categoryTitle) {
+      categoryTitle.textContent = CATEGORY_NAMES.HF;
+    }
 
     updateHairFlipButton();
     renderItemList();
@@ -1225,7 +1272,11 @@ coloredImageCache.clear();
 // ========================================
 
 function setupDownload() {
-  document.getElementById("download-button").addEventListener("click", async () => {
+  const downloadButton = document.getElementById("download-button");
+
+  if (!downloadButton) return;
+
+  downloadButton.addEventListener("click", async () => {
     updateStatus("画像を作成しています…");
 
     await renderCharacter(false);
