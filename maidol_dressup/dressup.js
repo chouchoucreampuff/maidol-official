@@ -1425,6 +1425,5 @@ async function initialize() {
     updateStatus("エラー：" + error.message);
   }
 }
-  alert("JSの読み込みは最後まで到達しました");
 
 initialize();
