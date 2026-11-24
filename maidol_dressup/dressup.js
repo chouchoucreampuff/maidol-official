@@ -265,29 +265,23 @@ async function drawHair() {
 }
 
 
+
 async function drawClothing() {
   if (selected.DR) {
     const number = selected.DR;
-    const groupName = manifest.categories.DR.group;
-    const group = groupName ? manifest.groups[groupName] : null;
 
-    // ワンピースの背面装飾
-    if (group?.sharedParts?.BK) {
-      await drawAsset(`assets/DR/${group.sharedParts.BK}`);
-    } else {
-      await drawAsset(getItemPath("DR", number, "_BK"));
-    }
-
-    // 袖
+    // 袖を先に描画
     await drawSleeves("DR", number);
 
-    // 服本体
+    // ワンピース本体
     await drawAsset(getItemPath("DR", number));
+
   } else {
-    // トップスの背面装飾
+    // トップスの袖
     if (selected.TP) {
-      await drawAsset(getItemPath("TP", selected.TP, "_BK"));
       await drawSleeves("TP", selected.TP);
+
+      // トップス本体
       await drawAsset(getItemPath("TP", selected.TP));
     }
 
@@ -297,6 +291,22 @@ async function drawClothing() {
     }
   }
 }
+
+async function drawBackDecoration() {
+  if (selected.DR) {
+    const groupName = manifest.categories.DR.group;
+    const group = groupName ? manifest.groups[groupName] : null;
+
+    if (group?.sharedParts?.BK) {
+      await drawAsset(`assets/DR/${group.sharedParts.BK}`);
+    } else {
+      await drawAsset(getItemPath("DR", selected.DR, "_BK"));
+    }
+  } else if (selected.TP) {
+    await drawAsset(getItemPath("TP", selected.TP, "_BK"));
+  }
+}
+
 
 async function drawSleeves(category, number) {
   const leftPath = getItemPath(category, number, "_AL");
@@ -318,25 +328,35 @@ async function drawSleeves(category, number) {
 }
 
 
+
 async function renderCharacter(includeOverlay = true) {
   ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
-  // 1. 後ろ髪（最背面）
+  // 1. 後ろ髪
   await drawFillAndLine("HB", selected.HB, true);
 
-  // 2. 服・背面装飾・袖・服本体
-  await drawClothing();
+  // 2. 背面装飾
+  await drawBackDecoration();
 
-  // 3. 身体
+  // 3. ボディ
   await drawAsset(getItemPath("SK", selected.SK));
 
-  // 4. 靴
-  await drawAsset(getItemPath("SH", selected.SH));
-
-  // 5. メイク
+  // 4. メイク
   await drawAsset(getItemPath("MK", selected.MK));
 
-  // 6. 顔パーツの半透明プレビュー
+  // 5. 靴
+  await drawAsset(getItemPath("SH", selected.SH));
+
+  // 6. 服
+  await drawClothing();
+
+  // 7. 顔パーツ
+  await drawFaceParts();
+
+  // 8. 前髪
+  await drawFillAndLine("HF", selected.HF, true);
+
+  // 9. 半透明の顔パーツ
   if (
     includeOverlay &&
     currentCategory === "HF" &&
@@ -345,16 +365,7 @@ async function renderCharacter(includeOverlay = true) {
     await drawFaceParts(0.45);
   }
 
-  // 7. 顔パーツ
-  await drawFillAndLine("ES", selected.ES);
-  await drawEyes();
-  await drawFillAndLine("MO", selected.MO);
-  await drawFillAndLine("BR", selected.BR, true);
-
-  // 8. 前髪
-  await drawFillAndLine("HF", selected.HF, true);
-
-  // 9. 髪飾り（最前面）
+  // 10. 髪飾り
   await drawAsset(getItemPath("HA", selected.HA));
 }
 
