@@ -81,51 +81,72 @@
 
       <section class="control-area">
 
-     
-<section class="control-box">
-  <h2>♡ ヘアカラー</h2>
-  <p class="help-text">前髪・後ろ髪・眉毛の色をまとめて変更します。</p>
+        <!-- カラー設定 -->
+        <section class="control-box">
+          <h2>♡ カラー設定</h2>
 
-  <div id="hair-color-list" class="hair-palette">
+          <p class="help-text">
+            ヘアカラーとエフェクトカラーを切り替えて設定できます。
+          </p>
 
-    <div class="hair-color-tabs">
-      <button type="button" class="hair-color-tab active" data-stop="shadow">影</button>
-      <button type="button" class="hair-color-tab" data-stop="main">メイン</button>
-      <button type="button" class="hair-color-tab" data-stop="highlight">ハイライト</button>
-    </div>
+          <!-- カラーモード切り替え -->
+          <div id="color-mode-switch" class="color-mode-switch">
+            <button
+              type="button"
+              class="color-mode-button active"
+              data-color-mode="hair">
+              ♡ ヘアカラー
+            </button>
 
-    <div class="hair-palette-heading">
-      <span>色相を選択</span>
-      <span id="hair-hue-name">赤</span>
-    </div>
+            <button
+              type="button"
+              class="color-mode-button"
+              data-color-mode="effect">
+              ♡ エフェクトカラー
+            </button>
+          </div>
 
-    <div id="hair-hue-list" class="hair-hue-list"></div>
+          <!-- 共通パレット -->
+          <div id="hair-color-list" class="hair-palette">
 
-    <div class="hair-palette-heading">
-      <span>彩度・明度</span>
-      <span id="hair-selected-color">#777777</span>
-    </div>
+            <div class="hair-color-tabs">
+              <button type="button" class="hair-color-tab active" data-stop="shadow">影</button>
+              <button type="button" class="hair-color-tab" data-stop="main">メイン</button>
+              <button type="button" class="hair-color-tab" data-stop="highlight">ハイライト</button>
+            </div>
 
-    <div id="hair-shade-list" class="hair-shade-list"></div>
+            <div class="hair-palette-heading">
+              <span>色相を選択</span>
+              <span id="hair-hue-name">赤</span>
+            </div>
 
-    <p class="hair-palette-note">
-      100%地点の白は固定です。
-    </p>
+            <div id="hair-hue-list" class="hair-hue-list"></div>
 
-  </div>
-</section>
+            <div class="hair-palette-heading">
+              <span>彩度・明度</span>
+              <span id="hair-selected-color">#666666</span>
+            </div>
 
+            <div id="hair-shade-list" class="hair-shade-list"></div>
 
+            <p class="hair-palette-note">
+              100%地点の白は固定です。
+            </p>
+
+          </div>
+        </section>
+
+        <!-- アイテム -->
         <section class="control-box">
           <h2>♡ アイテム</h2>
 
           <nav id="category-list" class="category-list">
             <button type="button" data-category="SK">肌</button>
-  <button type="button" data-category="HB">後ろ髪</button>
-<button type="button" data-category="HBE">後ろ髪エフェクト</button>
-<button type="button" data-category="HF" class="active">前髪</button>
-<button type="button" data-category="HFE">前髪エフェクト</button>
-<button type="button" data-category="HA">髪飾り</button>
+            <button type="button" data-category="HB">後ろ髪</button>
+            <button type="button" data-category="HBE">後ろ髪エフェクト</button>
+            <button type="button" data-category="HF" class="active">前髪</button>
+            <button type="button" data-category="HFE">前髪エフェクト</button>
+            <button type="button" data-category="HA">髪飾り</button>
             <button type="button" data-category="ES">目の形</button>
             <button type="button" data-category="IC">瞳の色</button>
             <button type="button" data-category="BR">眉毛</button>
