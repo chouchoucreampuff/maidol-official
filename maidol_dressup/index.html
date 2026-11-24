@@ -1,176 +1,82 @@
 
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#fff0f7">
-  <title>MAIDOL DRESS UP ♡</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>メイドル♡きせかえ</title>
   <link rel="stylesheet" href="dressup.css">
   <script src="dressup.js" defer></script>
 </head>
-
 <body>
-  <div class="app">
+  <header class="site-header">
+    <h1>♡ メイドル きせかえ ♡</h1>
+    <p>すきなコーディネートをつくってね！</p>
+  </header>
 
-    <!-- ヘッダー -->
-    <header class="header">
-      <div class="header-logo">
-        <span class="logo-decoration">♡</span>
-        <div>
-          <h1>MAIDOL DRESS UP</h1>
-          <p>MOE MOE ♡ CUTE COORDINATE</p>
-        </div>
-        <span class="logo-decoration">♡</span>
+  <main class="app">
+    <section class="preview-area">
+      <div class="preview-frame">
+        <canvas id="character-canvas" width="1500" height="3000"></canvas>
       </div>
-    </header>
 
-    <!-- メイン -->
-    <main class="main-layout">
+      <div class="preview-options">
+        <label class="check-option">
+          <input type="checkbox" id="face-overlay">
+          前髪選択中に顔パーツを重ねて表示
+        </label>
+      </div>
 
-      <!-- 左：キャラクタープレビュー -->
-      <section class="preview-section">
+      <div class="action-buttons">
+        <button id="reset-button" type="button">リセット</button>
+        <button id="download-button" type="button">PNGで保存</button>
+      </div>
+      <p id="status-message" aria-live="polite"></p>
+    </section>
 
-        <div class="section-heading">
-          <span>♡</span>
-          <h2>CHARACTER</h2>
-          <span>♡</span>
-        </div>
-
-        <div class="character-card">
-
-          <div class="preview-decoration decoration-top">
-            ✧ ♡ ✧
-          </div>
-
-          <div id="character-stage" class="character-stage">
-
-            <!-- キャラクター画像の表示領域 -->
-            <div id="character-layers" class="character-layers">
-              <p class="loading-message">
-                ♡ CHARACTER ♡
-                <br>
-                <span>素材を読み込みます</span>
-              </p>
-            </div>
-
-          </div>
-
-          <div class="preview-decoration decoration-bottom">
-            ♡ ✧ ♡ ✧ ♡
-          </div>
-
-        </div>
-
-        <div class="preview-footer">
-          <span>✧ YOUR ORIGINAL MAIDOL ✧</span>
-        </div>
-
+    <section class="control-area">
+      <section class="control-box">
+        <h2>♡ ヘアカラー</h2>
+        <p class="help-text">前髪・後ろ髪・眉毛の色をまとめて変更します。</p>
+        <div id="hair-color-list" class="color-list"></div>
       </section>
 
-      <!-- 右：アイテム選択 -->
-      <section class="item-section">
-
-        <div class="section-heading">
-          <span>♡</span>
-          <h2>ITEM SELECT</h2>
-          <span>♡</span>
+      <section class="control-box">
+        <h2>♡ 瞳の色</h2>
+        <p class="help-text">左右の瞳を別々に設定できます。</p>
+        <div class="eye-targets">
+          <button type="button" class="target-button active" data-eye-target="both">左右同じ色</button>
+          <button type="button" class="target-button" data-eye-target="left">画面左の瞳</button>
+          <button type="button" class="target-button" data-eye-target="right">画面右の瞳</button>
         </div>
+        <label class="check-option">
+          <input type="checkbox" id="same-eye-color" checked>
+          左右の瞳を同じ色にする
+        </label>
+      </section>
 
-        <!-- カテゴリー -->
-        <nav class="category-list" aria-label="アイテムカテゴリー">
-
-          <button class="category-button active" data-category="SK">
-            素体
-          </button>
-
-          <button class="category-button" data-category="HB">
-            後ろ髪
-          </button>
-
-          <button class="category-button" data-category="HF">
-            前髪
-          </button>
-
-          <button class="category-button" data-category="HA">
-            髪飾り
-          </button>
-
-          <button class="category-button" data-category="ES">
-            目の形
-          </button>
-
-          <button class="category-button" data-category="IC">
-            瞳の色
-          </button>
-
-          <button class="category-button" data-category="BR">
-            眉
-          </button>
-
-          <button class="category-button" data-category="MO">
-            口
-          </button>
-
-          <button class="category-button" data-category="MK">
-            メイク
-          </button>
-
-          <button class="category-button" data-category="DR">
-            ワンピース
-          </button>
-
-          <button class="category-button" data-category="TP">
-            トップス
-          </button>
-
-          <button class="category-button" data-category="BT">
-            ボトムス
-          </button>
-
-          <button class="category-button" data-category="SH">
-            シューズ
-          </button>
-
+      <section class="control-box">
+        <h2>♡ アイテム</h2>
+        <nav id="category-list" class="category-list">
+          <button type="button" data-category="SK">肌</button>
+          <button type="button" data-category="HB">後ろ髪</button>
+          <button type="button" data-category="HF" class="active">前髪</button>
+          <button type="button" data-category="HA">髪飾り</button>
+          <button type="button" data-category="ES">目の形</button>
+          <button type="button" data-category="IC">瞳の色</button>
+          <button type="button" data-category="BR">眉毛</button>
+          <button type="button" data-category="MO">口</button>
+          <button type="button" data-category="MK">メイク</button>
+          <button type="button" data-category="DR">ワンピース</button>
+          <button type="button" data-category="TP">トップス</button>
+          <button type="button" data-category="BT">ボトムス</button>
+          <button type="button" data-category="SH">靴</button>
         </nav>
 
-        <!-- 選択中カテゴリー -->
-        <div class="item-panel">
-
-          <div class="item-panel-heading">
-            <h3 id="category-title">素体</h3>
-            <span>SELECT ITEM ♡</span>
-          </div>
-
-          <div id="item-list" class="item-list">
-            <p class="empty-message">
-              アイテムを読み込みます ♡
-            </p>
-          </div>
-
-        </div>
-
-        <!-- 操作ボタン -->
-        <div class="action-buttons">
-          <button id="reset-button" class="action-button reset-button">
-            ↻ RESET
-          </button>
-
-          <button id="download-button" class="action-button download-button">
-            ♡ PNG EXPORT
-          </button>
-        </div>
-
+        <h3 id="category-title">前髪</h3>
+        <div id="item-list" class="item-list"></div>
       </section>
-
-    </main>
-
-    <!-- フッター -->
-    <footer class="footer">
-      <p>♡ MOE MOE ♡ CUTE MAIDOL !! ♡</p>
-    </footer>
-
-  </div>
+    </section>
+  </main>
 </body>
 </html>
