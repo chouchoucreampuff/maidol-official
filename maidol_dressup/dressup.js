@@ -399,13 +399,13 @@ function generateHairPalette(hueIndex) {
   const palette = [];
 
   // モノトーン専用パレット
-  if (selectedHue.hue === null) {
-    return [
-      "#D9D9D9", "#C5C5C5", "#B0B0B0",
-      "#999999", "#858585", "#707070",
-      "#595959", "#454545", "#303030"
-    ];
-  }
+if (selectedHue.hue === null) {
+  return [
+    "#FFFFFF", "#F0F0F0", "#E0E0E0",
+    "#C8C8C8", "#B0B0B0", "#989898",
+    "#707070", "#505050", "#303030"
+  ];
+}
 
   // 通常色は3×3で生成
   const hue = selectedHue.hue;
