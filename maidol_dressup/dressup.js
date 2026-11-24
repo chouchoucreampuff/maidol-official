@@ -55,11 +55,8 @@ const HAIR_HUES = [
 { name: "モノトーン", base: "#A5A5A5", hue: null }
 ];
 
-// 彩度：低・中・高
 const HAIR_SATURATION_LEVELS = [0.30, 0.60, 0.90];
-
-// 明度：明・中・暗
-const HAIR_LIGHTNESS_LEVELS = [0.80, 0.55, 0.30];
+const HAIR_LIGHTNESS_LEVELS = [0.90, 0.70, 0.50, 0.30];
 
 
 // ========================================
@@ -393,21 +390,22 @@ function hslToHex(h, s, l) {
   ).toUpperCase();
 }
 
-// 色相ごとに3×3の色を自動生成
+// 色相ごとに3×4の色を自動生成
 function generateHairPalette(hueIndex) {
   const selectedHue = HAIR_HUES[hueIndex];
   const palette = [];
 
-  // モノトーン専用パレット
-if (selectedHue.hue === null) {
-  return [
-    "#FFFFFF", "#F0F0F0", "#E0E0E0",
-    "#C8C8C8", "#B0B0B0", "#989898",
-    "#707070", "#505050", "#303030"
-  ];
-}
+  // モノトーン専用12色
+  if (selectedHue.hue === null) {
+    return [
+      "#FFFFFF", "#F5F5F5", "#EBEBEB",
+      "#DCDCDC", "#CCCCCC", "#BBBBBB",
+      "#AAAAAA", "#999999", "#858585",
+      "#707070", "#505050", "#303030"
+    ];
+  }
 
-  // 通常色は3×3で生成
+  // 通常色は彩度3段階×明度4段階
   const hue = selectedHue.hue;
 
   HAIR_LIGHTNESS_LEVELS.forEach(lightness => {
