@@ -1,4 +1,10 @@
 
+"use strict";
+
+// ========================================
+// 基本設定
+// ========================================
+
 const CANVAS_WIDTH = 1500;
 const CANVAS_HEIGHT = 3000;
 
@@ -18,8 +24,7 @@ const CATEGORY_NAMES = {
   SH: "靴"
 };
 
-// 髪色のカラーコード
-// stopsの位置は暗い順に10%、30%、65%、100%です。
+// 髪色の設定
 const HAIR_COLORS = [
   { name: "赤", stops: ["#79212D", "#D94355", "#FF9A9F", "#FFFFFF"] },
   { name: "オレンジ", stops: ["#873B20", "#E97835", "#FFC08A", "#FFFFFF"] },
@@ -42,12 +47,22 @@ const HAIR_COLORS = [
 
 const GRADIENT_POSITIONS = [0.10, 0.30, 0.65, 1.00];
 
+
+// ========================================
+// HTML要素
+// ========================================
+
 const canvas = document.getElementById("character-canvas");
-const ctx = canvas.getContext("2d");
+const ctx = canvas ? canvas.getContext("2d") : null;
 
 const itemList = document.getElementById("item-list");
 const categoryTitle = document.getElementById("category-title");
 const statusMessage = document.getElementById("status-message");
+
+
+// ========================================
+// 状態管理
+// ========================================
 
 let manifest = null;
 let currentCategory = "HF";
@@ -70,18 +85,48 @@ const selected = {
   SH: null
 };
 
+// 前髪と後ろ髪は別々に反転
+const hairFlip = {
+  HF: false,
+  HB: false
+};
+
+// 読み込んだ画像を保存
 const imageCache = new Map();
 const coloredImageCache = new Map();
 
 
-// ------------------------------
-// 画像読み込み
-// ------------------------------
+// ========================================
+// 共通処理
+// ========================================
+
+function updateStatus(message) {
+  if (statusMessage) {
+    statusMessage.textContent = message;
+  }
+}
 
 function assetPath(category, number, suffix = "") {
   const id = String(number).padStart(5, "0");
   return `assets/${category}/${category}${id}${suffix}.png`;
 }
+
+function getItemPath(category, number, suffix = "") {
+  return assetPath(category, number, suffix);
+}
+
+function getCategoryCount(category) {
+  return manifest?.categories?.[category]?.count || 0;
+}
+
+function getSelectedNumber(category) {
+  return selected[category];
+}
+
+
+// ========================================
+// 画像読み込み
+// ========================================
 
 function loadImage(path) {
   if (imageCache.has(path)) {
@@ -92,7 +137,10 @@ function loadImage(path) {
     const img = new Image();
 
     img.onload = () => resolve(img);
-    img.onerror = () => resolve(null);
+    img.onerror = () => {
+      console.warn("画像を読み込めませんでした:", path);
+      resolve(null);
+    };
 
     img.src = path;
   });
@@ -102,6 +150,8 @@ function loadImage(path) {
 }
 
 async function drawAsset(path, alpha = 1, flip = false, colorize = false) {
+  if (!path) return;
+
   let img = await loadImage(path);
 
   if (!img) return;
@@ -124,9 +174,19 @@ async function drawAsset(path, alpha = 1, flip = false, colorize = false) {
 }
 
 
-// ------------------------------
+// ========================================
 // 髪色変更
-// ------------------------------
+// ========================================
+
+function hexToRgb(hex) {
+  const value = hex.replace("#", "");
+
+  return {
+    r: parseInt(value.slice(0, 2), 16),
+    g: parseInt(value.slice(2, 4), 16),
+    b: parseInt(value.slice(4, 6), 16)
+  };
+}
 
 async function getColoredImage(path, colorIndex) {
   const cacheKey = `${path}_${colorIndex}`;
@@ -156,14 +216,13 @@ async function getColoredImage(path, colorIndex) {
   const colors = HAIR_COLORS[colorIndex].stops.map(hexToRgb);
 
   for (let i = 0; i < pixels.length; i += 4) {
-    const alpha = pixels[i + 3];
+    if (pixels[i + 3] === 0) continue;
 
-    if (alpha === 0) continue;
-
-    const brightness =
-      (0.299 * pixels[i] +
-       0.587 * pixels[i + 1] +
-       0.114 * pixels[i + 2]) / 255;
+    const brightness = (
+      0.299 * pixels[i] +
+      0.587 * pixels[i + 1] +
+      0.114 * pixels[i + 2]
+    ) / 255;
 
     let segment = 0;
 
@@ -193,40 +252,14 @@ async function getColoredImage(path, colorIndex) {
   tempCtx.putImageData(imageData, 0, 0);
 
   coloredImageCache.set(cacheKey, temp);
+
   return temp;
 }
 
-function hexToRgb(hex) {
-  const value = hex.replace("#", "");
 
-  return {
-    r: parseInt(value.slice(0, 2), 16),
-    g: parseInt(value.slice(2, 4), 16),
-    b: parseInt(value.slice(4, 6), 16)
-  };
-}
-
-
-// ------------------------------
-// アイテム情報
-// ------------------------------
-
-function getSelectedNumber(category) {
-  return selected[category];
-}
-
-function getCategoryCount(category) {
-  return manifest?.categories?.[category]?.count || 0;
-}
-
-function getItemPath(category, number, suffix = "") {
-  return assetPath(category, number, suffix);
-}
-
-
-// ------------------------------
+// ========================================
 // 塗りと線画
-// ------------------------------
+// ========================================
 
 async function drawFillAndLine(
   category,
@@ -240,19 +273,14 @@ async function drawFillAndLine(
   const fillPath = getItemPath(category, number);
   const linePath = getItemPath(category, number, "_LN");
 
-  if (colorize) {
-    await drawAsset(fillPath, alpha, flip, true);
-  } else {
-    await drawAsset(fillPath, alpha, flip);
-  }
-
+  await drawAsset(fillPath, alpha, flip, colorize);
   await drawAsset(linePath, alpha, flip);
 }
 
 
-// ------------------------------
+// ========================================
 // 顔パーツ
-// ------------------------------
+// ========================================
 
 async function drawFaceParts(alpha = 1) {
   // 1. 瞳の色
@@ -274,11 +302,13 @@ async function drawFaceParts(alpha = 1) {
 }
 
 
-// ------------------------------
+// ========================================
 // 袖
-// ------------------------------
+// ========================================
 
 async function drawSleeves(category, number) {
+  if (!number) return;
+
   const leftPath = getItemPath(category, number, "_AL");
   const rightPath = getItemPath(category, number, "_AR");
 
@@ -298,9 +328,9 @@ async function drawSleeves(category, number) {
 }
 
 
-// ------------------------------
+// ========================================
 // 服
-// ------------------------------
+// ========================================
 
 async function drawClothing() {
   if (selected.DR) {
@@ -309,19 +339,15 @@ async function drawClothing() {
     // 袖を先に描画
     await drawSleeves("DR", number);
 
-    // ワンピース本体を後から描画
+    // ワンピース本体
     await drawAsset(getItemPath("DR", number));
 
   } else {
     if (selected.TP) {
-      // トップスの袖
       await drawSleeves("TP", selected.TP);
-
-      // トップス本体
       await drawAsset(getItemPath("TP", selected.TP));
     }
 
-    // ボトムス
     if (selected.BT) {
       await drawAsset(getItemPath("BT", selected.BT));
     }
@@ -329,40 +355,45 @@ async function drawClothing() {
 }
 
 
-// ------------------------------
+// ========================================
 // 背面装飾
-// ------------------------------
+// ========================================
 
 async function drawBackDecoration() {
   if (selected.DR) {
-    const groupName = manifest.categories.DR.group;
-    const group = groupName ? manifest.groups[groupName] : null;
+    const groupName = manifest?.categories?.DR?.group;
+    const group = groupName ? manifest?.groups?.[groupName] : null;
 
     if (group?.sharedParts?.BK) {
       await drawAsset(`assets/DR/${group.sharedParts.BK}`);
     } else {
-      await drawAsset(
-        getItemPath("DR", selected.DR, "_BK")
-      );
+      await drawAsset(getItemPath("DR", selected.DR, "_BK"));
     }
 
   } else if (selected.TP) {
-    await drawAsset(
-      getItemPath("TP", selected.TP, "_BK")
-    );
+    await drawAsset(getItemPath("TP", selected.TP, "_BK"));
   }
 }
 
 
-// ------------------------------
+// ========================================
 // キャラクター描画
-// ------------------------------
+// ========================================
 
 async function renderCharacter(includeOverlay = true) {
+  if (!ctx) return;
+
   ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
   // 1. 後ろ髪
-  await drawFillAndLine("HB", selected.HB, true, 1, hairFlip.HB);
+  await drawFillAndLine(
+    "HB",
+    selected.HB,
+    true,
+    1,
+    hairFlip.HB
+  );
+
   // 2. 背面装飾
   await drawBackDecoration();
 
@@ -372,10 +403,14 @@ async function renderCharacter(includeOverlay = true) {
   }
 
   // 4. メイク
-  await drawAsset(getItemPath("MK", selected.MK));
+  if (selected.MK) {
+    await drawAsset(getItemPath("MK", selected.MK));
+  }
 
   // 5. 靴
-  await drawAsset(getItemPath("SH", selected.SH));
+  if (selected.SH) {
+    await drawAsset(getItemPath("SH", selected.SH));
+  }
 
   // 6. 服
   await drawClothing();
@@ -384,7 +419,13 @@ async function renderCharacter(includeOverlay = true) {
   await drawFaceParts();
 
   // 8. 前髪
-  await drawFillAndLine("HF", selected.HF, true, 1, hairFlip.HF);
+  await drawFillAndLine(
+    "HF",
+    selected.HF,
+    true,
+    1,
+    hairFlip.HF
+  );
 
   // 9. 半透明の顔パーツ
   if (includeOverlay && faceOverlayEnabled) {
@@ -392,25 +433,21 @@ async function renderCharacter(includeOverlay = true) {
   }
 
   // 10. 髪飾り
-  await drawAsset(getItemPath("HA", selected.HA));
+  if (selected.HA) {
+    await drawAsset(getItemPath("HA", selected.HA));
+  }
 }
 
 
-// ------------------------------
-// 状態表示
-// ------------------------------
-
-function updateStatus(message) {
-  statusMessage.textContent = message;
-}
-
-
-// ------------------------------
-// 髪色ボタン
-// ------------------------------
+// ========================================
+// ヘアカラー選択
+// ========================================
 
 function createHairColorButtons() {
   const container = document.getElementById("hair-color-list");
+
+  if (!container) return;
+
   container.innerHTML = "";
 
   HAIR_COLORS.forEach((color, index) => {
@@ -448,52 +485,31 @@ function createHairColorButtons() {
 }
 
 
-// ------------------------------
-// カテゴリボタン
-// ------------------------------
+// ========================================
+// 髪の左右反転
+// ========================================
 
-function createCategoryButtons() {
-  document.querySelectorAll("[data-category]").forEach(button => {
-    button.addEventListener("click", async () => {
-      currentCategory = button.dataset.category;
-      const flipControls = document.getElementById("hair-flip-controls");
+function updateHairFlipButton() {
+  const container = document.getElementById("hair-flip-controls");
+  const button = document.getElementById("hair-flip-button");
 
-if (flipControls) {
-  flipControls.style.display =
-    currentCategory === "HF" || currentCategory === "HB"
-      ? "flex"
-      : "none";
-}
+  if (!container || !button) return;
 
-const flipButton = document.getElementById("hair-flip-button");
+  const isHairCategory =
+    currentCategory === "HF" || currentCategory === "HB";
 
-if (flipButton && (currentCategory === "HF" || currentCategory === "HB")) {
-  flipButton.textContent = hairFlip[currentCategory]
+  container.style.display = isHairCategory ? "flex" : "none";
+
+  if (!isHairCategory) return;
+
+  button.textContent = hairFlip[currentCategory]
     ? "↔ 反転中（元に戻す）"
     : "↔ 左右反転";
 
-  flipButton.style.background = hairFlip[currentCategory]
+  button.style.background = hairFlip[currentCategory]
     ? "#ffe4f1"
     : "#fffafd";
 }
-
-      document.querySelectorAll("[data-category]").forEach(el => {
-        el.classList.remove("active");
-      });
-
-      button.classList.add("active");
-
-      categoryTitle.textContent = CATEGORY_NAMES[currentCategory];
-
-      renderItemList();
-      await renderCharacter();
-    });
-  });
-}
-
-// ------------------------------
-// 髪の左右反転ボタン
-// ------------------------------
 
 function setupHairFlipButtons() {
   const container = document.createElement("div");
@@ -518,7 +534,6 @@ function setupHairFlipButtons() {
   button.style.cursor = "pointer";
 
   container.appendChild(button);
-
   categoryTitle.after(container);
 
   button.addEventListener("click", async () => {
@@ -528,21 +543,45 @@ function setupHairFlipButtons() {
 
     hairFlip[currentCategory] = !hairFlip[currentCategory];
 
-    button.textContent = hairFlip[currentCategory]
-      ? "↔ 反転中（元に戻す）"
-      : "↔ 左右反転";
-
-    button.style.background = hairFlip[currentCategory]
-      ? "#ffe4f1"
-      : "#fffafd";
+    updateHairFlipButton();
 
     await renderCharacter();
   });
+
+  updateHairFlipButton();
 }
 
-// ------------------------------
+
+// ========================================
+// カテゴリ選択
+// ========================================
+
+function createCategoryButtons() {
+  document.querySelectorAll("[data-category]").forEach(button => {
+    button.addEventListener("click", async () => {
+      currentCategory = button.dataset.category;
+
+      document.querySelectorAll("[data-category]").forEach(el => {
+        el.classList.remove("active");
+      });
+
+      button.classList.add("active");
+
+      categoryTitle.textContent = CATEGORY_NAMES[currentCategory];
+
+      updateHairFlipButton();
+
+      renderItemList();
+
+      await renderCharacter();
+    });
+  });
+}
+
+
+// ========================================
 // アイテム一覧
-// ------------------------------
+// ========================================
 
 function renderItemList() {
   itemList.innerHTML = "";
@@ -590,9 +629,9 @@ function renderItemList() {
 }
 
 
-// ------------------------------
-// アイテム選択
-// ------------------------------
+// ========================================
+// アイテム選択ルール
+// ========================================
 
 function selectItem(category, number) {
   if (category === "DR") {
@@ -612,23 +651,23 @@ function selectItem(category, number) {
 }
 
 
-// ------------------------------
-// 顔パーツの仮表示
-// ------------------------------
+// ========================================
+// 顔パーツの半透明表示
+// ========================================
 
 function setupFaceOverlay() {
   const checkbox = document.getElementById("face-overlay");
 
-  checkbox.addEventListener("change", event => {
+  checkbox.addEventListener("change", async event => {
     faceOverlayEnabled = event.target.checked;
-    renderCharacter();
+    await renderCharacter();
   });
 }
 
 
-// ------------------------------
+// ========================================
 // ズーム
-// ------------------------------
+// ========================================
 
 function setupZoom() {
   const slider = document.getElementById("preview-zoom");
@@ -653,9 +692,9 @@ function setupZoom() {
 }
 
 
-// ------------------------------
-// 初期化ボタン
-// ------------------------------
+// ========================================
+// リセット
+// ========================================
 
 function setupReset() {
   document.getElementById("reset-button").addEventListener("click", async () => {
@@ -666,25 +705,37 @@ function setupReset() {
     selected.SK = 1;
 
     currentHairColor = 0;
-hairFlip.HF = false;
-hairFlip.HB = false;
-    document.getElementById("face-overlay").checked = false;
+
+    hairFlip.HF = false;
+    hairFlip.HB = false;
+
     faceOverlayEnabled = false;
-    
-// 髪の左右反転状態
-const hairFlip = {
-  HF: false,
-  HB: false
-};
+    document.getElementById("face-overlay").checked = false;
+
     const zoomSlider = document.getElementById("preview-zoom");
 
-    if (zoomSlider) {
-      zoomSlider.value = 1;
-      canvas.style.transform = "scale(1)";
-      document.getElementById("zoom-value").textContent = "100%";
-    }
+    zoomSlider.value = 1;
+    canvas.style.transform = "scale(1)";
+    document.getElementById("zoom-value").textContent = "100%";
 
     createHairColorButtons();
+
+    document.querySelectorAll("[data-category]").forEach(el => {
+      el.classList.remove("active");
+    });
+
+    const initialCategoryButton = document.querySelector(
+      '[data-category="HF"]'
+    );
+
+    if (initialCategoryButton) {
+      initialCategoryButton.classList.add("active");
+    }
+
+    currentCategory = "HF";
+    categoryTitle.textContent = CATEGORY_NAMES.HF;
+
+    updateHairFlipButton();
     renderItemList();
 
     await renderCharacter();
@@ -694,19 +745,21 @@ const hairFlip = {
 }
 
 
-// ------------------------------
+// ========================================
 // PNG保存
-// ------------------------------
+// ========================================
 
 function setupDownload() {
   document.getElementById("download-button").addEventListener("click", async () => {
     updateStatus("画像を作成しています…");
 
+    // オーバーレイを含めずに描画
     await renderCharacter(false);
 
     canvas.toBlob(blob => {
       if (!blob) {
         updateStatus("画像の保存に失敗しました。");
+        renderCharacter();
         return;
       }
 
@@ -720,33 +773,48 @@ function setupDownload() {
       URL.revokeObjectURL(url);
 
       updateStatus("PNGを保存しました。");
+
+      // 通常のプレビューに戻す
       renderCharacter();
     }, "image/png");
   });
 }
 
 
-// ------------------------------
-// 起動処理
-// ------------------------------
+// ========================================
+// 初期化
+// ========================================
 
 async function initialize() {
   try {
+    if (!canvas || !ctx) {
+      throw new Error("プレビュー用canvasが見つかりません。");
+    }
+
+    if (!itemList || !categoryTitle || !statusMessage) {
+      throw new Error("HTML内の必要な要素が見つかりません。");
+    }
+
+    updateStatus("データを読み込んでいます…");
+
     const response = await fetch("manifest.json");
 
     if (!response.ok) {
-      throw new Error("manifest.jsonを読み込めませんでした。");
+      throw new Error(
+        `manifest.jsonの読み込みに失敗しました（${response.status}）`
+      );
     }
 
     manifest = await response.json();
 
+    if (!manifest.categories) {
+      throw new Error("manifest.jsonにcategoriesがありません。");
+    }
+
     createHairColorButtons();
     createCategoryButtons();
     setupHairFlipButtons();
-
-    // ズーム機能を起動
     setupZoom();
-
     setupFaceOverlay();
     setupReset();
     setupDownload();
@@ -759,9 +827,11 @@ async function initialize() {
 
     updateStatus("読み込みが完了しました。");
 
-} catch (error) {
-  console.error(error);
-  updateStatus("エラー：" + error.message);
+  } catch (error) {
+    console.error("きせかえ初期化エラー:", error);
+    updateStatus("エラー：" + error.message);
+  }
 }
 
+// ページ読み込み後に起動
 initialize();
