@@ -1,86 +1,127 @@
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#fff2fb">
+  <meta name="description" content="メイドルのキャラクターを自由にコーディネートできる着せ替えページです。">
   <title>メイドル♡きせかえ</title>
+
+  <link rel="stylesheet" href="../css/common.css">
   <link rel="stylesheet" href="dressup.css">
-  <script src="dressup.js" defer></script>
 </head>
-<body>
+
+<body class="dressup-page">
+
+  <!-- 共通ヘッダー -->
   <header class="site-header">
-    <h1>♡ メイドル きせかえ ♡</h1>
-    <p>すきなコーディネートをつくってね！</p>
+    <a class="mini-brand" href="../index.html" aria-label="メイドル トップ">
+      <img src="../assets/mini-logo.png" alt="メイドル!!">
+    </a>
+
+    <button class="menu-toggle"
+      type="button"
+      aria-label="メニューを開く"
+      aria-expanded="false"
+      aria-controls="site-menu">
+      <span></span><span></span><span></span>
+    </button>
+
+    <nav class="site-menu" id="site-menu" aria-hidden="true">
+      <a href="../index.html">TOP <small>トップ</small></a>
+      <a href="../characters.html">CHARACTER <small>キャラクター</small></a>
+      <a href="../story.html">STORY <small>ストーリー</small></a>
+      <a href="../rhythm.html">RHYTHM GAME <small>リズムゲーム</small></a>
+      <a href="../diagnosis.html">WHICH MAIDOL? <small>メイドル診断</small></a>
+      <a href="../omikuji.html">TODAY'S FORTUNE <small>メイドルおみくじ</small></a>
+      <a href="../sns.html">OFFICIAL SNS <small>公式SNS</small></a>
+    </nav>
   </header>
 
-  <main class="app">
-    <section class="preview-area">
-      <div class="preview-frame">
-        <canvas id="character-canvas" width="1500" height="3000"></canvas>
-      </div>
+  <main class="page-wrap">
 
-      
-<div class="preview-options">
-  <label class="check-option">
-    <input type="checkbox" id="face-overlay">
-    前髪選択中に顔パーツを重ねて表示
-  </label>
-
-  <div class="zoom-control">
-    <label for="preview-zoom">顔まわりのズーム</label>
-    <input
-      type="range"
-      id="preview-zoom"
-      min="1"
-      max="3"
-      step="0.1"
-      value="1"
-    >
-    <span id="zoom-value">100%</span>
-    <button type="button" id="zoom-reset">リセット</button>
-  </div>
-</div>
-
-
-      <div class="action-buttons">
-        <button id="reset-button" type="button">リセット</button>
-        <button id="download-button" type="button">PNGで保存</button>
-      </div>
-      <p id="status-message" aria-live="polite"></p>
+    <!-- ページタイトル -->
+    <section class="page-heading">
+      <p class="eyebrow">♡ MAIDOL DRESS UP ♡</p>
+      <h1>メイドル きせかえ</h1>
+      <p>すきなコーディネートをつくってね！</p>
+      <span class="heading-sparkle">✧ ♡ ✧</span>
     </section>
 
-    <section class="control-area">
-      <section class="control-box">
-        <h2>♡ ヘアカラー</h2>
-        <p class="help-text">前髪・後ろ髪・眉毛の色をまとめて変更します。</p>
-        <div id="hair-color-list" class="color-list"></div>
+    <!-- 着せ替えアプリ -->
+    <div class="app">
+
+      <section class="preview-area">
+        <div class="preview-frame">
+          <canvas id="character-canvas" width="1500" height="3000"></canvas>
+        </div>
+
+        <div class="preview-options">
+          <label class="check-option">
+            <input type="checkbox" id="face-overlay">
+            前髪選択中に顔パーツを重ねて表示
+          </label>
+
+          <div class="zoom-control">
+            <label for="preview-zoom">顔まわりのズーム</label>
+            <input type="range" id="preview-zoom" min="1" max="3" step="0.1" value="1">
+            <span id="zoom-value">100%</span>
+            <button type="button" id="zoom-reset">リセット</button>
+          </div>
+        </div>
+
+        <div class="action-buttons">
+          <button id="reset-button" type="button">リセット</button>
+          <button id="download-button" type="button">PNGで保存</button>
+        </div>
+
+        <p id="status-message" aria-live="polite"></p>
       </section>
 
-  
+      <section class="control-area">
 
-      <section class="control-box">
-        <h2>♡ アイテム</h2>
-        <nav id="category-list" class="category-list">
-          <button type="button" data-category="SK">肌</button>
-          <button type="button" data-category="HB">後ろ髪</button>
-          <button type="button" data-category="HF" class="active">前髪</button>
-          <button type="button" data-category="HA">髪飾り</button>
-          <button type="button" data-category="ES">目の形</button>
-          <button type="button" data-category="IC">瞳の色</button>
-          <button type="button" data-category="BR">眉毛</button>
-          <button type="button" data-category="MO">口</button>
-          <button type="button" data-category="MK">メイク</button>
-          <button type="button" data-category="DR">ワンピース</button>
-          <button type="button" data-category="TP">トップス</button>
-          <button type="button" data-category="BT">ボトムス</button>
-          <button type="button" data-category="SH">靴</button>
-        </nav>
+        <section class="control-box">
+          <h2>♡ ヘアカラー</h2>
+          <p class="help-text">前髪・後ろ髪・眉毛の色をまとめて変更します。</p>
+          <div id="hair-color-list" class="color-list"></div>
+        </section>
 
-        <h3 id="category-title">前髪</h3>
-        <div id="item-list" class="item-list"></div>
+        <section class="control-box">
+          <h2>♡ アイテム</h2>
+
+          <nav id="category-list" class="category-list">
+            <button type="button" data-category="SK">肌</button>
+            <button type="button" data-category="HB">後ろ髪</button>
+            <button type="button" data-category="HF" class="active">前髪</button>
+            <button type="button" data-category="HA">髪飾り</button>
+            <button type="button" data-category="ES">目の形</button>
+            <button type="button" data-category="IC">瞳の色</button>
+            <button type="button" data-category="BR">眉毛</button>
+            <button type="button" data-category="MO">口</button>
+            <button type="button" data-category="MK">メイク</button>
+            <button type="button" data-category="DR">ワンピース</button>
+            <button type="button" data-category="TP">トップス</button>
+            <button type="button" data-category="BT">ボトムス</button>
+            <button type="button" data-category="SH">靴</button>
+          </nav>
+
+          <h3 id="category-title">前髪</h3>
+          <div id="item-list" class="item-list"></div>
+        </section>
+
       </section>
-    </section>
+    </div>
   </main>
+
+  <!-- 共通フッター -->
+  <footer class="site-footer">
+    <span>萌え萌え♡きゅ～と メイドル!!</span>
+    <small>© 2026 かとらりびより</small>
+  </footer>
+
+  <script src="../js/common.js"></script>
+  <script src="dressup.js"></script>
+
 </body>
 </html>
