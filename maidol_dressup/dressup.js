@@ -37,7 +37,7 @@ const DEFAULT_HAIR_COLORS = {
 
 // 17色相の基準色（以前のメインカラーを使用）
 const HAIR_HUES = [
-  { name: "赤", base: "#D94355", hue: 350 },
+  { name: "赤", base: "#D94355", hue: 0 },
   { name: "オレンジ", base: "#E97835", hue: 25 },
   { name: "黄色", base: "#EBC34B", hue: 45 },
   { name: "緑", base: "#329765", hue: 145 },
@@ -47,7 +47,7 @@ const HAIR_HUES = [
   { name: "青", base: "#456FC9", hue: 225 },
   { name: "濃い紫", base: "#75418E", hue: 275 },
   { name: "薄紫", base: "#B49AD1", hue: 285 },
-  { name: "濃いピンク", base: "#D84F91", hue: 330 },
+  { name: "濃いピンク", base: "#D84F91", hue: 325},
   { name: "薄ピンク", base: "#F0A6C6", hue: 345 },
   { name: "ベージュ", base: "#C6A77A", hue: 35 },
   { name: "グレージュ", base: "#A49A91", hue: 10 },
