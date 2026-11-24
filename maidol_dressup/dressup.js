@@ -50,7 +50,7 @@ const HAIR_HUES = [
   { name: "濃いピンク", base: "#D84F91", hue: 330 },
   { name: "薄ピンク", base: "#F0A6C6", hue: 345 },
   { name: "ベージュ", base: "#C6A77A", hue: 35 },
-  { name: "グレージュ", base: "#A49A91", hue: 25 },
+  { name: "グレージュ", base: "#A49A91", hue: 10 },
   { name: "ブラウン", base: "#805238", hue: 20 },
 { name: "モノトーン", base: "#A5A5A5", hue: null }
 ];
