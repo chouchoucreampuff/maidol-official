@@ -20,7 +20,6 @@ const CATEGORY_NAMES = {
 
 // 髪色のカラーコード
 // stopsの位置は暗い順に10%、30%、65%、100%です。
-// ここを書き換えると、髪色プリセットを変更できます。
 const HAIR_COLORS = [
   { name: "赤", stops: ["#79212D", "#D94355", "#FF9A9F", "#FFFFFF"] },
   { name: "オレンジ", stops: ["#873B20", "#E97835", "#FFC08A", "#FFFFFF"] },
@@ -53,8 +52,6 @@ const statusMessage = document.getElementById("status-message");
 let manifest = null;
 let currentCategory = "HF";
 let currentHairColor = 0;
-let eyeTarget = "both";
-let sameEyeColor = true;
 let faceOverlayEnabled = false;
 
 const selected = {
@@ -63,8 +60,7 @@ const selected = {
   HF: null,
   HA: null,
   ES: null,
-  IC_LEFT: null,
-  IC_RIGHT: null,
+  IC: null,
   BR: null,
   MO: null,
   MK: null,
@@ -76,6 +72,11 @@ const selected = {
 
 const imageCache = new Map();
 const coloredImageCache = new Map();
+
+
+// ------------------------------
+// 画像読み込み
+// ------------------------------
 
 function assetPath(category, number, suffix = "") {
   const id = String(number).padStart(5, "0");
@@ -122,7 +123,11 @@ async function drawAsset(path, alpha = 1, flip = false, colorize = false) {
   ctx.restore();
 }
 
-// グレースケール画像の明るさを4色のグラデーションに変換
+
+// ------------------------------
+// 髪色変更
+// ------------------------------
+
 async function getColoredImage(path, colorIndex) {
   const cacheKey = `${path}_${colorIndex}`;
 
@@ -155,7 +160,6 @@ async function getColoredImage(path, colorIndex) {
 
     if (alpha === 0) continue;
 
-    // グレースケールの明るさを基準にする
     const brightness =
       (0.299 * pixels[i] +
        0.587 * pixels[i + 1] +
@@ -184,7 +188,6 @@ async function getColoredImage(path, colorIndex) {
     pixels[i] = Math.round(c1.r + (c2.r - c1.r) * amount);
     pixels[i + 1] = Math.round(c1.g + (c2.g - c1.g) * amount);
     pixels[i + 2] = Math.round(c1.b + (c2.b - c1.b) * amount);
-    // 元画像の透明度は維持する
   }
 
   tempCtx.putImageData(imageData, 0, 0);
@@ -203,12 +206,13 @@ function hexToRgb(hex) {
   };
 }
 
+
+// ------------------------------
+// アイテム情報
+// ------------------------------
+
 function getSelectedNumber(category) {
   return selected[category];
-}
-
-function setSelectedNumber(category, number) {
-  selected[category] = number;
 }
 
 function getCategoryCount(category) {
@@ -219,7 +223,17 @@ function getItemPath(category, number, suffix = "") {
   return assetPath(category, number, suffix);
 }
 
-async function drawFillAndLine(category, number, colorize = false, alpha = 1) {
+
+// ------------------------------
+// 塗りと線画
+// ------------------------------
+
+async function drawFillAndLine(
+  category,
+  number,
+  colorize = false,
+  alpha = 1
+) {
   if (!number) return;
 
   const fillPath = getItemPath(category, number);
@@ -234,79 +248,30 @@ async function drawFillAndLine(category, number, colorize = false, alpha = 1) {
   await drawAsset(linePath, alpha);
 }
 
+
+// ------------------------------
+// 顔パーツ
+// ------------------------------
+
 async function drawFaceParts(alpha = 1) {
   await drawFillAndLine("ES", selected.ES, false, alpha);
 
-  if (selected.IC_LEFT && selected.IC_RIGHT &&
-      selected.IC_LEFT === selected.IC_RIGHT) {
+  // 瞳は両目一体型の画像を1枚使用
+  if (selected.IC) {
     await drawAsset(
-      getItemPath("IC", selected.IC_LEFT),
+      getItemPath("IC", selected.IC),
       alpha
     );
-  } else {
-    // 左右の瞳の色を別々に配置するため、
-    // 左右別の画像がある場合は左右の画像を使用する。
-    // 通常のIC画像は左右両目用として描画する。
-    if (selected.IC_LEFT) {
-      await drawAsset(
-        getItemPath("IC", selected.IC_LEFT),
-        alpha
-      );
-    }
   }
 
   await drawFillAndLine("MO", selected.MO, false, alpha);
   await drawFillAndLine("BR", selected.BR, true, alpha);
 }
 
-async function drawHair() {
-  await drawFillAndLine("HF", selected.HF, true);
-  await drawFillAndLine("HB", selected.HB, true);
-}
 
-
-
-async function drawClothing() {
-  if (selected.DR) {
-    const number = selected.DR;
-
-    // 袖を先に描画
-    await drawSleeves("DR", number);
-
-    // ワンピース本体
-    await drawAsset(getItemPath("DR", number));
-
-  } else {
-    // トップスの袖
-    if (selected.TP) {
-      await drawSleeves("TP", selected.TP);
-
-      // トップス本体
-      await drawAsset(getItemPath("TP", selected.TP));
-    }
-
-    // ボトムス
-    if (selected.BT) {
-      await drawAsset(getItemPath("BT", selected.BT));
-    }
-  }
-}
-
-async function drawBackDecoration() {
-  if (selected.DR) {
-    const groupName = manifest.categories.DR.group;
-    const group = groupName ? manifest.groups[groupName] : null;
-
-    if (group?.sharedParts?.BK) {
-      await drawAsset(`assets/DR/${group.sharedParts.BK}`);
-    } else {
-      await drawAsset(getItemPath("DR", selected.DR, "_BK"));
-    }
-  } else if (selected.TP) {
-    await drawAsset(getItemPath("TP", selected.TP, "_BK"));
-  }
-}
-
+// ------------------------------
+// 袖
+// ------------------------------
 
 async function drawSleeves(category, number) {
   const leftPath = getItemPath(category, number, "_AL");
@@ -328,6 +293,65 @@ async function drawSleeves(category, number) {
 }
 
 
+// ------------------------------
+// 服
+// ------------------------------
+
+async function drawClothing() {
+  if (selected.DR) {
+    const number = selected.DR;
+
+    // 袖を先に描画
+    await drawSleeves("DR", number);
+
+    // ワンピース本体を後から描画
+    await drawAsset(getItemPath("DR", number));
+
+  } else {
+    if (selected.TP) {
+      // トップスの袖
+      await drawSleeves("TP", selected.TP);
+
+      // トップス本体
+      await drawAsset(getItemPath("TP", selected.TP));
+    }
+
+    // ボトムス
+    if (selected.BT) {
+      await drawAsset(getItemPath("BT", selected.BT));
+    }
+  }
+}
+
+
+// ------------------------------
+// 背面装飾
+// ------------------------------
+
+async function drawBackDecoration() {
+  if (selected.DR) {
+    const groupName = manifest.categories.DR.group;
+    const group = groupName ? manifest.groups[groupName] : null;
+
+    if (group?.sharedParts?.BK) {
+      await drawAsset(`assets/DR/${group.sharedParts.BK}`);
+    } else {
+      await drawAsset(
+        getItemPath("DR", selected.DR, "_BK")
+      );
+    }
+
+  } else if (selected.TP) {
+    await drawAsset(
+      getItemPath("TP", selected.TP, "_BK")
+    );
+  }
+}
+
+
+// ------------------------------
+// キャラクター描画
+// ------------------------------
 
 async function renderCharacter(includeOverlay = true) {
   ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
@@ -339,7 +363,9 @@ async function renderCharacter(includeOverlay = true) {
   await drawBackDecoration();
 
   // 3. ボディ
-  await drawAsset(getItemPath("SK", selected.SK));
+  if (selected.SK) {
+    await drawAsset(getItemPath("SK", selected.SK));
+  }
 
   // 4. メイク
   await drawAsset(getItemPath("MK", selected.MK));
@@ -370,22 +396,18 @@ async function renderCharacter(includeOverlay = true) {
 }
 
 
-async function drawEyes() {
-  if (!selected.IC_LEFT) return;
-
-  if (sameEyeColor || selected.IC_LEFT === selected.IC_RIGHT) {
-    await drawAsset(getItemPath("IC", selected.IC_LEFT));
-    return;
-  }
-
-  // 左右別々の画像を用意している場合に対応するための枠。
-  // 現在のIC画像が両目一体型の場合は左右同色で表示されます。
-  await drawAsset(getItemPath("IC", selected.IC_LEFT));
-}
+// ------------------------------
+// 状態表示
+// ------------------------------
 
 function updateStatus(message) {
   statusMessage.textContent = message;
 }
+
+
+// ------------------------------
+// 髪色ボタン
+// ------------------------------
 
 function createHairColorButtons() {
   const container = document.getElementById("hair-color-list");
@@ -425,6 +447,11 @@ function createHairColorButtons() {
   });
 }
 
+
+// ------------------------------
+// カテゴリボタン
+// ------------------------------
+
 function createCategoryButtons() {
   document.querySelectorAll("[data-category]").forEach(button => {
     button.addEventListener("click", async () => {
@@ -443,6 +470,11 @@ function createCategoryButtons() {
     });
   });
 }
+
+
+// ------------------------------
+// アイテム一覧
+// ------------------------------
 
 function renderItemList() {
   itemList.innerHTML = "";
@@ -469,12 +501,7 @@ function renderItemList() {
 
     button.append(img, label);
 
-    const currentSelection =
-      currentCategory === "IC"
-        ? selected.IC_LEFT
-        : getSelectedNumber(currentCategory);
-
-    if (currentSelection === number) {
+    if (getSelectedNumber(currentCategory) === number) {
       button.classList.add("active");
     }
 
@@ -494,20 +521,12 @@ function renderItemList() {
   }
 }
 
+
+// ------------------------------
+// アイテム選択
+// ------------------------------
+
 function selectItem(category, number) {
-  if (category === "IC") {
-    if (sameEyeColor || eyeTarget === "both") {
-      selected.IC_LEFT = number;
-      selected.IC_RIGHT = number;
-    } else if (eyeTarget === "left") {
-      selected.IC_LEFT = number;
-    } else {
-      selected.IC_RIGHT = number;
-    }
-
-    return;
-  }
-
   if (category === "DR") {
     selected.DR = number;
     selected.TP = null;
@@ -524,44 +543,51 @@ function selectItem(category, number) {
   selected[category] = number;
 }
 
-function setupEyeControls() {
-  document.querySelectorAll("[data-eye-target]").forEach(button => {
-    button.addEventListener("click", () => {
-      eyeTarget = button.dataset.eyeTarget;
 
-      document.querySelectorAll("[data-eye-target]").forEach(el => {
-        el.classList.remove("active");
-      });
-
-      button.classList.add("active");
-    });
-  });
-
-  document.getElementById("same-eye-color").addEventListener("change", event => {
-    sameEyeColor = event.target.checked;
-
-    if (sameEyeColor) {
-      selected.IC_RIGHT = selected.IC_LEFT;
-      eyeTarget = "both";
-
-      document.querySelectorAll("[data-eye-target]").forEach(el => {
-        el.classList.remove("active");
-      });
-
-      document.querySelector('[data-eye-target="both"]')
-        .classList.add("active");
-    }
-
-    renderCharacter();
-  });
-}
+// ------------------------------
+// 顔パーツの仮表示
+// ------------------------------
 
 function setupFaceOverlay() {
-  document.getElementById("face-overlay").addEventListener("change", event => {
+  const checkbox = document.getElementById("face-overlay");
+
+  checkbox.addEventListener("change", event => {
     faceOverlayEnabled = event.target.checked;
     renderCharacter();
   });
 }
+
+
+// ------------------------------
+// ズーム
+// ------------------------------
+
+function setupZoom() {
+  const slider = document.getElementById("preview-zoom");
+  const valueLabel = document.getElementById("zoom-value");
+  const resetButton = document.getElementById("zoom-reset");
+
+  function updateZoom() {
+    const zoom = Number(slider.value);
+
+    canvas.style.transform = `scale(${zoom})`;
+    valueLabel.textContent = `${Math.round(zoom * 100)}%`;
+  }
+
+  slider.addEventListener("input", updateZoom);
+
+  resetButton.addEventListener("click", () => {
+    slider.value = 1;
+    updateZoom();
+  });
+
+  updateZoom();
+}
+
+
+// ------------------------------
+// 初期化ボタン
+// ------------------------------
 
 function setupReset() {
   document.getElementById("reset-button").addEventListener("click", async () => {
@@ -572,20 +598,31 @@ function setupReset() {
     selected.SK = 1;
 
     currentHairColor = 0;
-    sameEyeColor = true;
-    eyeTarget = "both";
 
-    document.getElementById("same-eye-color").checked = true;
     document.getElementById("face-overlay").checked = false;
     faceOverlayEnabled = false;
 
+    const zoomSlider = document.getElementById("preview-zoom");
+
+    if (zoomSlider) {
+      zoomSlider.value = 1;
+      canvas.style.transform = "scale(1)";
+      document.getElementById("zoom-value").textContent = "100%";
+    }
+
     createHairColorButtons();
     renderItemList();
+
     await renderCharacter();
 
     updateStatus("初期状態に戻しました。");
   });
 }
+
+
+// ------------------------------
+// PNG保存
+// ------------------------------
 
 function setupDownload() {
   document.getElementById("download-button").addEventListener("click", async () => {
@@ -614,6 +651,11 @@ function setupDownload() {
   });
 }
 
+
+// ------------------------------
+// 起動処理
+// ------------------------------
+
 async function initialize() {
   try {
     const response = await fetch("manifest.json");
@@ -626,7 +668,10 @@ async function initialize() {
 
     createHairColorButtons();
     createCategoryButtons();
-    setupEyeControls();
+
+    // ズーム機能を起動
+    setupZoom();
+
     setupFaceOverlay();
     setupReset();
     setupDownload();
@@ -638,6 +683,7 @@ async function initialize() {
     await renderCharacter();
 
     updateStatus("読み込みが完了しました。");
+
   } catch (error) {
     console.error(error);
     updateStatus("読み込みエラー：manifest.jsonを確認してください。");
