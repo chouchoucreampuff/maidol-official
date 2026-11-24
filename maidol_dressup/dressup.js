@@ -254,9 +254,7 @@ async function drawFillAndLine(
 // ------------------------------
 
 async function drawFaceParts(alpha = 1) {
-  await drawFillAndLine("ES", selected.ES, false, alpha);
-
-  // 瞳は両目一体型の画像を1枚使用
+  // 1. 瞳の色
   if (selected.IC) {
     await drawAsset(
       getItemPath("IC", selected.IC),
@@ -264,7 +262,13 @@ async function drawFaceParts(alpha = 1) {
     );
   }
 
+  // 2. 目の形
+  await drawFillAndLine("ES", selected.ES, false, alpha);
+
+  // 3. 口
   await drawFillAndLine("MO", selected.MO, false, alpha);
+
+  // 4. 眉毛
   await drawFillAndLine("BR", selected.BR, true, alpha);
 }
 
@@ -383,11 +387,7 @@ async function renderCharacter(includeOverlay = true) {
   await drawFillAndLine("HF", selected.HF, true);
 
   // 9. 半透明の顔パーツ
-  if (
-    includeOverlay &&
-    currentCategory === "HF" &&
-    faceOverlayEnabled
-  ) {
+  if (includeOverlay && faceOverlayEnabled) {
     await drawFaceParts(0.45);
   }
 
