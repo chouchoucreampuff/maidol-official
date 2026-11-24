@@ -37,23 +37,22 @@ const DEFAULT_HAIR_COLORS = {
 
 // 17色相の基準色（以前のメインカラーを使用）
 const HAIR_HUES = [
-  { name: "赤", base: "#D94355" },
-  { name: "オレンジ", base: "#E97835" },
-  { name: "黄色", base: "#EBC34B" },
-  { name: "緑", base: "#329765" },
-  { name: "黄緑", base: "#9ABF3E" },
-  { name: "ミント", base: "#65C8B0" },
-  { name: "水色", base: "#68BCE5" },
-  { name: "青", base: "#456FC9" },
-  { name: "濃い紫", base: "#75418E" },
-  { name: "薄紫", base: "#B49AD1" },
-  { name: "濃いピンク", base: "#D84F91" },
-  { name: "薄ピンク", base: "#F0A6C6" },
-  { name: "ベージュ", base: "#C6A77A" },
-  { name: "グレージュ", base: "#A49A91" },
-  { name: "ブラウン", base: "#805238" },
-  { name: "黒", base: "#343744" },
-  { name: "白", base: "#C5C2C8" }
+  { name: "赤", base: "#D94355", hue: 350 },
+  { name: "オレンジ", base: "#E97835", hue: 25 },
+  { name: "黄色", base: "#EBC34B", hue: 45 },
+  { name: "緑", base: "#329765", hue: 145 },
+  { name: "黄緑", base: "#9ABF3E", hue: 80 },
+  { name: "ミント", base: "#65C8B0", hue: 165 },
+  { name: "水色", base: "#68BCE5", hue: 195 },
+  { name: "青", base: "#456FC9", hue: 225 },
+  { name: "濃い紫", base: "#75418E", hue: 275 },
+  { name: "薄紫", base: "#B49AD1", hue: 285 },
+  { name: "濃いピンク", base: "#D84F91", hue: 330 },
+  { name: "薄ピンク", base: "#F0A6C6", hue: 345 },
+  { name: "ベージュ", base: "#C6A77A", hue: 35 },
+  { name: "グレージュ", base: "#A49A91", hue: 25 },
+  { name: "ブラウン", base: "#805238", hue: 20 },
+{ name: "モノトーン", base: "#A5A5A5", hue: null }
 ];
 
 // 彩度：低・中・高
@@ -396,20 +395,24 @@ function hslToHex(h, s, l) {
 
 // 色相ごとに3×3の色を自動生成
 function generateHairPalette(hueIndex) {
-  const base = hexToRgb(HAIR_HUES[hueIndex].base);
-  const hsl = rgbToHsl(base.r, base.g, base.b);
-
+  const selectedHue = HAIR_HUES[hueIndex];
   const palette = [];
+
+  // モノトーン専用パレット
+  if (selectedHue.hue === null) {
+    return [
+      "#D9D9D9", "#C5C5C5", "#B0B0B0",
+      "#999999", "#858585", "#707070",
+      "#595959", "#454545", "#303030"
+    ];
+  }
+
+  // 通常色は3×3で生成
+  const hue = selectedHue.hue;
 
   HAIR_LIGHTNESS_LEVELS.forEach(lightness => {
     HAIR_SATURATION_LEVELS.forEach(saturation => {
-      palette.push(
-        hslToHex(
-          hsl.h,
-          saturation,
-          lightness
-        )
-      );
+      palette.push(hslToHex(hue, saturation, lightness));
     });
   });
 
