@@ -1,5 +1,4 @@
 
-
 const CATEGORY_NAMES = {
   SK: "素体",
   HB: "後ろ髪",
@@ -25,6 +24,25 @@ const categoryButtons = document.querySelectorAll(".category-button");
 const categoryTitle = document.getElementById("category-title");
 const itemList = document.getElementById("item-list");
 const resetButton = document.getElementById("reset-button");
+const characterLayers = document.getElementById("character-layers");
+
+let canvas;
+let ctx;
+
+const CANVAS_WIDTH = 1500;
+const CANVAS_HEIGHT = 3000;
+
+// キャンバスを準備
+function setupCanvas() {
+  canvas = document.createElement("canvas");
+  canvas.width = CANVAS_WIDTH;
+  canvas.height = CANVAS_HEIGHT;
+
+  ctx = canvas.getContext("2d");
+
+  characterLayers.innerHTML = "";
+  characterLayers.appendChild(canvas);
+}
 
 // 素材一覧を読み込む
 async function loadManifest() {
@@ -37,17 +55,19 @@ async function loadManifest() {
 
     manifest = await response.json();
 
+    setupCanvas();
     initializeSelections();
     showCategory(currentCategory);
+    await renderCharacter();
 
   } catch (error) {
     console.error(error);
 
-    itemList.innerHTML = `
-      <p class="empty-message">
-        素材一覧を読み込めませんでした。
+    characterLayers.innerHTML = `
+      <p class="loading-message">
+        ♡ ERROR ♡
         <br>
-        manifest.jsonを確認してください。
+        <span>素材を読み込めませんでした</span>
       </p>
     `;
   }
@@ -58,6 +78,8 @@ function initializeSelections() {
   for (const category of Object.keys(CATEGORY_NAMES)) {
     selectedItems[category] = null;
   }
+
+  selectedItems.SK = 1;
 }
 
 // カテゴリーを表示
@@ -69,7 +91,6 @@ function showCategory(category) {
   currentCategory = category;
 
   const settings = manifest.categories[category];
-  const count = settings.count;
 
   categoryTitle.textContent = CATEGORY_NAMES[category];
 
@@ -82,7 +103,7 @@ function showCategory(category) {
 
   itemList.innerHTML = "";
 
-  if (count === 0) {
+  if (settings.count === 0) {
     itemList.innerHTML = `
       <p class="empty-message">
         ただいま準備中です ♡
@@ -91,37 +112,70 @@ function showCategory(category) {
     return;
   }
 
-  // アイテムボタンを自動生成
-  for (let i = 1; i <= count; i++) {
-    const itemId = String(i).padStart(5, "0");
-    const fileName = `${category}${itemId}.png`;
-
+  for (let i = 1; i <= settings.count; i++) {
     const button = document.createElement("button");
 
     button.type = "button";
     button.className = "item-button";
-    button.textContent = fileName.replace(".png", "");
+    button.textContent = String(i).padStart(5, "0");
 
     if (selectedItems[category] === i) {
       button.classList.add("selected");
     }
 
-    button.addEventListener("click", () => {
-      selectItem(category, i);
+    button.addEventListener("click", async () => {
+      selectedItems[category] = i;
+      showCategory(category);
+      await renderCharacter();
     });
 
     itemList.appendChild(button);
   }
 }
 
-// アイテムを選択
-function selectItem(category, itemNumber) {
-  selectedItems[category] = itemNumber;
-  showCategory(category);
+// 画像を読み込む
+function loadImage(path) {
+  return new Promise((resolve, reject) => {
+    const image = new Image();
 
-  console.log(
-    `${CATEGORY_NAMES[category]}：${itemNumber}番を選択`
-  );
+    image.onload = () => resolve(image);
+    image.onerror = () => reject(
+      new Error(`画像を読み込めません：${path}`)
+    );
+
+    image.src = path;
+  });
+}
+
+// 素体を描画
+async function renderCharacter() {
+  if (!ctx) return;
+
+  ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+
+  const skinNumber = selectedItems.SK;
+
+  if (!skinNumber) return;
+
+  const fileName =
+    `SK${String(skinNumber).padStart(5, "0")}.png`;
+
+  const path = `assets/SK/${fileName}`;
+
+  try {
+    const image = await loadImage(path);
+
+    ctx.drawImage(
+      image,
+      0,
+      0,
+      CANVAS_WIDTH,
+      CANVAS_HEIGHT
+    );
+
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 // カテゴリーボタン
@@ -132,9 +186,10 @@ categoryButtons.forEach(button => {
 });
 
 // リセット
-resetButton.addEventListener("click", () => {
+resetButton.addEventListener("click", async () => {
   initializeSelections();
   showCategory(currentCategory);
+  await renderCharacter();
 });
 
 // 起動
