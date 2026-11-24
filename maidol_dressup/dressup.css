@@ -1,1 +1,374 @@
 
+/* =========================
+   MAIDOL DRESS UP
+   デザイン設定
+========================= */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  color: #80566e;
+  background: #fff0f7;
+  font-family:
+    "M PLUS Rounded 1c",
+    "Hiragino Maru Gothic ProN",
+    "Yu Gothic",
+    sans-serif;
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+}
+
+.app {
+  width: 100%;
+  min-height: 100vh;
+  padding: 24px;
+  background:
+    radial-gradient(circle at 10% 10%, #ffffff 0 3px, transparent 4px),
+    radial-gradient(circle at 90% 30%, #ffffff 0 4px, transparent 5px),
+    #fff0f7;
+}
+
+/* ヘッダー */
+
+.header {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.header-logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  padding: 12px 30px;
+  border: 2px solid #ffc5df;
+  border-radius: 24px;
+  background: #ffffff;
+  box-shadow: 0 5px 0 #f8c4dc;
+}
+
+.header-logo h1 {
+  margin: 0;
+  color: #ff78b5;
+  font-size: clamp(22px, 4vw, 34px);
+  letter-spacing: 2px;
+}
+
+.header-logo p {
+  margin: 4px 0 0;
+  color: #bd8ca8;
+  font-size: 10px;
+  letter-spacing: 2px;
+}
+
+.logo-decoration {
+  color: #ff8fc3;
+  font-size: 30px;
+}
+
+/* メインレイアウト */
+
+.main-layout {
+  display: grid;
+  grid-template-columns: minmax(280px, 1fr) minmax(320px, 1fr);
+  gap: 28px;
+  width: min(1200px, 100%);
+  margin: 0 auto;
+  align-items: start;
+}
+
+.preview-section,
+.item-section {
+  min-width: 0;
+}
+
+/* 見出し */
+
+.section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 14px;
+  color: #ff83b9;
+}
+
+.section-heading span {
+  font-size: 20px;
+}
+
+.section-heading h2 {
+  margin: 0;
+  font-size: 18px;
+  letter-spacing: 3px;
+}
+
+/* キャラクタープレビュー */
+
+.character-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 500px;
+  padding: 18px 12px;
+  overflow: hidden;
+  border: 3px solid #ffc5df;
+  border-radius: 24px;
+  background:
+    radial-gradient(circle, #ffe0ee 1px, transparent 2px);
+  background-size: 24px 24px;
+  background-color: #ffffff;
+  box-shadow: 0 6px 0 #f5c2dc;
+}
+
+.character-stage {
+  position: relative;
+  width: 100%;
+  max-width: 375px;
+  aspect-ratio: 1 / 2;
+  margin: auto;
+  overflow: hidden;
+  background: rgba(255, 245, 250, 0.5);
+  border-radius: 16px;
+}
+
+.character-layers {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.character-layers canvas,
+.character-layers img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.loading-message {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  color: #ff83b9;
+  font-size: 22px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.loading-message span {
+  margin-top: 12px;
+  color: #bd9bad;
+  font-size: 13px;
+  font-weight: normal;
+}
+
+.preview-decoration {
+  color: #ff9bc8;
+  letter-spacing: 8px;
+  text-align: center;
+}
+
+.decoration-top {
+  margin-bottom: 10px;
+}
+
+.decoration-bottom {
+  margin-top: 10px;
+}
+
+.preview-footer {
+  margin-top: 18px;
+  color: #c28ba9;
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-align: center;
+}
+
+/* カテゴリー選択 */
+
+.category-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 9px;
+  margin-bottom: 18px;
+}
+
+.category-button {
+  min-height: 43px;
+  padding: 8px 5px;
+  border: 2px solid #f6c5dc;
+  border-radius: 13px;
+  color: #a87591;
+  background: #ffffff;
+  font-size: 13px;
+  transition: 0.15s;
+}
+
+.category-button:hover {
+  border-color: #ff91c2;
+  background: #fff5fa;
+}
+
+.category-button.active {
+  border-color: #ff83b9;
+  color: #ffffff;
+  background: #ff91c2;
+  box-shadow: 0 3px 0 #e875a8;
+}
+
+/* アイテム一覧 */
+
+.item-panel {
+  min-height: 260px;
+  padding: 16px;
+  border: 2px solid #ffc5df;
+  border-radius: 20px;
+  background: #ffffff;
+  box-shadow: 0 4px 0 #f7c9df;
+}
+
+.item-panel-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding-bottom: 12px;
+  border-bottom: 1px dashed #f4bfd8;
+}
+
+.item-panel-heading h3 {
+  margin: 0;
+  color: #ff78b5;
+  font-size: 17px;
+}
+
+.item-panel-heading span {
+  color: #c69ab1;
+  font-size: 10px;
+  letter-spacing: 1px;
+}
+
+.item-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  padding-top: 15px;
+}
+
+.empty-message {
+  grid-column: 1 / -1;
+  margin: 35px 0;
+  color: #bd9bad;
+  font-size: 13px;
+  text-align: center;
+}
+
+/* 操作ボタン */
+
+.action-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.action-button {
+  min-height: 52px;
+  border: 2px solid #f4b9d5;
+  border-radius: 16px;
+  font-size: 13px;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.reset-button {
+  color: #bd82a2;
+  background: #ffffff;
+}
+
+.download-button {
+  border-color: #ff83b9;
+  color: #ffffff;
+  background: #ff91c2;
+  box-shadow: 0 4px 0 #e875a8;
+}
+
+.action-button:hover {
+  filter: brightness(1.04);
+}
+
+.action-button:active {
+  transform: translateY(2px);
+  box-shadow: none;
+}
+
+/* フッター */
+
+.footer {
+  margin-top: 40px;
+  color: #d39bb8;
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-align: center;
+}
+
+/* スマートフォン */
+
+@media (max-width: 700px) {
+  .app {
+    padding: 14px;
+  }
+
+  .header {
+    margin-bottom: 22px;
+  }
+
+  .header-logo {
+    gap: 10px;
+    padding: 10px 16px;
+  }
+
+  .logo-decoration {
+    font-size: 22px;
+  }
+
+  .main-layout {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .character-card {
+    min-height: 0;
+    padding: 14px 10px;
+  }
+
+  .character-stage {
+    width: min(100%, 330px);
+  }
+
+  .category-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .item-panel {
+    min-height: 220px;
+  }
+
+  .footer {
+    margin-top: 30px;
+  }
+}
+
