@@ -81,11 +81,40 @@
 
       <section class="control-area">
 
-        <section class="control-box">
-          <h2>♡ ヘアカラー</h2>
-          <p class="help-text">前髪・後ろ髪・眉毛の色をまとめて変更します。</p>
-          <div id="hair-color-list" class="color-list"></div>
-        </section>
+     
+<section class="control-box">
+  <h2>♡ ヘアカラー</h2>
+  <p class="help-text">前髪・後ろ髪・眉毛の色をまとめて変更します。</p>
+
+  <div id="hair-color-list" class="hair-palette">
+
+    <div class="hair-color-tabs">
+      <button type="button" class="hair-color-tab active" data-stop="shadow">影</button>
+      <button type="button" class="hair-color-tab" data-stop="main">メイン</button>
+      <button type="button" class="hair-color-tab" data-stop="highlight">ハイライト</button>
+    </div>
+
+    <div class="hair-palette-heading">
+      <span>色相を選択</span>
+      <span id="hair-hue-name">赤</span>
+    </div>
+
+    <div id="hair-hue-list" class="hair-hue-list"></div>
+
+    <div class="hair-palette-heading">
+      <span>彩度・明度</span>
+      <span id="hair-selected-color">#777777</span>
+    </div>
+
+    <div id="hair-shade-list" class="hair-shade-list"></div>
+
+    <p class="hair-palette-note">
+      100%地点の白は固定です。
+    </p>
+
+  </div>
+</section>
+
 
         <section class="control-box">
           <h2>♡ アイテム</h2>
