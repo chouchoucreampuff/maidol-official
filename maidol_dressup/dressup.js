@@ -232,7 +232,8 @@ async function drawFillAndLine(
   category,
   number,
   colorize = false,
-  alpha = 1
+  alpha = 1,
+  flip = false
 ) {
   if (!number) return;
 
@@ -240,12 +241,12 @@ async function drawFillAndLine(
   const linePath = getItemPath(category, number, "_LN");
 
   if (colorize) {
-    await drawAsset(fillPath, alpha, false, true);
+    await drawAsset(fillPath, alpha, flip, true);
   } else {
-    await drawAsset(fillPath, alpha);
+    await drawAsset(fillPath, alpha, flip);
   }
 
-  await drawAsset(linePath, alpha);
+  await drawAsset(linePath, alpha, flip);
 }
 
 
@@ -361,8 +362,7 @@ async function renderCharacter(includeOverlay = true) {
   ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
   // 1. 後ろ髪
-  await drawFillAndLine("HB", selected.HB, true);
-
+  await drawFillAndLine("HB", selected.HB, true, 1, hairFlip.HB);
   // 2. 背面装飾
   await drawBackDecoration();
 
@@ -384,7 +384,7 @@ async function renderCharacter(includeOverlay = true) {
   await drawFaceParts();
 
   // 8. 前髪
-  await drawFillAndLine("HF", selected.HF, true);
+  await drawFillAndLine("HF", selected.HF, true, 1, hairFlip.HF);
 
   // 9. 半透明の顔パーツ
   if (includeOverlay && faceOverlayEnabled) {
@@ -456,6 +456,26 @@ function createCategoryButtons() {
   document.querySelectorAll("[data-category]").forEach(button => {
     button.addEventListener("click", async () => {
       currentCategory = button.dataset.category;
+      const flipControls = document.getElementById("hair-flip-controls");
+
+if (flipControls) {
+  flipControls.style.display =
+    currentCategory === "HF" || currentCategory === "HB"
+      ? "flex"
+      : "none";
+}
+
+const flipButton = document.getElementById("hair-flip-button");
+
+if (flipButton && (currentCategory === "HF" || currentCategory === "HB")) {
+  flipButton.textContent = hairFlip[currentCategory]
+    ? "↔ 反転中（元に戻す）"
+    : "↔ 左右反転";
+
+  flipButton.style.background = hairFlip[currentCategory]
+    ? "#ffe4f1"
+    : "#fffafd";
+}
 
       document.querySelectorAll("[data-category]").forEach(el => {
         el.classList.remove("active");
@@ -471,6 +491,54 @@ function createCategoryButtons() {
   });
 }
 
+// ------------------------------
+// 髪の左右反転ボタン
+// ------------------------------
+
+function setupHairFlipButtons() {
+  const container = document.createElement("div");
+  container.id = "hair-flip-controls";
+
+  container.style.display = "none";
+  container.style.gap = "8px";
+  container.style.margin = "10px 0";
+  container.style.justifyContent = "center";
+  container.style.flexWrap = "wrap";
+
+  const button = document.createElement("button");
+  button.type = "button";
+  button.id = "hair-flip-button";
+  button.textContent = "↔ 左右反転";
+
+  button.style.padding = "10px 18px";
+  button.style.borderRadius = "20px";
+  button.style.border = "1px solid #edb7d0";
+  button.style.background = "#fffafd";
+  button.style.color = "#bd6792";
+  button.style.cursor = "pointer";
+
+  container.appendChild(button);
+
+  categoryTitle.after(container);
+
+  button.addEventListener("click", async () => {
+    if (currentCategory !== "HF" && currentCategory !== "HB") {
+      return;
+    }
+
+    hairFlip[currentCategory] = !hairFlip[currentCategory];
+
+    button.textContent = hairFlip[currentCategory]
+      ? "↔ 反転中（元に戻す）"
+      : "↔ 左右反転";
+
+    button.style.background = hairFlip[currentCategory]
+      ? "#ffe4f1"
+      : "#fffafd";
+
+    await renderCharacter();
+  });
+}
 
 // ------------------------------
 // アイテム一覧
@@ -598,10 +666,16 @@ function setupReset() {
     selected.SK = 1;
 
     currentHairColor = 0;
-
+hairFlip.HF = false;
+hairFlip.HB = false;
     document.getElementById("face-overlay").checked = false;
     faceOverlayEnabled = false;
-
+    
+// 髪の左右反転状態
+const hairFlip = {
+  HF: false,
+  HB: false
+};
     const zoomSlider = document.getElementById("preview-zoom");
 
     if (zoomSlider) {
@@ -668,6 +742,7 @@ async function initialize() {
 
     createHairColorButtons();
     createCategoryButtons();
+    setupHairFlipButtons();
 
     // ズーム機能を起動
     setupZoom();
