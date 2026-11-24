@@ -927,9 +927,11 @@ function setupReset() {
 
     selected.SK = 1;
 
-    // 髪色を初期グレースケールに戻す
-    hairColors = { ...DEFAULT_HAIR_COLORS };
-    coloredImageCache.clear();
+  // 髪色を初期グレースケールに戻す
+hairColors = { ...DEFAULT_HAIR_COLORS };
+currentHairStop = "shadow";
+currentHairHue = 0;
+coloredImageCache.clear();
 
     hairFlip.HF = false;
     hairFlip.HB = false;
@@ -943,7 +945,7 @@ function setupReset() {
     canvas.style.transform = "scale(1)";
     document.getElementById("zoom-value").textContent = "100%";
 
-    createHairColorButtons();
+    updateHairPalette();
 
     document.querySelectorAll("[data-category]").forEach(el => {
       el.classList.remove("active");
