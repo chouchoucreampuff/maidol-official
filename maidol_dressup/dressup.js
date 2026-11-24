@@ -83,15 +83,23 @@ let hairColors = { ...DEFAULT_HAIR_COLORS };
 // 現在編集中のグラデーション色
 let currentHairStop = "shadow";
 
-// エフェクト専用カラー
-const DEFAULT_HAIR_EFFECT_COLORS = {
-  HF: { ...DEFAULT_HAIR_COLORS },
-  HB: { ...DEFAULT_HAIR_COLORS }
+// ========================================
+// カラーモード
+// ========================================
+
+// hair = 通常の髪色
+// effect = 前髪・後ろ髪エフェクト共通色
+let currentColorMode = "hair";
+
+// エフェクト共通カラー
+const DEFAULT_EFFECT_COLORS = {
+  shadow: "#666666",
+  main: "#AAAAAA",
+  highlight: "#EEEEEE"
 };
 
-let hairEffectColors = {
-  HF: { ...DEFAULT_HAIR_EFFECT_COLORS.HF },
-  HB: { ...DEFAULT_HAIR_EFFECT_COLORS.HB }
+let effectColors = {
+  ...DEFAULT_EFFECT_COLORS
 };
 
 // 現在選択中の色相
@@ -499,9 +507,27 @@ function createHairColorButtons() {
 // パレットの表示更新
 function updateHairPalette() {
   const hueList = document.getElementById("hair-hue-list");
+// ========================================
+// 現在編集中のカラー取得
+// ========================================
+
+function getCurrentColorSet() {
+  return currentColorMode === "effect"
+    ? effectColors
+    : hairColors;
+}
+
+// ========================================
+// パレットの表示更新
+// ========================================
+
+function updateHairPalette() {
+  const hueList = document.getElementById("hair-hue-list");
   const shadeList = document.getElementById("hair-shade-list");
 
   if (!hueList || !shadeList) return;
+
+  const colorsSet = getCurrentColorSet();
 
   // 色相ボタンの選択状態
   hueList.querySelectorAll(".hair-hue-button").forEach((button, index) => {
@@ -533,33 +559,41 @@ function updateHairPalette() {
 
     button.classList.toggle(
       "active",
-      hairColors[currentHairStop] === color
+      colorsSet[currentHairStop] === color
     );
 
     button.addEventListener("click", async () => {
-      hairColors[currentHairStop] = color;
+      colorsSet[currentHairStop] = color;
 
-      coloredImageCache.clear();
+      if (currentColorMode === "effect") {
+        hairEffectCache.clear();
+      } else {
+        coloredImageCache.clear();
+      }
 
       updateHairPalette();
 
       await renderCharacter();
 
-      updateStatus(
-        `${currentHairStop === "shadow" ? "影" :
-          currentHairStop === "main" ? "メイン" :
-          "ハイライト"}の色を変更しました。`
-      );
+      const stopName =
+        currentHairStop === "shadow" ? "影" :
+        currentHairStop === "main" ? "メイン" :
+        "ハイライト";
+
+      const modeName =
+        currentColorMode === "effect" ? "エフェクトカラー" : "ヘアカラー";
+
+      updateStatus(`${modeName}の${stopName}色を変更しました。`);
     });
 
     shadeList.appendChild(button);
   });
 
-  // 色の表示
+  // 選択色の表示
   const selectedColor = document.getElementById("hair-selected-color");
 
   if (selectedColor) {
-    selectedColor.textContent = hairColors[currentHairStop];
+    selectedColor.textContent = colorsSet[currentHairStop];
   }
 
   // 編集中のタブ
@@ -568,6 +602,44 @@ function updateHairPalette() {
       "active",
       button.dataset.stop === currentHairStop
     );
+  });
+}
+
+  // ========================================
+// カラーモード切り替え
+// ========================================
+
+function setupColorModeButtons() {
+  const buttons = document.querySelectorAll(".color-mode-button");
+
+  buttons.forEach(button => {
+    button.addEventListener("click", async () => {
+      const mode = button.dataset.colorMode;
+
+      if (currentColorMode === mode) return;
+
+      currentColorMode = mode;
+
+      // ボタンの選択状態を更新
+      buttons.forEach(btn => {
+        btn.classList.toggle(
+          "active",
+          btn.dataset.colorMode === currentColorMode
+        );
+      });
+
+      // パレットを更新
+      updateHairPalette();
+
+      // キャラクターを再描画
+      await renderCharacter();
+
+      updateStatus(
+        currentColorMode === "effect"
+          ? "エフェクトカラーを編集中です。"
+          : "ヘアカラーを編集中です。"
+      );
+    });
   });
 }
 
@@ -588,7 +660,7 @@ async function drawHairEffect(
   const basePath = getItemPath(baseCategory, baseNumber);
   const effectPath = getItemPath(effectCategory, effectNumber);
 
-  const colors = hairEffectColors[baseCategory];
+ const colors = effectColors;
 
   const cacheKey = [
     basePath,
@@ -1335,6 +1407,7 @@ async function initialize() {
     }
 
     createHairColorButtons();
+    setupColorModeButtons();
     createCategoryButtons();
     setupHairFlipButtons();
     setupZoom();
