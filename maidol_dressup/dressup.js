@@ -27,12 +27,41 @@ const CATEGORY_NAMES = {
 // グラデーション位置
 const GRADIENT_POSITIONS = [0.10, 0.30, 0.65, 1.00];
 
+
 // 初期カラー（グレースケール）
 const DEFAULT_HAIR_COLORS = {
   shadow: "#666666",
   main: "#AAAAAA",
   highlight: "#EEEEEE"
 };
+
+// 17色相の基準色（以前のメインカラーを使用）
+const HAIR_HUES = [
+  { name: "赤", base: "#D94355" },
+  { name: "オレンジ", base: "#E97835" },
+  { name: "黄色", base: "#EBC34B" },
+  { name: "緑", base: "#329765" },
+  { name: "黄緑", base: "#9ABF3E" },
+  { name: "ミント", base: "#65C8B0" },
+  { name: "水色", base: "#68BCE5" },
+  { name: "青", base: "#456FC9" },
+  { name: "濃い紫", base: "#75418E" },
+  { name: "薄紫", base: "#B49AD1" },
+  { name: "濃いピンク", base: "#D84F91" },
+  { name: "薄ピンク", base: "#F0A6C6" },
+  { name: "ベージュ", base: "#C6A77A" },
+  { name: "グレージュ", base: "#A49A91" },
+  { name: "ブラウン", base: "#805238" },
+  { name: "黒", base: "#343744" },
+  { name: "白", base: "#C5C2C8" }
+];
+
+// 彩度：低・中・高
+const HAIR_SATURATION_LEVELS = [0.30, 0.60, 0.90];
+
+// 明度：明・中・暗
+const HAIR_LIGHTNESS_LEVELS = [0.80, 0.55, 0.30];
+
 
 // ========================================
 // HTML要素
@@ -55,6 +84,11 @@ let faceOverlayEnabled = false;
 
 // ユーザーが設定する髪色
 let hairColors = { ...DEFAULT_HAIR_COLORS };
+// 現在編集中のグラデーション色
+let currentHairStop = "shadow";
+
+// 現在選択中の色相
+let currentHairHue = 0;
 
 const selected = {
   SK: 1,
@@ -266,113 +300,257 @@ async function getColoredImage(path) {
   return temp;
 }
 
+
 // ========================================
-// 髪色設定画面
+// パレット式ヘアカラー
 // ========================================
 
+// HEX → RGB
+function hexToRgb(hex) {
+  const value = hex.replace("#", "");
+
+  return {
+    r: parseInt(value.slice(0, 2), 16),
+    g: parseInt(value.slice(2, 4), 16),
+    b: parseInt(value.slice(4, 6), 16)
+  };
+}
+
+// RGB → HSL
+function rgbToHsl(r, g, b) {
+  r /= 255;
+  g /= 255;
+  b /= 255;
+
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+  const diff = max - min;
+
+  let h = 0;
+  let s = 0;
+  const l = (max + min) / 2;
+
+  if (diff !== 0) {
+    s = diff / (1 - Math.abs(2 * l - 1));
+
+    switch (max) {
+      case r:
+        h = 60 * (((g - b) / diff) % 6);
+        break;
+      case g:
+        h = 60 * ((b - r) / diff + 2);
+        break;
+      case b:
+        h = 60 * ((r - g) / diff + 4);
+        break;
+    }
+  }
+
+  if (h < 0) h += 360;
+
+  return { h, s, l };
+}
+
+// HSL → HEX
+function hslToHex(h, s, l) {
+  const chroma = (1 - Math.abs(2 * l - 1)) * s;
+  const x = chroma * (1 - Math.abs((h / 60) % 2 - 1));
+  const m = l - chroma / 2;
+
+  let r = 0;
+  let g = 0;
+  let b = 0;
+
+  if (h < 60) {
+    r = chroma;
+    g = x;
+  } else if (h < 120) {
+    r = x;
+    g = chroma;
+  } else if (h < 180) {
+    g = chroma;
+    b = x;
+  } else if (h < 240) {
+    g = x;
+    b = chroma;
+  } else if (h < 300) {
+    r = x;
+    b = chroma;
+  } else {
+    r = chroma;
+    b = x;
+  }
+
+  const toHex = value =>
+    Math.round((value + m) * 255)
+      .toString(16)
+      .padStart(2, "0");
+
+  return (
+    "#" +
+    toHex(r) +
+    toHex(g) +
+    toHex(b)
+  ).toUpperCase();
+}
+
+// 色相ごとに3×3の色を自動生成
+function generateHairPalette(hueIndex) {
+  const base = hexToRgb(HAIR_HUES[hueIndex].base);
+  const hsl = rgbToHsl(base.r, base.g, base.b);
+
+  const palette = [];
+
+  HAIR_LIGHTNESS_LEVELS.forEach(lightness => {
+    HAIR_SATURATION_LEVELS.forEach(saturation => {
+      palette.push(
+        hslToHex(
+          hsl.h,
+          saturation,
+          lightness
+        )
+      );
+    });
+  });
+
+  return palette;
+}
+
+// パレット画面を作成
 function createHairColorButtons() {
   const container = document.getElementById("hair-color-list");
   if (!container) return;
 
-  container.innerHTML = "";
+  // 色相ボタン
+  const hueList = document.getElementById("hair-hue-list");
 
-  const settings = [
-    {
-      key: "shadow",
-      label: "シェーダー",
-      description: "10%・影色"
-    },
-    {
-      key: "main",
-      label: "メイン",
-      description: "30%・基本色"
-    },
-    {
-      key: "highlight",
-      label: "ハイライト",
-      description: "65%・明るい色"
-    }
-  ];
+  hueList.innerHTML = "";
 
-  settings.forEach(setting => {
-    const row = document.createElement("div");
-    row.className = "hair-color-editor";
+  HAIR_HUES.forEach((hue, index) => {
+    const button = document.createElement("button");
 
-    const labelArea = document.createElement("div");
-    labelArea.className = "hair-color-label";
+    button.type = "button";
+    button.className = "hair-hue-button";
 
-    const title = document.createElement("strong");
-    title.textContent = setting.label;
+    const swatch = document.createElement("span");
+    swatch.className = "hair-hue-swatch";
+    swatch.style.background = hue.base;
 
-    const description = document.createElement("small");
-    description.textContent = setting.description;
+    const label = document.createElement("span");
+    label.textContent = hue.name;
 
-    labelArea.append(title, description);
+    button.append(swatch, label);
 
-    const picker = document.createElement("input");
-    picker.type = "color";
-    picker.className = "hair-color-picker";
-    picker.value = hairColors[setting.key];
-    picker.setAttribute("aria-label", setting.label + "の色");
-
-    const code = document.createElement("input");
-    code.type = "text";
-    code.className = "hair-color-code";
-    code.value = hairColors[setting.key];
-    code.maxLength = 7;
-    code.spellcheck = false;
-    code.setAttribute("aria-label", setting.label + "のカラーコード");
-    code.placeholder = "#FFFFFF";
-
-    // カラーピッカーから変更
-    picker.addEventListener("input", async () => {
-      hairColors[setting.key] = picker.value.toUpperCase();
-      code.value = picker.value.toUpperCase();
-
-      coloredImageCache.clear();
-      await renderCharacter();
+    button.addEventListener("click", () => {
+      currentHairHue = index;
+      updateHairPalette();
     });
 
-    // カラーコードから変更
-    code.addEventListener("input", async () => {
-      const value = code.value.trim();
-
-      if (!/^#[0-9A-Fa-f]{6}$/.test(value)) {
-        code.classList.add("invalid");
-        return;
-      }
-
-      code.classList.remove("invalid");
-
-      hairColors[setting.key] = value.toUpperCase();
-      picker.value = value;
-
-      coloredImageCache.clear();
-      await renderCharacter();
-    });
-
-    row.append(labelArea, picker, code);
-    container.appendChild(row);
+    hueList.appendChild(button);
   });
 
-  // 初期カラーに戻す
+  // 影・メイン・ハイライト切り替え
+  container.querySelectorAll(".hair-color-tab").forEach(button => {
+    button.addEventListener("click", () => {
+      currentHairStop = button.dataset.stop;
+      updateHairPalette();
+    });
+  });
+
+  // 初期状態に戻すボタン
   const resetButton = document.createElement("button");
+
   resetButton.type = "button";
   resetButton.className = "hair-color-reset";
   resetButton.textContent = "♡ 髪色を初期状態に戻す";
 
   resetButton.addEventListener("click", async () => {
     hairColors = { ...DEFAULT_HAIR_COLORS };
+
+    currentHairStop = "shadow";
+    currentHairHue = 0;
+
     coloredImageCache.clear();
 
-    createHairColorButtons();
+    updateHairPalette();
     await renderCharacter();
 
     updateStatus("髪色を初期状態に戻しました。");
   });
 
   container.appendChild(resetButton);
+
+  updateHairPalette();
 }
+
+// パレットの表示更新
+function updateHairPalette() {
+  const hueList = document.getElementById("hair-hue-list");
+  const shadeList = document.getElementById("hair-shade-list");
+
+  if (!hueList || !shadeList) return;
+
+  // 色相ボタンの選択状態
+  hueList.querySelectorAll(".hair-hue-button").forEach((button, index) => {
+    button.classList.toggle(
+      "active",
+      index === currentHairHue
+    );
+  });
+
+  // 色相名
+  document.getElementById("hair-hue-name").textContent =
+    HAIR_HUES[currentHairHue].name;
+
+  // 色の一覧を生成
+  const colors = generateHairPalette(currentHairHue);
+
+  shadeList.innerHTML = "";
+
+  colors.forEach((color, index) => {
+    const button = document.createElement("button");
+
+    button.type = "button";
+    button.className = "hair-shade-button";
+    button.style.backgroundColor = color;
+    button.title = color;
+
+    button.classList.toggle(
+      "active",
+      hairColors[currentHairStop] === color
+    );
+
+    button.addEventListener("click", async () => {
+      hairColors[currentHairStop] = color;
+
+      coloredImageCache.clear();
+
+      updateHairPalette();
+      await renderCharacter();
+
+      updateStatus(
+        `${currentHairStop === "shadow" ? "影" :
+          currentHairStop === "main" ? "メイン" :
+          "ハイライト"}の色を変更しました。`
+      );
+    });
+
+    shadeList.appendChild(button);
+  });
+
+  // 色の表示
+  document.getElementById("hair-selected-color").textContent =
+    hairColors[currentHairStop];
+
+  // 編集中のタブ
+  document.querySelectorAll(".hair-color-tab").forEach(button => {
+    button.classList.toggle(
+      "active",
+      button.dataset.stop === currentHairStop
+    );
+  });
+}
+
 
 // ========================================
 // 塗りと線画
