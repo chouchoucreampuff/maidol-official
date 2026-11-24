@@ -952,6 +952,8 @@ selected.TP = null;
 selected.BT = null;
 selected.HA = null;
 selected.MK = null;
+selected.HBE = null;
+selected.HFE = null;
 
   // 髪色を初期グレースケールに戻す
 hairColors = { ...DEFAULT_HAIR_COLORS };
