@@ -605,3 +605,19 @@
     gap: 7px;
   }
 }
+.item-remove-button {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 12px;
+  border: 1px solid #edb7d0;
+  border-radius: 12px;
+  background: #fff0f6;
+  color: #c45d8b;
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.item-remove-button:hover {
+  background: #ffe1ed;
+}
