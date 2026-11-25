@@ -1403,6 +1403,7 @@ function setupReset() {
 // PNG保存
 // ========================================
 
+
 function setupDownload() {
   const downloadButton = document.getElementById("download-button");
 
@@ -1411,7 +1412,8 @@ function setupDownload() {
   downloadButton.addEventListener("click", async () => {
     updateStatus("画像を作成しています…");
 
-    await renderCharacter(false);
+    // 現在の表示設定を反映して描画
+    await renderCharacter();
 
     canvas.toBlob(blob => {
       if (!blob) {
@@ -1435,6 +1437,7 @@ function setupDownload() {
     }, "image/png");
   });
 }
+
 
 // ========================================
 // 初期化
