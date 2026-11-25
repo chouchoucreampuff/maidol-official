@@ -17,6 +17,7 @@ const CATEGORY_NAMES = {
   HA: "髪飾り",
   ES: "目の形",
   IC: "瞳の色",
+  ICH: "瞳ハイライト",
   BR: "眉毛",
   MO: "口",
   MK: "メイク",
@@ -26,17 +27,26 @@ const CATEGORY_NAMES = {
   SH: "靴"
 };
 
-// グラデーション位置
 const GRADIENT_POSITIONS = [0.10, 0.30, 0.65, 1.00];
 
-// 初期カラー（グレースケール）
 const DEFAULT_HAIR_COLORS = {
   shadow: "#666666",
   main: "#AAAAAA",
   highlight: "#EEEEEE"
 };
 
-// 14色相＋モノトーン
+const DEFAULT_EFFECT_COLORS = {
+  shadow: "#666666",
+  main: "#AAAAAA",
+  highlight: "#EEEEEE"
+};
+
+const DEFAULT_EYE_COLORS = {
+  shadow: "#666666",
+  main: "#AAAAAA",
+  highlight: "#EEEEEE"
+};
+
 const HAIR_HUES = [
   { name: "赤", base: "#D94355", hue: 355 },
   { name: "橙", base: "#E97835", hue: 30 },
@@ -77,34 +87,21 @@ let manifest = null;
 let currentCategory = "HF";
 let faceOverlayEnabled = false;
 
-// ユーザーが設定する髪色
 let hairColors = { ...DEFAULT_HAIR_COLORS };
 
-// 現在編集中のグラデーション色
-let currentHairStop = "shadow";
-
-// ========================================
-// カラーモード
-// ========================================
-
-// hair = 通常の髪色
-// effect = 前髪・後ろ髪エフェクト共通色
-let currentColorMode = "hair";
-
-// エフェクトカラー初期設定
-const DEFAULT_EFFECT_COLORS = {
-  shadow: "#666666",
-  main: "#AAAAAA",
-  highlight: "#EEEEEE"
-};
-
-// 前髪・後ろ髪エフェクトのカラーを別々に管理
 let effectColors = {
   HFE: { ...DEFAULT_EFFECT_COLORS },
   HBE: { ...DEFAULT_EFFECT_COLORS }
 };
 
-// 現在選択中の色相
+// 左右の瞳色を完全に独立して管理
+let eyeColors = {
+  left: { ...DEFAULT_EYE_COLORS },
+  right: { ...DEFAULT_EYE_COLORS }
+};
+
+let currentHairStop = "shadow";
+let currentColorMode = "hair";
 let currentHairHue = 0;
 
 const selected = {
@@ -116,6 +113,7 @@ const selected = {
   HA: null,
   ES: 1,
   IC: 1,
+  ICH: 1,
   BR: 1,
   MO: 1,
   MK: null,
@@ -125,7 +123,6 @@ const selected = {
   SH: 1
 };
 
-// 前髪・後ろ髪・エフェクトを別々に反転
 const hairFlip = {
   HF: false,
   HB: false,
@@ -133,7 +130,6 @@ const hairFlip = {
   HBE: false
 };
 
-// 画像キャッシュ
 const imageCache = new Map();
 const coloredImageCache = new Map();
 const hairEffectCache = new Map();
@@ -163,6 +159,11 @@ function getCategoryCount(category) {
 
 function getSelectedNumber(category) {
   return selected[category];
+}
+
+function clearColorCaches() {
+  coloredImageCache.clear();
+  hairEffectCache.clear();
 }
 
 // ========================================
@@ -198,7 +199,7 @@ async function drawAsset(path, alpha = 1, flip = false, colorize = false) {
   if (!img) return;
 
   if (colorize) {
-    img = await getColoredImage(path);
+    img = await getColoredImage(path, colorize);
     if (!img) return;
   }
 
@@ -215,7 +216,7 @@ async function drawAsset(path, alpha = 1, flip = false, colorize = false) {
 }
 
 // ========================================
-// 色変換・補間
+// 色変換
 // ========================================
 
 function hexToRgb(hex) {
@@ -236,25 +237,25 @@ function interpolateColor(color1, color2, amount) {
   };
 }
 
-// ========================================
-// 髪色変更
-// ========================================
-
-function getGradientColors() {
+function getGradientColors(colorSet) {
   return [
-    hexToRgb(hairColors.shadow),
-    hexToRgb(hairColors.main),
-    hexToRgb(hairColors.highlight),
+    hexToRgb(colorSet.shadow),
+    hexToRgb(colorSet.main),
+    hexToRgb(colorSet.highlight),
     { r: 255, g: 255, b: 255 }
   ];
 }
 
-async function getColoredImage(path) {
+// ========================================
+// グレースケール画像の着色
+// ========================================
+
+async function getColoredImage(path, colorSet) {
   const cacheKey = [
     path,
-    hairColors.shadow,
-    hairColors.main,
-    hairColors.highlight
+    colorSet.shadow,
+    colorSet.main,
+    colorSet.highlight
   ].join("_");
 
   if (coloredImageCache.has(cacheKey)) {
@@ -279,7 +280,7 @@ async function getColoredImage(path) {
   );
 
   const pixels = imageData.data;
-  const colors = getGradientColors();
+  const colors = getGradientColors(colorSet);
 
   for (let i = 0; i < pixels.length; i += 4) {
     if (pixels[i + 3] === 0) continue;
@@ -319,17 +320,15 @@ async function getColoredImage(path) {
   }
 
   tempCtx.putImageData(imageData, 0, 0);
-
   coloredImageCache.set(cacheKey, temp);
 
   return temp;
 }
 
 // ========================================
-// パレット式ヘアカラー
+// RGB・HSL変換
 // ========================================
 
-// RGB → HSL
 function rgbToHsl(r, g, b) {
   r /= 255;
   g /= 255;
@@ -364,7 +363,6 @@ function rgbToHsl(r, g, b) {
   return { h, s, l };
 }
 
-// HSL → HEX
 function hslToHex(h, s, l) {
   const chroma = (1 - Math.abs(2 * l - 1)) * s;
   const x = chroma * (1 - Math.abs((h / 60) % 2 - 1));
@@ -407,11 +405,13 @@ function hslToHex(h, s, l) {
   ).toUpperCase();
 }
 
-// 色相ごとに3×4の色を自動生成
+// ========================================
+// パレット生成
+// ========================================
+
 function generateHairPalette(hueIndex) {
   const selectedHue = HAIR_HUES[hueIndex];
 
-  // モノトーン専用12色
   if (selectedHue.hue === null) {
     return [
       "#FFFFFF", "#F5F5F5", "#EBEBEB",
@@ -421,13 +421,13 @@ function generateHairPalette(hueIndex) {
     ];
   }
 
-  // 通常色は彩度3段階×明度4段階
   const palette = [];
-  const hue = selectedHue.hue;
 
   HAIR_LIGHTNESS_LEVELS.forEach(lightness => {
     HAIR_SATURATION_LEVELS.forEach(saturation => {
-      palette.push(hslToHex(hue, saturation, lightness));
+      palette.push(
+        hslToHex(selectedHue.hue, saturation, lightness)
+      );
     });
   });
 
@@ -435,17 +435,49 @@ function generateHairPalette(hueIndex) {
 }
 
 // ========================================
-// パレット画面
+// 現在編集中のカラーセット
+// ========================================
+
+function getCurrentColorSet() {
+  if (currentColorMode === "effect") {
+    return currentCategory === "HBE"
+      ? effectColors.HBE
+      : effectColors.HFE;
+  }
+
+  if (currentColorMode === "eyeLeft") {
+    return eyeColors.left;
+  }
+
+  if (currentColorMode === "eyeRight") {
+    return eyeColors.right;
+  }
+
+  return hairColors;
+}
+
+function getCurrentModeName() {
+  switch (currentColorMode) {
+    case "effect":
+      return "エフェクトカラー";
+    case "eyeLeft":
+      return "左目アイカラー";
+    case "eyeRight":
+      return "右目アイカラー";
+    default:
+      return "ヘアカラー";
+  }
+}
+
+// ========================================
+// カラーパレット作成
 // ========================================
 
 function createHairColorButtons() {
   const container = document.getElementById("hair-color-list");
-  if (!container) return;
-
-  // 色相ボタン
   const hueList = document.getElementById("hair-hue-list");
 
-  if (!hueList) return;
+  if (!container || !hueList) return;
 
   hueList.innerHTML = "";
 
@@ -472,7 +504,6 @@ function createHairColorButtons() {
     hueList.appendChild(button);
   });
 
-  // 影・メイン・ハイライト切り替え
   container.querySelectorAll(".hair-color-tab").forEach(button => {
     button.addEventListener("click", () => {
       currentHairStop = button.dataset.stop;
@@ -480,27 +511,34 @@ function createHairColorButtons() {
     });
   });
 
-  // 初期状態に戻すボタン
   const resetButton = document.createElement("button");
 
   resetButton.type = "button";
   resetButton.className = "hair-color-reset";
-  resetButton.textContent = "♡ 髪色を初期状態に戻す";
+  resetButton.textContent = "♡ このカラーを初期状態に戻す";
 
   resetButton.addEventListener("click", async () => {
-    hairColors = { ...DEFAULT_HAIR_COLORS };
+    const defaults = { ...DEFAULT_HAIR_COLORS };
 
-    currentHairStop = "shadow";
-    currentHairHue = 0;
+    if (currentColorMode === "effect") {
+      if (currentCategory === "HBE") {
+        effectColors.HBE = { ...DEFAULT_EFFECT_COLORS };
+      } else {
+        effectColors.HFE = { ...DEFAULT_EFFECT_COLORS };
+      }
+    } else if (currentColorMode === "eyeLeft") {
+      eyeColors.left = { ...DEFAULT_EYE_COLORS };
+    } else if (currentColorMode === "eyeRight") {
+      eyeColors.right = { ...DEFAULT_EYE_COLORS };
+    } else {
+      hairColors = defaults;
+    }
 
-    coloredImageCache.clear();
-    hairEffectCache.clear();
-
+    clearColorCaches();
     updateHairPalette();
-
     await renderCharacter();
 
-    updateStatus("髪色を初期状態に戻しました。");
+    updateStatus(`${getCurrentModeName()}を初期状態に戻しました。`);
   });
 
   container.appendChild(resetButton);
@@ -508,25 +546,8 @@ function createHairColorButtons() {
   updateHairPalette();
 }
 
-
 // ========================================
-// 現在編集中のカラー取得
-// ========================================
-
-function getCurrentColorSet() {
-  if (currentColorMode === "effect") {
-    if (currentCategory === "HBE") {
-      return effectColors.HBE;
-    }
-
-    return effectColors.HFE;
-  }
-
-  return hairColors;
-}
-
-// ========================================
-// パレットの表示更新
+// パレット表示更新
 // ========================================
 
 function updateHairPalette() {
@@ -567,13 +588,9 @@ function updateHairPalette() {
     button.addEventListener("click", async () => {
       colorsSet[currentHairStop] = color;
 
-      if (currentColorMode === "effect") {
-        hairEffectCache.clear();
-      } else {
-        coloredImageCache.clear();
-      }
-
+      clearColorCaches();
       updateHairPalette();
+
       await renderCharacter();
 
       const stopName =
@@ -581,10 +598,9 @@ function updateHairPalette() {
         currentHairStop === "main" ? "メイン" :
         "ハイライト";
 
-      const modeName =
-        currentColorMode === "effect" ? "エフェクトカラー" : "ヘアカラー";
-
-      updateStatus(`${modeName}の${stopName}色を変更しました。`);
+      updateStatus(
+        `${getCurrentModeName()}の${stopName}色を変更しました。`
+      );
     });
 
     shadeList.appendChild(button);
@@ -604,7 +620,7 @@ function updateHairPalette() {
   });
 }
 
-  // ========================================
+// ========================================
 // カラーモード切り替え
 // ========================================
 
@@ -615,11 +631,14 @@ function setupColorModeButtons() {
     button.addEventListener("click", async () => {
       const mode = button.dataset.colorMode;
 
-      if (currentColorMode === mode) return;
+      if (
+        !["hair", "effect", "eyeLeft", "eyeRight"].includes(mode)
+      ) {
+        return;
+      }
 
       currentColorMode = mode;
 
-      // ボタンの選択状態を更新
       buttons.forEach(btn => {
         btn.classList.toggle(
           "active",
@@ -627,17 +646,10 @@ function setupColorModeButtons() {
         );
       });
 
-      // パレットを更新
       updateHairPalette();
-
-      // キャラクターを再描画
       await renderCharacter();
 
-      updateStatus(
-        currentColorMode === "effect"
-          ? "エフェクトカラーを編集中です。"
-          : "ヘアカラーを編集中です。"
-      );
+      updateStatus(`${getCurrentModeName()}を編集中です。`);
     });
   });
 }
@@ -659,7 +671,7 @@ async function drawHairEffect(
   const basePath = getItemPath(baseCategory, baseNumber);
   const effectPath = getItemPath(effectCategory, effectNumber);
 
- const colors = effectColors[effectCategory] || DEFAULT_EFFECT_COLORS;
+  const colors = effectColors[effectCategory] || DEFAULT_EFFECT_COLORS;
 
   const cacheKey = [
     basePath,
@@ -685,21 +697,14 @@ async function drawHairEffect(
       willReadFrequently: true
     });
 
-    // 元の髪画像を読み込む
     tempCtx.drawImage(
-      baseImage,
-      0, 0,
-      CANVAS_WIDTH,
-      CANVAS_HEIGHT
+      baseImage, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT
     );
 
     const baseData = tempCtx.getImageData(
-      0, 0,
-      CANVAS_WIDTH,
-      CANVAS_HEIGHT
+      0, 0, CANVAS_WIDTH, CANVAS_HEIGHT
     );
 
-    // マスク画像を読み込む
     const maskCanvas = document.createElement("canvas");
     maskCanvas.width = CANVAS_WIDTH;
     maskCanvas.height = CANVAS_HEIGHT;
@@ -709,39 +714,27 @@ async function drawHairEffect(
     });
 
     maskCtx.drawImage(
-      maskImage,
-      0, 0,
-      CANVAS_WIDTH,
-      CANVAS_HEIGHT
+      maskImage, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT
     );
 
     const maskData = maskCtx.getImageData(
-      0, 0,
-      CANVAS_WIDTH,
-      CANVAS_HEIGHT
+      0, 0, CANVAS_WIDTH, CANVAS_HEIGHT
     );
 
     const basePixels = baseData.data;
     const maskPixels = maskData.data;
 
-    const gradientColors = [
-      hexToRgb(colors.shadow),
-      hexToRgb(colors.main),
-      hexToRgb(colors.highlight),
-      { r: 255, g: 255, b: 255 }
-    ];
+    const gradientColors = getGradientColors(colors);
 
     for (let i = 0; i < basePixels.length; i += 4) {
       const baseAlpha = basePixels[i + 3];
       const maskAlpha = maskPixels[i + 3];
 
-      // 髪の外側は透明
       if (baseAlpha === 0) {
         basePixels[i + 3] = 0;
         continue;
       }
 
-      // マスクの明るさを効果の強さとして使用
       const maskBrightness = (
         0.299 * maskPixels[i] +
         0.587 * maskPixels[i + 1] +
@@ -755,7 +748,6 @@ async function drawHairEffect(
         continue;
       }
 
-      // 元の髪画像の明るさでグラデーションを決定
       const brightness = (
         0.299 * basePixels[i] +
         0.587 * basePixels[i + 1] +
@@ -789,7 +781,6 @@ async function drawHairEffect(
       basePixels[i + 1] = Math.round(result.g);
       basePixels[i + 2] = Math.round(result.b);
 
-      // マスクの明るさに応じて透明度を設定
       basePixels[i + 3] = Math.round(
         baseAlpha * effectAmount
       );
@@ -810,17 +801,14 @@ async function drawHairEffect(
   }
 
   ctx.drawImage(
-    effectCanvas,
-    0, 0,
-    CANVAS_WIDTH,
-    CANVAS_HEIGHT
+    effectCanvas, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT
   );
 
   ctx.restore();
 }
 
 // ========================================
-// エフェクト付き髪の描画
+// エフェクト付き髪
 // ========================================
 
 async function drawHairWithEffect(
@@ -835,13 +823,10 @@ async function drawHairWithEffect(
   const fillPath = getItemPath(category, number);
   const linePath = getItemPath(category, number, "_LN");
 
-  // エフェクト専用の反転状態
   const effectFlip = hairFlip[effectCategory] || false;
 
-  // 1. 髪の塗り
-  await drawAsset(fillPath, 1, flip, true);
+  await drawAsset(fillPath, 1, flip, hairColors);
 
-  // 2. エフェクト
   if (effectNumber) {
     await drawHairEffect(
       category,
@@ -853,7 +838,6 @@ async function drawHairWithEffect(
     );
   }
 
-  // 3. 線画
   await drawAsset(linePath, 1, flip);
 }
 
@@ -873,7 +857,13 @@ async function drawFillAndLine(
   const fillPath = getItemPath(category, number);
   const linePath = getItemPath(category, number, "_LN");
 
-  await drawAsset(fillPath, alpha, flip, colorize);
+  await drawAsset(
+    fillPath,
+    alpha,
+    flip,
+    colorize ? hairColors : false
+  );
+
   await drawAsset(linePath, alpha, flip);
 }
 
@@ -882,10 +872,39 @@ async function drawFillAndLine(
 // ========================================
 
 async function drawFaceParts(alpha = 1) {
+  // 1. 白目：両目が入った共通画像
+  await drawAsset(
+    "assets/IC/IC00001_WH.png",
+    alpha
+  );
+
+  // 2. 左目：元画像を左目位置に描画
   if (selected.IC) {
-    await drawAsset(getItemPath("IC", selected.IC), alpha);
+    await drawAsset(
+      getItemPath("IC", selected.IC),
+      alpha,
+      false,
+      eyeColors.left
+    );
+
+    // 3. 右目：同じ画像を左右反転
+    await drawAsset(
+      getItemPath("IC", selected.IC),
+      alpha,
+      true,
+      eyeColors.right
+    );
   }
 
+  // 4. ハイライト：両目入りの共通画像
+  if (selected.ICH) {
+    await drawAsset(
+      getItemPath("ICH", selected.ICH),
+      alpha
+    );
+  }
+
+  // 5. その他の顔パーツ
   await drawFillAndLine("ES", selected.ES, false, alpha);
   await drawFillAndLine("MO", selected.MO, false, alpha);
   await drawFillAndLine("BR", selected.BR, true, alpha);
@@ -951,11 +970,15 @@ async function drawBackDecoration() {
     if (group?.sharedParts?.BK) {
       await drawAsset(`assets/DR/${group.sharedParts.BK}`);
     } else {
-      await drawAsset(getItemPath("DR", selected.DR, "_BK"));
+      await drawAsset(
+        getItemPath("DR", selected.DR, "_BK")
+      );
     }
 
   } else if (selected.TP) {
-    await drawAsset(getItemPath("TP", selected.TP, "_BK"));
+    await drawAsset(
+      getItemPath("TP", selected.TP, "_BK")
+    );
   }
 }
 
@@ -1103,7 +1126,8 @@ function createCategoryButtons() {
 
       button.classList.add("active");
 
-      categoryTitle.textContent = CATEGORY_NAMES[currentCategory];
+      categoryTitle.textContent =
+        CATEGORY_NAMES[currentCategory] || currentCategory;
 
       updateHairFlipButton();
       renderItemList();
@@ -1122,7 +1146,6 @@ function renderItemList() {
 
   const count = getCategoryCount(currentCategory);
 
-  // パーツを外すボタン
   const removeButton = document.createElement("button");
   removeButton.type = "button";
   removeButton.className = "item-remove-button";
@@ -1131,11 +1154,13 @@ function renderItemList() {
   removeButton.addEventListener("click", async () => {
     selected[currentCategory] = null;
 
-    // 服のカテゴリは関連する選択も解除
     if (currentCategory === "DR") {
       selected.TP = null;
       selected.BT = null;
-    } else if (currentCategory === "TP" || currentCategory === "BT") {
+    } else if (
+      currentCategory === "TP" ||
+      currentCategory === "BT"
+    ) {
       selected.DR = null;
     }
 
@@ -1147,7 +1172,9 @@ function renderItemList() {
 
   if (!count) {
     const message = document.createElement("p");
-    message.textContent = "このカテゴリにはまだアイテムがありません。";
+    message.textContent =
+      "このカテゴリにはまだアイテムがありません。";
+
     itemList.appendChild(message);
     return;
   }
@@ -1203,7 +1230,7 @@ function selectItem(category, number) {
 }
 
 // ========================================
-// 顔パーツの半透明表示
+// 顔パーツ半透明表示
 // ========================================
 
 function setupFaceOverlay() {
@@ -1246,7 +1273,7 @@ function setupZoom() {
 }
 
 // ========================================
-// リセット
+// 全体リセット
 // ========================================
 
 function setupReset() {
@@ -1255,7 +1282,6 @@ function setupReset() {
   if (!resetButton) return;
 
   resetButton.addEventListener("click", async () => {
-    // 選択パーツを初期化
     Object.keys(selected).forEach(key => {
       selected[key] = 1;
     });
@@ -1267,38 +1293,36 @@ function setupReset() {
     selected.HBE = null;
     selected.HFE = null;
 
-// 通常のヘアカラーを初期化
-hairColors = { ...DEFAULT_HAIR_COLORS };
+    hairColors = { ...DEFAULT_HAIR_COLORS };
 
-// 前髪・後ろ髪のエフェクトカラーを初期化
-effectColors = {
-  HFE: { ...DEFAULT_EFFECT_COLORS },
-  HBE: { ...DEFAULT_EFFECT_COLORS }
-};
+    effectColors = {
+      HFE: { ...DEFAULT_EFFECT_COLORS },
+      HBE: { ...DEFAULT_EFFECT_COLORS }
+    };
 
-// カラーモードを通常のヘアカラーに戻す
-currentColorMode = "hair";
+    eyeColors = {
+      left: { ...DEFAULT_EYE_COLORS },
+      right: { ...DEFAULT_EYE_COLORS }
+    };
 
-// カラーモードボタンの表示を更新
-document.querySelectorAll(".color-mode-button").forEach(button => {
-  button.classList.toggle(
-    "active",
-    button.dataset.colorMode === "hair"
-  );
-});
-
+    currentColorMode = "hair";
     currentHairStop = "shadow";
     currentHairHue = 0;
 
-    // 色変更後の画像キャッシュを消去
-    coloredImageCache.clear();
-    hairEffectCache.clear();
+    document.querySelectorAll(".color-mode-button").forEach(button => {
+      button.classList.toggle(
+        "active",
+        button.dataset.colorMode === "hair"
+      );
+    });
 
-    // 髪の反転を解除
+    clearColorCaches();
+
     hairFlip.HF = false;
     hairFlip.HB = false;
+    hairFlip.HFE = false;
+    hairFlip.HBE = false;
 
-    // 顔パーツの半透明表示を解除
     faceOverlayEnabled = false;
 
     const faceOverlay = document.getElementById("face-overlay");
@@ -1307,7 +1331,6 @@ document.querySelectorAll(".color-mode-button").forEach(button => {
       faceOverlay.checked = false;
     }
 
-    // ズームを初期化
     const zoomSlider = document.getElementById("preview-zoom");
     const zoomValue = document.getElementById("zoom-value");
 
@@ -1323,10 +1346,8 @@ document.querySelectorAll(".color-mode-button").forEach(button => {
       zoomValue.textContent = "100%";
     }
 
-    // パレット表示を更新
     updateHairPalette();
 
-    // カテゴリを前髪に戻す
     document.querySelectorAll("[data-category]").forEach(el => {
       el.classList.remove("active");
     });
@@ -1419,6 +1440,14 @@ async function initialize() {
 
     if (!manifest.categories) {
       throw new Error("manifest.jsonにcategoriesがありません。");
+    }
+
+    if (!manifest.categories.IC) {
+      throw new Error("manifest.jsonにICカテゴリがありません。");
+    }
+
+    if (!manifest.categories.ICH) {
+      throw new Error("manifest.jsonにICHカテゴリがありません。");
     }
 
     createHairColorButtons();
