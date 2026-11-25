@@ -91,15 +91,17 @@ let currentHairStop = "shadow";
 // effect = 前髪・後ろ髪エフェクト共通色
 let currentColorMode = "hair";
 
-// エフェクト共通カラー
+// エフェクトカラー初期設定
 const DEFAULT_EFFECT_COLORS = {
   shadow: "#666666",
   main: "#AAAAAA",
   highlight: "#EEEEEE"
 };
 
+// 前髪・後ろ髪エフェクトのカラーを別々に管理
 let effectColors = {
-  ...DEFAULT_EFFECT_COLORS
+  HFE: { ...DEFAULT_EFFECT_COLORS },
+  HBE: { ...DEFAULT_EFFECT_COLORS }
 };
 
 // 現在選択中の色相
@@ -512,9 +514,15 @@ function createHairColorButtons() {
 // ========================================
 
 function getCurrentColorSet() {
-  return currentColorMode === "effect"
-    ? effectColors
-    : hairColors;
+  if (currentColorMode === "effect") {
+    if (currentCategory === "HBE") {
+      return effectColors.HBE;
+    }
+
+    return effectColors.HFE;
+  }
+
+  return hairColors;
 }
 
 // ========================================
@@ -651,7 +659,7 @@ async function drawHairEffect(
   const basePath = getItemPath(baseCategory, baseNumber);
   const effectPath = getItemPath(effectCategory, effectNumber);
 
- const colors = effectColors;
+ const colors = effectColors[effectCategory] || DEFAULT_EFFECT_COLORS;
 
   const cacheKey = [
     basePath,
