@@ -1270,8 +1270,11 @@ function setupReset() {
 // 通常のヘアカラーを初期化
 hairColors = { ...DEFAULT_HAIR_COLORS };
 
-// エフェクトカラーを初期化
-effectColors = { ...DEFAULT_EFFECT_COLORS };
+// 前髪・後ろ髪のエフェクトカラーを初期化
+effectColors = {
+  HFE: { ...DEFAULT_EFFECT_COLORS },
+  HBE: { ...DEFAULT_EFFECT_COLORS }
+};
 
 // カラーモードを通常のヘアカラーに戻す
 currentColorMode = "hair";
