@@ -815,7 +815,8 @@ async function drawHairWithEffect(
   number,
   effectCategory,
   effectNumber,
-  flip = false
+  flip = false,
+  alpha = 1
 ) {
   if (!number) return;
 
@@ -824,20 +825,23 @@ async function drawHairWithEffect(
 
   const effectFlip = hairFlip[effectCategory] || false;
 
-  await drawAsset(fillPath, 1, flip, hairColors);
+  // 髪の塗り
+  await drawAsset(fillPath, alpha, flip, hairColors);
 
+  // 髪のエフェクト
   if (effectNumber) {
     await drawHairEffect(
       category,
       number,
       effectCategory,
       effectNumber,
-      1,
+      alpha,
       effectFlip
     );
   }
 
-  await drawAsset(linePath, 1, flip);
+  // 髪の線画
+  await drawAsset(linePath, alpha, flip);
 }
 
 // ========================================
@@ -1020,21 +1024,42 @@ async function renderCharacter(includeOverlay = true) {
   // 6. 服
   await drawClothing();
 
-  // 7. 顔パーツ
-  await drawFaceParts();
-
-  // 8. 前髪
-  await drawHairWithEffect(
-    "HF",
-    selected.HF,
-    "HFE",
-    selected.HFE,
-    hairFlip.HF
-  );
-
-  // 9. 半透明の顔パーツ
   if (includeOverlay && faceOverlayEnabled) {
-    await drawFaceParts(0.45);
+
+    // 7. 前髪を通常表示（目の後ろ）
+    await drawHairWithEffect(
+      "HF",
+      selected.HF,
+      "HFE",
+      selected.HFE,
+      hairFlip.HF
+    );
+
+    // 8. 顔パーツを通常の濃さで描画
+    await drawFaceParts();
+
+    // 9. 前髪を60%の不透明度で重ねる
+    await drawHairWithEffect(
+      "HF",
+      selected.HF,
+      "HFE",
+      selected.HFE,
+      hairFlip.HF,
+      0.6
+    );
+
+  } else {
+
+    // 通常表示：顔パーツの上に前髪を描画
+    await drawFaceParts();
+
+    await drawHairWithEffect(
+      "HF",
+      selected.HF,
+      "HFE",
+      selected.HFE,
+      hairFlip.HF
+    );
   }
 
   // 10. 髪飾り
