@@ -993,6 +993,10 @@ async function renderCharacter(includeOverlay = true) {
   if (!ctx) return;
 
   ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+  // 背景を描画
+drawBackground();
+
+// その後、キャラクターを描画
 
   // 1. 後ろ髪
   await drawHairWithEffect(
