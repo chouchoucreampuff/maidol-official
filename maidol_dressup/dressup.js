@@ -45,6 +45,11 @@ const DEFAULT_EYE_COLORS = {
   main: "#AAAAAA",
   highlight: "#EEEEEE"
 };
+const DEFAULT_BACKGROUND_COLORS = {
+  shadow: "#FFB4D5",
+  main: "#FFE8B8",
+  highlight: "#B8E8FF"
+};
 
 const HAIR_HUES = [
   { name: "赤", base: "#D94355", hue: 355 },
@@ -87,7 +92,7 @@ let currentCategory = "HF";
 let faceOverlayEnabled = false;
 
 let hairColors = { ...DEFAULT_HAIR_COLORS };
-
+let backgroundColors = {...DEFAULT_BACKGROUND_COLORS};
 let effectColors = {
   HFE: { ...DEFAULT_EFFECT_COLORS },
   HBE: { ...DEFAULT_EFFECT_COLORS }
@@ -438,19 +443,18 @@ function generateHairPalette(hueIndex) {
 // ========================================
 
 function getCurrentColorSet() {
+  if (currentColorMode === "background") {
+    return backgroundColors;
+  }
+
   if (currentColorMode === "effect") {
     return currentCategory === "HBE"
       ? effectColors.HBE
       : effectColors.HFE;
   }
 
-  if (currentColorMode === "eyeLeft") {
-    return eyeColors.left;
-  }
-
-  if (currentColorMode === "eyeRight") {
-    return eyeColors.right;
-  }
+  if (currentColorMode === "eyeLeft") return eyeColors.left;
+  if (currentColorMode === "eyeRight") return eyeColors.right;
 
   return hairColors;
 }
@@ -463,6 +467,8 @@ function getCurrentModeName() {
       return "左目アイカラー";
     case "eyeRight":
       return "右目アイカラー";
+    case "background":
+      return "背景";
     default:
       return "ヘアカラー";
   }
@@ -630,11 +636,7 @@ function setupColorModeButtons() {
     button.addEventListener("click", async () => {
       const mode = button.dataset.colorMode;
 
-      if (
-        !["hair", "effect", "eyeLeft", "eyeRight"].includes(mode)
-      ) {
-        return;
-      }
+if (!["hair", "effect", "eyeLeft", "eyeRight", "background"].includes(mode)) return;
 
       currentColorMode = mode;
 
@@ -985,6 +987,24 @@ async function drawBackDecoration() {
   }
 }
 
+function drawBackground() {
+  if (!ctx || !canvas) return;
+
+  const gradient = ctx.createLinearGradient(
+    0,
+    0,
+    0,
+    CANVAS_HEIGHT
+  );
+
+  gradient.addColorStop(0, backgroundColors.shadow);
+  gradient.addColorStop(0.5, backgroundColors.main);
+  gradient.addColorStop(1, backgroundColors.highlight);
+
+  ctx.fillStyle = gradient;
+  ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+}
+
 // ========================================
 // キャラクター描画
 // ========================================
@@ -1323,6 +1343,8 @@ function setupReset() {
 
     hairColors = { ...DEFAULT_HAIR_COLORS };
 
+    backgroundColors = { ...DEFAULT_BACKGROUND_COLORS };
+    
     effectColors = {
       HFE: { ...DEFAULT_EFFECT_COLORS },
       HBE: { ...DEFAULT_EFFECT_COLORS }
